@@ -104,7 +104,7 @@ if "%VC10DIR%"=="" (
 )
 
 REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir >nul 2>nul
-if "%VC8EXPRESSDIR%"=="" (
+if "%VC10EXPRESSDIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir') DO SET VC10EXPRESSDIR=%%B
   )
@@ -181,10 +181,9 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60000 (
 
 REM The Vista SDK (6.0 and 6.0A) ships with a VC8 Express install
 
-if "%SDKVER%"=="6" (
-  if "%VC8EXPRESSDIR%"=="" (
-    SET VC8EXPRESSDIR=%SDKDIR%VC\
-  )
+REG QUERY "%SDK6KEY%\WinSDKCompiler" /v InstallationFolder >nul 2>nul
+IF %ERRORLEVEL% EQU 0 (
+  FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK6KEY%\WinSDKCompiler" /v InstallationFolder`) DO SET VC8EXPRESSDIR=%%BVC\
 )
 
 REG QUERY "%SDK2003SP2KEY%" /v "Install Dir" >nul 2>nul
