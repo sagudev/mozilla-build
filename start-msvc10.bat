@@ -76,6 +76,4 @@ if "%VC10DIR%"=="" (
     )
 )
 
-cd "%USERPROFILE%"
-
-"%MOZILLABUILD%\msys\bin\bash" --login -i
+start /d "%USERPROFILE%" "" "%MOZILLABUILD%"\msys\bin\bash --login -i
