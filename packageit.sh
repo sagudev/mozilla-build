@@ -119,6 +119,10 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.10.2b.zip"
 # so SSL will work
 cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/wget"
 
+# Install yasm
+mkdir "${MSYS_STAGEDIR}/mozilla-build/yasm"
+cp "${MSYS_SRCDIR}/yasm-1.1.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/yasm.exe"
+
 # stage files to make the installer
 cp "${MSYS_SRCDIR}"/{license.rtf,installit.nsi} "${MSYS_STAGEDIR}"
 version=`cat "${MSYS_SRCDIR}"/VERSION`
