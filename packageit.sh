@@ -71,24 +71,9 @@ mkdir "${MSYS_STAGEDIR}/atlthunk_compat"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/atlthunk_compat"
 install "${MSYS_STAGEDIR}/atlthunk_compat/atlthunk.lib" "${MSYS_STAGEDIR}/mozilla-build/atlthunk_compat"
 
-# install moztools-static and wintools-compat
+# install moztools-static
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static.zip"
 rm -f "${MSYS_STAGEDIR}"/mozilla-build/moztools/bin/{gmake.exe,shmsdos.exe,uname.exe}
-
-rm -rf "${MSYS_STAGEDIR}/buildtools"
-mkdir -p "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/bin"
-mkdir -p "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/include/libIDL"
-mkdir -p "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/lib"
-
-unzip -d "${MSYS_STAGEDIR}" "${MSYS_SRCDIR}/wintools-180compat.zip"
-cp "${MSYS_STAGEDIR}"/buildtools/windows/bin/x86/{glib-1.2.dll,gmodule-1.2.dll,gthread-1.2.dll,libIDL-0.6.dll,nsinstall.exe} \
-    "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/bin"
-for file in "${MSYS_STAGEDIR}"/buildtools/windows/include/*.h; do
-    tr -d '\015' < $file > "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/include"/`basename $file`
-done
-cp "${MSYS_STAGEDIR}/buildtools/windows/include/libIDL/IDL.h" "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/include/libIDL"
-cp "${MSYS_STAGEDIR}"/buildtools/windows/lib/*.lib \
-    "${MSYS_STAGEDIR}/mozilla-build/moztools-180compat/lib"
 
 # install moztools x64
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static-x64.zip"
@@ -100,7 +85,7 @@ cp "${MSYS_SRCDIR}"/{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,pro
     "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
 
 # Copy the batch files that make everything go!
-cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-msvc6.bat,start-msvc71.bat,start-msvc8.bat,start-msvc9.bat,start-msvc10.bat,start-l10n.bat,start-msvc8-x64.bat,start-msvc9-x64.bat,start-msvc10-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
+cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-msvc71.bat,start-msvc8.bat,start-msvc9.bat,start-msvc10.bat,start-l10n.bat,start-msvc8-x64.bat,start-msvc9-x64.bat,start-msvc10-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
 
 # Copy VERSION file
 cp "${MSYS_SRCDIR}"/VERSION "${MSYS_STAGEDIR}/mozilla-build"

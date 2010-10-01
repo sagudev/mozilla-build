@@ -29,7 +29,6 @@ if "%WIN64%" == "1" (
   SET MSVCEXPROOTKEY=HKLM\SOFTWARE\Microsoft\VCExpress
 )
 
-SET MSVC6KEY=%MSVCROOTKEY%\6.0\Setup\Microsoft Visual C++
 SET MSVC71KEY=%MSVCROOTKEY%\7.1\Setup\VC
 SET MSVC8KEY=%MSVCROOTKEY%\8.0\Setup\VC
 SET MSVC8EXPRESSKEY=%MSVCEXPROOTKEY%\8.0\Setup\VC
@@ -41,13 +40,6 @@ SET MSVC10EXPRESSKEY=%MSVCEXPROOTKEY%\10.0\Setup\VC
 REM First see if we can find MSVC, then set the variable
 REM NOTE: delims=<tab><space>
 REM NOTE: run the initial REQ QUERY outside of the if() to set ERRORLEVEL correctly
-
-REG QUERY "%MSVC6KEY%" /v ProductDir >nul 2>nul
-if "%VC6DIR%"=="" (
-  IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC6KEY%" /v ProductDir') DO SET VC6DIR=%%B
-  )
-)
 
 REG QUERY "%MSVC71KEY%" /v ProductDir >nul 2>nul
 if "%VC71DIR%"=="" (
@@ -203,7 +195,6 @@ if "%PSDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 40000 (
   )
 )
 
-if defined %VC6DIR% (ECHO Visual C++ 6 directory: %VC6DIR%)
 if defined %VC71DIR% (ECHO Visual C++ 7.1 directory: %VC71DIR%)
 if defined %VC8DIR% (ECHO Visual C++ 8 directory: %VC8DIR%)
 if defined %VC8EXPRESSDIR% (ECHO Visual C++ 8 Express directory: %VC8EXPRESSDIR%)
