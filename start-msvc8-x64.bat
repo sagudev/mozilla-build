@@ -88,4 +88,6 @@ if "%USESDK%"=="1" (
     )
 )
 
-start /d "%USERPROFILE%" "" "%MOZILLABUILD%"\msys\bin\bash --login -i
+cd "%USERPROFILE%"
+
+"%MOZILLABUILD%\msys\bin\bash" --login -i
