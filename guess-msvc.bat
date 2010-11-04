@@ -44,21 +44,21 @@ REM NOTE: run the initial REQ QUERY outside of the if() to set ERRORLEVEL correc
 REG QUERY "%MSVC71KEY%" /v ProductDir >nul 2>nul
 if "%VC71DIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC71KEY%" /v ProductDir') DO SET VC71DIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC71KEY%" /v ProductDir') DO SET VC71DIR=%%B
   )
 )
 
 REG QUERY "%MSVC8KEY%" /v ProductDir >nul 2>nul
 if "%VC8DIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC8KEY%" /v ProductDir') DO SET VC8DIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC8KEY%" /v ProductDir') DO SET VC8DIR=%%B
   )
 )
 
 REG QUERY "%MSVC8EXPRESSKEY%" /v ProductDir >nul 2>nul
 if "%VC8EXPRESSDIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC8EXPRESSKEY%" /v ProductDir') DO SET VC8EXPRESSDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC8EXPRESSKEY%" /v ProductDir') DO SET VC8EXPRESSDIR=%%B
   )
 )
 
@@ -67,7 +67,7 @@ if "%VC9DIR%"=="" (
   REM Newer SDKs (6.1, 7.0) install the VC9 compilers and set this key,
   REM but they're functionally equivalent to the VC9 Express compilers.
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC9KEY%" /v ProductDir') DO SET TEMPVC9DIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC9KEY%" /v ProductDir') DO SET TEMPVC9DIR=%%B
   )
 )
 
@@ -84,21 +84,21 @@ if NOT "%TEMPVC9DIR%"=="" (
 REG QUERY "%MSVC9EXPRESSKEY%" /v ProductDir >nul 2>nul
 if "%VC9EXPRESSDIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC9EXPRESSKEY%" /v ProductDir') DO SET VC9EXPRESSDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC9EXPRESSKEY%" /v ProductDir') DO SET VC9EXPRESSDIR=%%B
   )
 )
 
 REG QUERY "%MSVC10KEY%" /v ProductDir >nul 2>nul
 if "%VC10DIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC10KEY%" /v ProductDir') DO SET VC10DIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10KEY%" /v ProductDir') DO SET VC10DIR=%%B
   )
 )
 
 REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir >nul 2>nul
 if "%VC10EXPRESSDIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* delims=	 " %%A IN ('REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir') DO SET VC10EXPRESSDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir') DO SET VC10EXPRESSDIR=%%B
   )
 )
 
@@ -115,6 +115,7 @@ SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
 SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
 
 REM Just a base value to compare against
+SET SDKDIR=
 SET SDKVER=0
 SET SDKMINORVER=0
 
@@ -130,7 +131,7 @@ IF NOT DEFINED MOZ_MAXWINSDK (
 REG QUERY "%SDK71KEY%" /v InstallationFolder >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70100 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* usebackq delims=  " %%A IN (`REG QUERY "%SDK71KEY%" /v InstallationFolder`) DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK71KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=7
     SET SDKMINORVER=1
   )
@@ -139,7 +140,7 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70100 (
 REG QUERY "%SDK7KEY%" /v InstallationFolder >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70000 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK7KEY%" /v InstallationFolder`) DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK7KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=7
   )
 )
@@ -147,7 +148,7 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70000 (
 REG QUERY "%SDK61KEY%" /v InstallationFolder >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60100 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK61KEY%" /v InstallationFolder`) DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK61KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=6
     SET SDKMINORVER=1
   )
@@ -156,7 +157,7 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60100 (
 REG QUERY "%SDK6AKEY%" /v InstallationFolder >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60001 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK6AKEY%" /v InstallationFolder`) DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK6AKEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=6
     REM insane, I know!
     SET SDKMINORVER=0A
@@ -166,7 +167,7 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60001 (
 REG QUERY "%SDK6KEY%" /v InstallationFolder >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 60000 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK6KEY%" /v InstallationFolder`) DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK6KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=6
   )
 )
@@ -175,13 +176,13 @@ REM The Vista SDK (6.0 and 6.0A) ships with a VC8 Express install
 
 REG QUERY "%SDK6KEY%\WinSDKCompiler" /v InstallationFolder >nul 2>nul
 IF %ERRORLEVEL% EQU 0 (
-  FOR /F "tokens=2* usebackq delims=	 " %%A IN (`REG QUERY "%SDK6KEY%\WinSDKCompiler" /v InstallationFolder`) DO SET VC8EXPRESSDIR=%%BVC\
+  FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK6KEY%\WinSDKCompiler" /v InstallationFolder') DO SET VC8EXPRESSDIR=%%BVC\
 )
 
 REG QUERY "%SDK2003SP2KEY%" /v "Install Dir" >nul 2>nul
 if "%PSDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 50000 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=3* delims=	 " %%A IN ('REG QUERY "%SDK2003SP2KEY%" /v "Install Dir"') DO SET PSDKDIR=%%B
+    FOR /F "tokens=3*" %%A IN ('REG QUERY "%SDK2003SP2KEY%" /v "Install Dir"') DO SET PSDKDIR=%%B
     REM arbitrary, but works for me
     SET PSDKVER=5
   )
@@ -190,7 +191,7 @@ if "%PSDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 50000 (
 REG QUERY "%SDK2003SP1KEY%" /v "Install Dir" >nul 2>nul
 if "%PSDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 40000 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=3* delims=	 " %%A IN ('REG QUERY "%SDK2003SP1KEY%" /v "Install Dir"') DO SET PSDKDIR=%%B
+    FOR /F "tokens=3*" %%A IN ('REG QUERY "%SDK2003SP1KEY%" /v "Install Dir"') DO SET PSDKDIR=%%B
     SET PSDKVER=4
   )
 )
