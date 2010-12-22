@@ -112,6 +112,7 @@ REM the express edition will update you to 6.0A
 SET SDK6AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v6.0A
 SET SDK61KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v6.1
 SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
+SET SDK7AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A
 SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
 
 REM Just a base value to compare against
@@ -134,6 +135,15 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70100 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK71KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
     SET SDKVER=7
     SET SDKMINORVER=1
+  )
+)
+
+REG QUERY "%SDK7AKEY%" /v InstallationFolder >nul 2>nul
+if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70001 (
+  IF %ERRORLEVEL% EQU 0 (
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK7AKEY%" /v InstallationFolder') DO SET SDKDIR=%%B
+    SET SDKVER=7
+    SET SDKMINORVER=0A
   )
 )
 
