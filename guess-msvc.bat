@@ -206,13 +206,13 @@ if "%PSDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 40000 (
   )
 )
 
-if defined %VC71DIR% (ECHO Visual C++ 7.1 directory: %VC71DIR%)
-if defined %VC8DIR% (ECHO Visual C++ 8 directory: %VC8DIR%)
-if defined %VC8EXPRESSDIR% (ECHO Visual C++ 8 Express directory: %VC8EXPRESSDIR%)
-if defined %VC9DIR% (ECHO Visual C++ 9 directory: %VC9DIR%)
-if defined %VC9EXPRESSDIR% (ECHO Visual C++ 9 Express directory: %VC9EXPRESSDIR%)
-if defined %VC10DIR% (ECHO Visual C++ 10 directory: %VC10DIR%)
-if defined %VC10EXPRESSDIR% (ECHO Visual C++ 10 Express directory: %VC10EXPRESSDIR%)
+if defined VC71DIR ECHO Visual C++ 7.1 directory: %VC71DIR%
+if defined VC8DIR ECHO Visual C++ 8 directory: %VC8DIR%
+if defined VC8EXPRESSDIR ECHO Visual C++ 8 Express directory: %VC8EXPRESSDIR%
+if defined VC9DIR ECHO Visual C++ 9 directory: %VC9DIR%
+if defined VC9EXPRESSDIR ECHO Visual C++ 9 Express directory: %VC9EXPRESSDIR%
+if defined VC10DIR ECHO Visual C++ 10 directory: %VC10DIR%
+if defined VC10EXPRESSDIR ECHO Visual C++ 10 Express directory: %VC10EXPRESSDIR%
 if "%SDKDIR%"=="" (
     SET SDKDIR=%PSDKDIR%
     SET SDKVER=%PSDKVER%
