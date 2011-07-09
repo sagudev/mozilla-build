@@ -90,8 +90,20 @@ if "%VC9EXPRESSDIR%"=="" (
 
 REG QUERY "%MSVC10KEY%" /v ProductDir >nul 2>nul
 if "%VC10DIR%"=="" (
+  REM Newer SDKs (7.1) install the VC10 compilers and set this key,
+  REM but they're functionally equivalent to the VC10 Express compilers.
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10KEY%" /v ProductDir') DO SET VC10DIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10KEY%" /v ProductDir') DO SET TEMPVC10DIR=%%B
+  )
+)
+
+REM We'll double-check for a VC10 Pro install here per the comment above.
+REG QUERY "%MSVCROOTKEY%\10.0\InstalledProducts\Microsoft Visual C++" >nul 2>nul
+if NOT "%TEMPVC10DIR%"=="" (
+  IF %ERRORLEVEL% EQU 0 (
+    SET "VC10DIR=%TEMPVC10DIR%"
+  ) ELSE (
+    SET "VC10EXPRESSDIR=%TEMPVC10DIR%"
   )
 )
 

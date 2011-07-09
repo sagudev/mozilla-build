@@ -30,7 +30,13 @@ if "%VC10DIR%"=="" (
     )
 
     rem Prepend MSVC paths
-    call "%VC10EXPRESSDIR%\bin\amd64\vcvars64.bat"
+    call "%VC10EXPRESSDIR%\bin\amd64\vcvars64.bat" 2>nul
+    if "%DevEnvDir%"=="" (
+      rem Might be using a compiler that shipped with an SDK, so manually set paths
+      SET "PATH=%VC10EXPRESSDIR%\Bin\amd64;%VC10EXPRESSDIR%\Bin;%PATH%"
+      SET "INCLUDE=%VC10EXPRESSDIR%\Include;%VC10EXPRESSDIR%\Include\Sys;%INCLUDE%"
+      SET "LIB=%VC10EXPRESSDIR%\Lib\amd64;%VC10EXPRESSDIR%\Lib;%LIB%"
+    )
 
     rem Don't set SDK paths in this block, because blocks are early-evaluated.
 
