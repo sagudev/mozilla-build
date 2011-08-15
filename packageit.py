@@ -189,7 +189,6 @@ def embed_recursedir(dir, mf):
 manifest = join(sourcedir, "noprivs.manifest")
 embed_recursedir(join(stagedir, "mozilla-build", "msys"), manifest)
 embedmanifest(join(stagedir, "mozilla-build", "moztools", "bin", "nsinstall.exe"), manifest)
-embedmanifest(join(stagedir, "mozilla-build", "moztools-180compat", "bin", "nsinstall.exe"), manifest)
 
 # Make an installer
 chdir(stagedir)
