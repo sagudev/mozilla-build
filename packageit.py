@@ -57,7 +57,7 @@
 # == Other Applications ==
 # * [http://www.bastet.com/uddu.zip unix2dos]
 # ** Put the exe files in c:\windows
-# * [http://www.python.org/ftp/python/2.6.5/python-2.6.5.msi Python 2.6]
+# * [http://www.python.org/ftp/python/2.7.2/python-2.7.2.msi Python 2.7]
 # * [http://superb-west.dl.sourceforge.net/sourceforge/nsis/nsis-2.33-setup.exe NSIS]
 # * [http://code.google.com/p/unsis/downloads/detail?name=nsis-2.46-Unicode-setup.exe NSIS]
 # * [http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/unz552xN.exe?raw=1&ctype=application/octet-stream unzip]
@@ -102,11 +102,11 @@ if exists(join(stagedir, "mozilla-build")):
 check_call([join(sourcedir, "7z465.exe"),
             "/D=" + join(stagedir, "mozilla-build", "7zip")])
 check_call(["msiexec.exe", "/a",
-            join(sourcedir, "python-2.6.5.msi"),
+            join(sourcedir, "python-2.7.2.msi"),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
-# copy python.exe to python2.6.exe
+# copy python.exe to python2.7.exe
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
-         join(stagedir, "mozilla-build", "python", "python2.6.exe"))
+         join(stagedir, "mozilla-build", "python", "python2.7.exe"))
 check_call([join(sourcedir, "MSYS-1.0.11-rc-1.exe"),
             "/DIR=" + join(stagedir, "mozilla-build", "msys"),
             # "/VERYSILENT", "/SUPRESSMSGBOXES",
@@ -127,7 +127,7 @@ check_call([join(sourcedir, "KDiff3Setup_0.9.95.exe"),
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             join(sourcedir, "ez_setup.py"),
             "-H", "None",
-            join(sourcedir, "setuptools-0.6c11-py2.6.egg")])
+            join(sourcedir, "setuptools-0.6c11-py2.7.egg")])
 
 # install NSIS 2.46 Unicode
 check_call([join(sourcedir, "nsis-2.46-Unicode-setup.exe"),
@@ -155,7 +155,7 @@ def munge_easy_install_script(path):
     f.write('\n'.join(lines[1:]))
     f.close()
 munge_easy_install_script(join(stagedir, "mozilla-build", "python", "Scripts", "easy_install-script.py"))
-munge_easy_install_script(join(stagedir, "mozilla-build", "python", "Scripts", "easy_install-2.6-script.py"))
+munge_easy_install_script(join(stagedir, "mozilla-build", "python", "Scripts", "easy_install-2.7-script.py"))
 
 # Run an MSYS shell to perform the following tasks:
 # * install make-3.81.90
