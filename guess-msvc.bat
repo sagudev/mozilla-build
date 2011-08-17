@@ -1,8 +1,6 @@
 REM -*- Mode: fundamental; tab-width: 8; indent-tabs-mode: 1 -*-
 @ECHO OFF
 
-setlocal enableextensions enabledelayedexpansion
-
 set CYGWIN=
 if not defined MOZ_NO_RESET_PATH (
     set PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
@@ -227,6 +225,9 @@ if defined VC9DIR ECHO Visual C++ 9 directory: %VC9DIR%
 if defined VC9EXPRESSDIR ECHO Visual C++ 9 Express directory: %VC9EXPRESSDIR%
 if defined VC10DIR ECHO Visual C++ 10 directory: %VC10DIR%
 if defined VC10EXPRESSDIR ECHO Visual C++ 10 Express directory: %VC10EXPRESSDIR%
+
+setlocal enableextensions enabledelayedexpansion
+
 if "!SDKDIR!"=="" (
     SET SDKDIR=!PSDKDIR!
     SET SDKVER=%PSDKVER%
@@ -238,3 +239,5 @@ if not "!PSDKDIR!"=="" (
     ECHO Platform SDK directory: !PSDKDIR!
     ECHO Platform SDK version: %PSDKVER%
 )
+
+setlocal disableextensions enabledelayedexpansion
