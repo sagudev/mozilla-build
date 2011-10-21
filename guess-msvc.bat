@@ -36,6 +36,8 @@ SET MSVC9KEY=%MSVCROOTKEY%\9.0\Setup\VC
 SET MSVC9EXPRESSKEY=%MSVCEXPROOTKEY%\9.0\Setup\VC
 SET MSVC10KEY=%MSVCROOTKEY%\10.0\Setup\VC
 SET MSVC10EXPRESSKEY=%MSVCEXPROOTKEY%\10.0\Setup\VC
+SET MSVC11KEY=%MSVCROOTKEY%\11.0\Setup\VC
+SET MSVC11EXPRESSKEY=%MSVCEXPROOTKEY%\11.0\Setup\VC
 
 REM First see if we can find MSVC, then set the variable
 REM NOTE: delims=<tab><space>
@@ -114,6 +116,20 @@ if "%VC10EXPRESSDIR%"=="" (
   )
 )
 
+REG QUERY "%MSVC11KEY%" /v ProductDir >nul 2>nul
+if "%VC11DIR%"=="" (
+  IF %ERRORLEVEL% EQU 0 (
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC11KEY%" /v ProductDir') DO SET VC11DIR=%%B
+  )
+)
+
+REG QUERY "%MSVC11EXPRESSKEY%" /v ProductDir >nul 2>nul
+if "%VC11EXPRESSDIR%"=="" (
+  IF %ERRORLEVEL% EQU 0 (
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC11EXPRESSKEY%" /v ProductDir') DO SET VC11EXPRESSDIR=%%B
+  )
+)
+
 REM Look for Installed SDKs:
 SET SDKROOTKEY=HKLM\SOFTWARE\Microsoft\MicrosoftSDK\InstalledSDKs
 SET SDK2003SP1KEY=%SDKROOTKEY%\8F9E5EF3-A9A5-491B-A889-C58EFFECE8B3
@@ -126,6 +142,7 @@ SET SDK61KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v6.1
 SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
 SET SDK7AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A
 SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
+SET SDK80KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0
 
 REM Just a base value to compare against
 SET SDKDIR=
@@ -139,6 +156,15 @@ IF NOT DEFINED MOZ_MAXWINSDK (
   REM Maximum WinSDK version to use; 2 digits for major, 2 for minor, 2 for revision
   REM Revivsion is A = 01, B = 02, etc.
   SET MOZ_MAXWINSDK=999999
+)
+
+REG QUERY "%SDK80KEY%" /v InstallationFolder >nul 2>nul
+if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
+  IF %ERRORLEVEL% EQU 0 (
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
+	SET SDKVER=8
+	SET SDKMINORVER=0
+  )
 )
 
 REG QUERY "%SDK71KEY%" /v InstallationFolder >nul 2>nul
@@ -225,6 +251,8 @@ if defined VC9DIR ECHO Visual C++ 9 directory: %VC9DIR%
 if defined VC9EXPRESSDIR ECHO Visual C++ 9 Express directory: %VC9EXPRESSDIR%
 if defined VC10DIR ECHO Visual C++ 10 directory: %VC10DIR%
 if defined VC10EXPRESSDIR ECHO Visual C++ 10 Express directory: %VC10EXPRESSDIR%
+if defined VC11DIR ECHO Visual C++ 11 directory: %VC11DIR%
+if defined VC11EXPRESSDIR ECHO Visual C++ 11 Express directory: %VC11EXPRESSDIR%
 
 setlocal enableextensions enabledelayedexpansion
 
