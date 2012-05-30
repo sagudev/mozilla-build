@@ -142,7 +142,7 @@ SET SDK61KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v6.1
 SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
 SET SDK7AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A
 SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
-SET SDK80KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0
+SET SDK80KEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots
 
 REM Just a base value to compare against
 SET SDKDIR=
@@ -158,10 +158,10 @@ IF NOT DEFINED MOZ_MAXWINSDK (
   SET MOZ_MAXWINSDK=999999
 )
 
-REG QUERY "%SDK80KEY%" /v InstallationFolder >nul 2>nul
+REG QUERY "%SDK80KEY%" /v KitsRoot >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
   IF %ERRORLEVEL% EQU 0 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot') DO SET SDKDIR=%%B
 	SET SDKVER=8
 	SET SDKMINORVER=0
   )

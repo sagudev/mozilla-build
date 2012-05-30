@@ -58,6 +58,7 @@ if "%VC11DIR%"=="" (
     rem Prepend MSVC paths
     rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
     ECHO Using VC 2011 built-in SDK
+    set "LIBPATH=%SDKDIR%\Windows Metadata"
     call "%VC11DIR%\bin\vcvars32.bat"
 )
 
