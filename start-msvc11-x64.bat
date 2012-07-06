@@ -18,7 +18,7 @@ SET PATH=%PATH%;%MOZ_TOOLS%\bin
 
 if "%VC11DIR%"=="" (
     if "%VC11EXPRESSDIR%"=="" (
-        ECHO "Microsoft Visual C++ version 11 (2011) was not found. Exiting."
+        ECHO "Microsoft Visual C++ version 11 (2012) was not found. Exiting."
         pause
         EXIT /B 1
     )
@@ -57,8 +57,7 @@ if "%VC11DIR%"=="" (
 ) else (
     rem Prepend MSVC paths
     rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
-    ECHO Using VC 2011 built-in SDK
-    set "LIBPATH=%SDKDIR%\Windows Metadata"
+    ECHO Using VC 2012 built-in SDK
     call "%VC11DIR%\bin\amd64\vcvars64.bat"
 )
 
