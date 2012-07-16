@@ -99,7 +99,7 @@ print("Output location: " + stagedir)
 if exists(join(stagedir, "mozilla-build")):
     check_call(["cmd.exe", "/C", "rmdir /S /Q %s" % join(stagedir, "mozilla-build")])
 
-check_call([join(sourcedir, "7z465.exe"),
+check_call([join(sourcedir, "7z442.exe"),
             "/D=" + join(stagedir, "mozilla-build", "7zip")])
 check_call(["msiexec.exe", "/a",
             join(sourcedir, "python-2.7.2.msi"),
