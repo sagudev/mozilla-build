@@ -55,10 +55,24 @@ if "%VC10DIR%"=="" (
         )
     )
 ) else (
-    rem Prepend MSVC paths
-    rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
-    ECHO Using VC 2010 built-in SDK
-    call "%VC10DIR%\Bin\vcvars32.bat"
+    if "%SDKVER%"=="8" (
+      rem For VS 2010 with the 8.0 SDK, setup the VC 2010 env and then manually add sdk path info. below.
+      call "%VC10DIR%\Bin\vcvars32.bat"
+    ) else (
+      rem Prepend MSVC paths
+      rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
+      ECHO Using VC 2010 built-in SDK
+      call "%VC10DIR%\Bin\vcvars32.bat"
+    )
+)
+
+rem The call to VS 2010 vcvars32 adds 7.x SDK paths, so prepend the 8.0 kit to give it priority
+if "%SDKVER%"=="8" (
+  ECHO Using the Windows 8.0 Developer Kit
+  set "PATH=%SDKDIR%bin\x86;%PATH%"
+  set "LIB=%SDKDIR%Lib\win8\um\x86;%LIB%"
+  set "LIBPATH=%SDKDIR%Lib\win8\um\x86;%LIBPATH%"
+  set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
 )
 
 if "%VC10DIR%"=="" (
