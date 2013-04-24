@@ -116,7 +116,7 @@ check_call([join(sourcedir, "msysDTK-1.0.1.exe"),
             # "/VERYSILENT", "/SUPRESSMSGBOXES",
             "/SP-", "/NOICONS"])
 check_call(["msiexec", "/i", 
-            join(sourcedir, "mercurial-2.5.1-x86.msi"),
+            join(sourcedir, "mercurial-2.5.4-x86.msi"),
             "/qn",
             "INSTALLDIR=" + join(stagedir, "mozilla-build", "hg")])
 check_call([join(sourcedir, "KDiff3Setup_0.9.95.exe"),
