@@ -20,7 +20,7 @@ patch -p0 < "${MSYS_SRCDIR}/Mercurial.rc.patch"
 popd
 
 # install emacs
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/emacs-22.3-bin-i386.zip"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/emacs-24.3-bin-i386.zip"
 
 # install vim
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/vim72rt.zip"
