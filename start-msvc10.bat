@@ -68,11 +68,19 @@ if "%VC10DIR%"=="" (
 
 rem The call to VS 2010 vcvars32 adds 7.x SDK paths, so prepend the 8.0 kit to give it priority
 if "%SDKVER%"=="8" (
-  ECHO Using the Windows 8.0 Developer Kit
-  set "PATH=%SDKDIR%bin\x86;%PATH%"
-  set "LIB=%SDKDIR%Lib\win8\um\x86;%LIB%"
-  set "LIBPATH=%SDKDIR%Lib\win8\um\x86;%LIBPATH%"
-  set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+    if "%SDKMINORVER%"=="1" (
+        ECHO Using the Windows 8.1 Developer Kit
+        set "PATH=%SDKDIR%bin\x86;%PATH%"
+        set "LIB=%SDKDIR%Lib\winv6.3\um\x86;%LIB%"
+        set "LIBPATH=%SDKDIR%Lib\winv6.3\um\x86;%LIBPATH%"
+        set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+    ) else (
+        ECHO Using the Windows 8.0 Developer Kit
+        set "PATH=%SDKDIR%bin\x86;%PATH%"
+        set "LIB=%SDKDIR%Lib\win8\um\x86;%LIB%"
+        set "LIBPATH=%SDKDIR%Lib\win8\um\x86;%LIBPATH%"
+        set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+    )
 )
 
 if "%VC10DIR%"=="" (
