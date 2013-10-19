@@ -119,7 +119,7 @@ check_call(["msiexec", "/i",
             join(sourcedir, "mercurial-2.7.2-x86.msi"),
             "/qn",
             "INSTALLDIR=" + join(stagedir, "mozilla-build", "hg")])
-check_call([join(sourcedir, "KDiff3Setup_0.9.95.exe"),
+check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.97.exe"),
             "/S",
             "/D=" + join(stagedir, "mozilla-build", "kdiff3")])
 
