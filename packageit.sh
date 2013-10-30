@@ -111,3 +111,7 @@ cp "${MSYS_SRCDIR}"/{license.rtf,installit.nsi} "${MSYS_STAGEDIR}"
 version=`cat "${MSYS_SRCDIR}"/VERSION`
 sed < "${MSYS_SRCDIR}"/version.nsi s/@VERSION@/$version/g > "${MSYS_STAGEDIR}"/version.nsi
 unix2dos "${MSYS_STAGEDIR}/license.rtf"
+
+# Install mozmake
+mkdir "${MSYS_STAGEDIR}/mozilla-build/mozmake"
+cp "${MSYS_SRCDIR}/mozmake/mozmake.exe" "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"

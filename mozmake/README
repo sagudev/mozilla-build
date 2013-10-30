@@ -1,0 +1,20 @@
+This directory contains the source and modifications to GNU Make to enable it to be
+used to build Firefox.
+
+This directory contains source archives for GNU Make that were exported from
+its canonical Git repository at git://git.savannah.gnu.org/make.git, with the
+following command, and further bzip2'ed:
+    git archive -o make-`git describe HEAD`.tar --format=tar --prefix=make-`git describe HEAD`/ HEAD
+
+To obtain the source, extract the vanilla/unmodified make-*.tar.bz2 source
+archive. Then apply the patches from the NNNN-*.patch files in this directory
+in order (make sure to use version 2.7 or newer of the patch utility).
+
+To build, open make_msvc_net2003.sln in Visual Studio. Go to the configuration
+manager and ensure the "release" configuration (not the "debug" configuration)
+is active. Then build and take the resulting "Release/make_msvc_net2003.exe"
+and rename it to "mozmake.exe" and install.
+
+Patches in this directory are licensed under the same license as the GNU make
+source code. For more info, view the COPYING file in the GNU make source
+archive.

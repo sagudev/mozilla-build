@@ -1,0 +1,64 @@
+# HG changeset patch
+# User Mike Hommey <mh+mozilla@glandium.org>
+# Date 1383161303 25200
+#      Wed Oct 30 12:28:23 2013 -0700
+# Node ID ddded309b83a64e80cac2adbb7f2332626b148ef
+# Parent  bc0851c0583a2e0b4cf8ebd0d3413cfa702215b4
+Modifications to work for Mozilla
+
+diff --git a/config.h.W32.template b/config.h
+copy from config.h.W32.template
+copy to config.h
+--- a/config.h.W32.template
++++ b/config.h
+@@ -360,29 +360,29 @@ this program.  If not, see <http://www.g
+ 
+ /* Define to 1 if struct nlist.n_name is a pointer rather than an array. */
+ /* #undef NLIST_STRUCT */
+ 
+ /* Define to 1 if your C compiler doesn't accept -c and -o together. */
+ /* #undef NO_MINUS_C_MINUS_O */
+ 
+ /* Name of this package (needed by automake) */
+-#define PACKAGE "%PACKAGE%"
++#define PACKAGE "make"
+ 
+ /* Define to the address where bug reports for this package should be sent. */
+ #define PACKAGE_BUGREPORT "bug-make@gnu.org"
+ 
+ /* Define to the full name of this package. */
+ #define PACKAGE_NAME "GNU make"
+ 
+ /* Define to the home page for this package. */
+ #define PACKAGE_URL "http://www.gnu.org/software/make/"
+ 
+ /* Define to the version of this package. */
+-#define PACKAGE_VERSION "%VERSION%"
++#define PACKAGE_VERSION "4.0-23-g9d58570"
+ 
+ /* Define to the character that separates directories in PATH. */
+ #define PATH_SEPARATOR_CHAR ';'
+ 
+ /* Define as the return type of signal handlers ('int' or 'void'). */
+ #define RETSIGTYPE void
+ 
+ /* Define to the name of the SCCS 'get' command. */
+@@ -494,17 +494,17 @@ this program.  If not, see <http://www.g
+  */
+ 
+ 
+ /*
+  * If you have a shell that does not grok 'sh -c quoted-command-line'
+  * correctly, you need this setting. Please see below for specific
+  * shell support.
+  */
+-/*#define BATCH_MODE_ONLY_SHELL 1 */
++#define BATCH_MODE_ONLY_SHELL 1
+ 
+ /*
+  * Define if you have the Cygnus "Cygwin" GNU Windows32 tool set.
+  * Do NOT define BATCH_MODE_ONLY_SHELL if you define HAVE_CYGWIN_SHELL
+  */
+ /*#define HAVE_CYGWIN_SHELL 1 */
+ 
+ /*
