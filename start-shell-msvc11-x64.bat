@@ -30,10 +30,10 @@ if "%VC11DIR%"=="" (
     )
 
     rem Prepend MSVC paths
-    call "%VC11EXPRESSDIR%\bin\amd64\vcvars64.bat" 2>nul
+    call "%VC11EXPRESSDIR%\bin\x86_amd64\vcvarsx86_amd64.bat" 2>nul
     if "%DevEnvDir%"=="" (
       rem Might be using a compiler that shipped with an SDK, so manually set paths
-      SET "PATH=%VC11EXPRESSDIR%\Bin\amd64;%VC11EXPRESSDIR%\Bin;%PATH%"
+      SET "PATH=%VC11EXPRESSDIR%\Bin\x86_amd64;%VC11EXPRESSDIR%\Bin;%PATH%"
       SET "INCLUDE=%VC11EXPRESSDIR%\Include;%VC11EXPRESSDIR%\Include\Sys;%INCLUDE%"
       SET "LIB=%VC11EXPRESSDIR%\Lib\amd64;%VC11EXPRESSDIR%\Lib;%LIB%"
     )
@@ -57,8 +57,13 @@ if "%VC11DIR%"=="" (
 ) else (
     rem Prepend MSVC paths
     rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
-    ECHO Using VC 2012 built-in SDK
-    call "%VC11DIR%\bin\amd64\vcvars64.bat"
+    if exist "%VC11DIR%\bin\amd64\vcvars64.bat" (
+        ECHO Using VC 2012 built-in SDK
+        call "%VC11DIR%\bin\amd64\vcvars64.bat"
+    ) else (
+        ECHO Using VC Express 2012 built-in SDK
+        call "%VC11DIR%\bin\x86_amd64\vcvarsx86_amd64.bat"
+    )
 )
 
 if "%VC11DIR%"=="" (
