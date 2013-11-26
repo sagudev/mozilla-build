@@ -1,6 +1,11 @@
---- Mercurial.rc.old	2013-02-20 20:47:06 -0500
-+++ Mercurial.rc	2013-02-21 08:42:19 -0500
-@@ -16,7 +16,6 @@
+--- Mercurial.rc	2013-11-03 23:22:26 -0500
++++ Mercurial.rc	2013-11-26 10:12:33 -0500
+@@ -11,17 +11,16 @@
+ ; your user Mercurial.ini file, where USERNAME is your Windows user name:
+ ;
+ ; XP or older    - C:\Documents and Settings\USERNAME\Mercurial.ini
+ ; Vista or later - C:\Users\USERNAME\Mercurial.ini
+ 
  
  [ui]
  ; editor used to enter commit logs, etc.  Most text editors will work.
@@ -8,7 +13,17 @@
  ; show changed files and be a bit more verbose if True
  ; verbose = True
   
-@@ -39,13 +38,13 @@
+ ; username data to appear in commits
+ ; it usually takes the form: Joe User <joe.user@host.com>
+ ; username = Joe User <j.user@example.com>
+ 
+ ; In order to push/pull over ssh you must specify an ssh tool
+@@ -35,46 +34,60 @@ editor = notepad
+ ; Extensions shipped with Mercurial
+ ;
+ [extensions]
+ ;acl =
+ ;blackbox =
  ;bugzilla =
  ;children =
  ;churn =
@@ -24,7 +39,7 @@
  ;hgcia =
  ;hgk =
  ;highlight = 
-@@ -53,21 +52,35 @@
+ ;histedit =
  ;interhg =
  ;largefiles =
  ;keyword =
@@ -43,6 +58,7 @@
  ;relink =
  ;schemes =
  ;share =
+ ;shelve =
 -;transplant =
 +transplant =
  ;win32mbcs =
@@ -65,7 +81,17 @@
  ;
  ; Define external diff commands
  ;
-@@ -92,6 +105,7 @@
+ [extdiff]
+ ;cmd.bc3diff = C:\Program Files\Beyond Compare 3\BCompare.exe
+ ;cmd.vdiff = C:\Progra~1\TortoiseSVN\bin\TortoiseMerge.exe
+ ;cmd.vimdiff = gvim.exe
+ ;opts.vimdiff = -f "+next" "+execute 'DirDiff' fnameescape(argv(0)) fnameescape(argv(1))"
+@@ -89,11 +102,12 @@ editor = notepad
+ 
+ ;
+ ; The git extended diff format can represent binary files, file
+ ; permission changes, and rename information that the normal patch format
+ ; cannot describe.  However it is also not compatible with tools which
  ; expect normal patches. so enable git patches at your own risk.
  ;
  [diff]
