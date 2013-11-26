@@ -83,7 +83,7 @@ cp "${MSYS_SRCDIR}"/{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,pro
     "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
 
 # Copy the batch files that make everything go!
-cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-shell-l10n.bat,start-shell-msvc10.bat,start-shell-msvc10-x64.bat,start-shell-msvc11.bat,start-shell-msvc11-x64.bat,start-shell-msvc12.bat,start-shell-msvc12-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
+cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-shell-l10n.bat,start-shell-msvc2010.bat,start-shell-msvc2010-x64.bat,start-shell-msvc2012.bat,start-shell-msvc2012-x64.bat,start-shell-msvc2013.bat,start-shell-msvc2013-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
 
 # Copy VERSION file
 cp "${MSYS_SRCDIR}"/VERSION "${MSYS_STAGEDIR}/mozilla-build"
