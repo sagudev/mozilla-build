@@ -99,6 +99,7 @@ SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
 SET SDK7AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A
 SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
 REM 8.0 and 8.1 uses same key tree
+SET SDKPRODUCTKEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Products
 SET SDK80KEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots
 
 REM Just a base value to compare against
@@ -115,8 +116,9 @@ IF NOT DEFINED MOZ_MAXWINSDK (
   SET MOZ_MAXWINSDK=999999
 )
 
-REG QUERY "%SDK80KEY%" /v KitsRoot81 >nul 2>nul
-if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
+REM Windows Software Development Kit DirectX x64 Remote x64 (SDK 8.1)
+REG QUERY "%SDKPRODUCTKEY%" /v "{5247E16E-BCF8-95AB-1653-B3F8FBF8B3F1}" >nul 2>nul
+if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80100 (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot81') DO SET SDKDIR=%%B
 	SET SDKVER=8
@@ -124,13 +126,28 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
   )
 )
 
-REG QUERY "%SDK80KEY%" /v KitsRoot >nul 2>nul
+REM The Installed Products key still exists even if the SDK is uninstalled.
+REM Verify that the Windows.h header exists to confirm that the SDK is
+REM installed.
+IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
+  SET SDKDIR=
+)
+
+REM Windows Software Development Kit DirectX x64 Remote x64 (SDK 8.0)
+REG QUERY "%SDKPRODUCTKEY%" /v "{5FB4C443-6BD6-1514-2717-3827D65AE6FB}" >nul 2>nul
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot') DO SET SDKDIR=%%B
 	SET SDKVER=8
 	SET SDKMINORVER=0
   )
+)
+
+REM The Installed Products key still exists even if the SDK is uninstalled.
+REM Verify that the Windows.h header exists to confirm that the SDK is
+REM installed.
+IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
+  SET SDKDIR=
 )
 
 REG QUERY "%SDK71KEY%" /v InstallationFolder >nul 2>nul
