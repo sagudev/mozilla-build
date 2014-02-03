@@ -1,5 +1,5 @@
---- Mercurial.rc	2013-11-03 23:22:26 -0500
-+++ Mercurial.rc	2013-11-26 10:12:33 -0500
+--- Mercurial.rc	2013-12-05 14:16:40 -0500
++++ Mercurial.rc	2014-02-03 10:27:59 -0500
 @@ -11,17 +11,16 @@
  ; your user Mercurial.ini file, where USERNAME is your Windows user name:
  ;
@@ -18,7 +18,7 @@
  ; username = Joe User <j.user@example.com>
  
  ; In order to push/pull over ssh you must specify an ssh tool
-@@ -35,46 +34,60 @@ editor = notepad
+@@ -35,45 +34,59 @@ editor = notepad
  ; Extensions shipped with Mercurial
  ;
  [extensions]
@@ -34,8 +34,6 @@
  ;extdiff =
  ;fetch =
  ;gpg =
--;graphlog = 
-+graphlog = 
  ;hgcia =
  ;hgk =
  ;highlight = 
@@ -86,7 +84,7 @@
  ;cmd.vdiff = C:\Progra~1\TortoiseSVN\bin\TortoiseMerge.exe
  ;cmd.vimdiff = gvim.exe
  ;opts.vimdiff = -f "+next" "+execute 'DirDiff' fnameescape(argv(0)) fnameescape(argv(1))"
-@@ -89,11 +102,12 @@ editor = notepad
+@@ -88,11 +101,12 @@ editor = notepad
  
  ;
  ; The git extended diff format can represent binary files, file
