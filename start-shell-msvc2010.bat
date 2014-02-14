@@ -8,6 +8,8 @@ SET MOZILLABUILD=%MOZBUILDDIR%
 echo "Mozilla tools directory: %MOZBUILDDIR%"
 
 REM Get MSVC paths
+REM MSVC10 + Win8.1 SDK has a known problem (bug 949483)
+SET MOZ_MAXWINSDK=80000
 call "%MOZBUILDDIR%guess-msvc.bat"
 
 REM Use the "new" moztools-static
