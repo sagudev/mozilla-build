@@ -112,6 +112,13 @@ version=`cat "${MSYS_SRCDIR}"/VERSION`
 sed < "${MSYS_SRCDIR}"/version.nsi s/@VERSION@/$version/g > "${MSYS_STAGEDIR}"/version.nsi
 unix2dos "${MSYS_STAGEDIR}/license.rtf"
 
-# Install mozmake
+# Build and install mozmake
+MAKE_VERSION="4.0-43-g8411528"
+tar -xjf "${MSYS_SRCDIR}/mozmake/make-${MAKE_VERSION}.tar.bz2" -C "${MSYS_STAGEDIR}"
+pushd "${MSYS_STAGEDIR}/make-${MAKE_VERSION}"
+sed "s/%PACKAGE%/make/;s/%VERSION%/${MAKE_VERSION}/;/#define BATCH_MODE_ONLY_SHELL/s/\/\*\(.*\)\*\//\1/" config.h.W32.template > config.h.W32
+cp NMakefile.template NMakefile
+nmake -f NMakefile
 mkdir "${MSYS_STAGEDIR}/mozilla-build/mozmake"
-cp "${MSYS_SRCDIR}/mozmake/mozmake.exe" "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
+cp WinRel/make.exe "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
+popd
