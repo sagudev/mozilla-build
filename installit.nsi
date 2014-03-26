@@ -18,6 +18,18 @@ Section "MozillaBuild"
   return
   continue:
   SetOutPath $INSTDIR
+  Delete "$INSTDIR\start-l10n.bat"
+  Delete "$INSTDIR\start-msvc71.bat"
+  Delete "$INSTDIR\start-msvc8.bat"
+  Delete "$INSTDIR\start-msvc8-x64.bat"
+  Delete "$INSTDIR\start-msvc9.bat"
+  Delete "$INSTDIR\start-msvc9-x64.bat"
+  Delete "$INSTDIR\start-msvc10.bat"
+  Delete "$INSTDIR\start-msvc10-x64.bat"
+  Delete "$INSTDIR\start-msvc11.bat"
+  Delete "$INSTDIR\start-msvc11-x64.bat"
+  Delete "$INSTDIR\start-msvc12.bat"
+  Delete "$INSTDIR\start-msvc12-x64.bat"
   File /r *.*
   ; write the full path to ca-bundle.crt in wget.ini
   FileOpen $0 "$INSTDIR\wget\wget.ini" w
