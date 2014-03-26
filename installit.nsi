@@ -30,6 +30,7 @@ Section "MozillaBuild"
   Delete "$INSTDIR\start-msvc11-x64.bat"
   Delete "$INSTDIR\start-msvc12.bat"
   Delete "$INSTDIR\start-msvc12-x64.bat"
+  RMDir /r "$INSTDIR\nsis-2.33u"
   File /r *.*
   ; write the full path to ca-bundle.crt in wget.ini
   FileOpen $0 "$INSTDIR\wget\wget.ini" w

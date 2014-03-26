@@ -58,7 +58,6 @@
 # * [http://www.bastet.com/uddu.zip unix2dos]
 # ** Put the exe files in c:\windows
 # * [http://www.python.org/ftp/python/2.7.5/python-2.7.5.msi Python 2.7]
-# * [http://superb-west.dl.sourceforge.net/sourceforge/nsis/nsis-2.33-setup.exe NSIS]
 # * [http://code.google.com/p/unsis/downloads/detail?name=nsis-2.46-Unicode-setup.exe NSIS]
 # * [http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/unz552xN.exe?raw=1&ctype=application/octet-stream unzip]
 # ** Extract to c:\program files\unzip
