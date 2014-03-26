@@ -38,11 +38,6 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/blat261.full.zip"
 # install SVN
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/svn-win32-1.6.3.zip"
 
-# install NSIS unicode version 2.33
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/nsis-2.33u.zip"
-# rename the unicode version executable
-mv "${MSYS_STAGEDIR}/mozilla-build/nsis-2.33u/makensis.exe" "${MSYS_STAGEDIR}/mozilla-build/nsis-2.33u/makensisu.exe"
-
 # install WiX toolset nightly 3.5.1728.0
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/wix-351728/" "${MSYS_SRCDIR}/wix35-binaries.zip"
 
