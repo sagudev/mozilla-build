@@ -74,12 +74,14 @@ if "%SDKVER%"=="8" (
         set "LIB=%SDKDIR%Lib\winv6.3\um\x64;%LIB%"
         set "LIBPATH=%SDKDIR%Lib\winv6.3\um\x64;%LIBPATH%"
         set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+        set "WINDOWSSDKDIR=%SDKDIR%"
     ) else (
         ECHO Using the Windows 8.0 Developer Kit
         set "PATH=%SDKDIR%bin\x64;%PATH%"
         set "LIB=%SDKDIR%Lib\win8\um\x64;%LIB%"
         set "LIBPATH=%SDKDIR%Lib\win8\um\x64;%LIBPATH%"
         set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+        set "WINDOWSSDKDIR=%SDKDIR%"
     )
 )
 
