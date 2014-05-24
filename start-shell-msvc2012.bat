@@ -55,10 +55,23 @@ if "%VC11DIR%"=="" (
         )
     )
 ) else (
-    rem Prepend MSVC paths
-    rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
-    ECHO Using VC 2012 built-in SDK
+    rem Prepend MSVC paths.
     call "%VC11DIR%\bin\vcvars32.bat"
+)
+
+rem By default, the Windows 8.0 SDK should be automatically included via vcvars32.bat above.
+rem If installed, prepend the Windows 8.1 SDK to give it priority instead.
+if "%SDKVER%"=="8" (
+    if "%SDKMINORVER%"=="1" (
+        ECHO Using the installed Windows 8.1 SDK
+        set "PATH=%SDKDIR%bin\x86;%PATH%"
+        set "LIB=%SDKDIR%Lib\winv6.3\um\x86;%LIB%"
+        set "LIBPATH=%SDKDIR%Lib\winv6.3\um\x86;%LIBPATH%"
+        set "INCLUDE=%SDKDIR%Include\shared;%SDKDIR%Include\um;%SDKDIR%Include\winrt;%SDKDIR%Include\winrt\wrl;%SDKDIR%Include\winrt\wrl\wrappers;%INCLUDE%"
+        set "WINDOWSSDKDIR=%SDKDIR%"
+    ) else (
+        ECHO Using the built-in Windows 8.0 SDK
+    )
 )
 
 if "%VC11DIR%"=="" (
