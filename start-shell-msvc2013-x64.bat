@@ -56,14 +56,13 @@ if "%VC12DIR%"=="" (
     )
 ) else (
     rem Prepend MSVC paths
-    rem The Win7 SDK (or newer) should automatically integrate itself into vcvars32.bat
+    rem By default, the Windows 8.1 SDK should be automatically included via vcvars64.bat.
     if exist "%VC12DIR%\bin\amd64\vcvars64.bat" (
-        ECHO Using VC 2013 built-in SDK
         call "%VC12DIR%\bin\amd64\vcvars64.bat"
     ) else (
-        ECHO Using VC Express 2013 built-in SDK
         call "%VC12DIR%\bin\x86_amd64\vcvarsx86_amd64.bat"
     )
+    ECHO Using the built-in Windows 8.1 SDK
 )
 
 if "%VC12DIR%"=="" (
