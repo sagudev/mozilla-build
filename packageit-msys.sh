@@ -56,6 +56,7 @@ tar -jvxf "${MSYS_SRCDIR}/minires-1.01-1-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDI
 tar -vxf "${MSYS_SRCDIR}/mktemp-1.6-1-msys-1.0.11-bin.tar" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 tar -jvxf "${MSYS_SRCDIR}/openssh-4.6p1-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 tar -jvxf "${MSYS_SRCDIR}/openssl-0.9.8e-3-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
+tar -jvxf "${MSYS_SRCDIR}/sed-4.2.1-1-msys-1.0.11-bin.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 tar -jvxf "${MSYS_SRCDIR}/zlib-1.2.3-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 # These tarballs extract to usr/; it's easiest if we just move all the files
 # into /...
