@@ -30,6 +30,13 @@ Section "MozillaBuild"
   Delete "$INSTDIR\start-msvc11-x64.bat"
   Delete "$INSTDIR\start-msvc12.bat"
   Delete "$INSTDIR\start-msvc12-x64.bat"
+  Delete "$INSTDIR\moztools\bin\gmake.exe"
+  Delete "$INSTDIR\moztools\bin\shmsdos.exe"
+  Delete "$INSTDIR\moztools\bin\uname.exe"
+  RMDir /r "$INSTDIR\moztools\include"
+  RMDir /r "$INSTDIR\moztools\lib"
+  RMDir /r "$INSTDIR\moztools-x64\include"
+  RMDir /r "$INSTDIR\moztools-x64\lib"
   RMDir /r "$INSTDIR\nsis-2.33u"
   File /r *.*
   ; write the full path to ca-bundle.crt in wget.ini
