@@ -66,10 +66,6 @@ install "${MSYS_STAGEDIR}/atlthunk_compat/atlthunk.lib" "${MSYS_STAGEDIR}/mozill
 
 # install moztools-static
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static.zip"
-rm -f "${MSYS_STAGEDIR}"/mozilla-build/moztools/bin/{gmake.exe,shmsdos.exe,uname.exe}
-
-# install moztools x64
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static-x64.zip"
 
 # Copy various configuration files
 cp "${MSYS_SRCDIR}/inputrc" "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
