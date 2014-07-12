@@ -30,7 +30,7 @@ unzip -o -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/gvim72.zip"
 cp "${MSYS_SRCDIR}"/{vi,view} "${MSYS_STAGEDIR}"/mozilla-build/vim/vim72
 
 # install UPX
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx203w.zip"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
 
 # install blat
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/blat261.full.zip"
