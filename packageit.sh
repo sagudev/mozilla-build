@@ -43,8 +43,8 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build/wix-351728/" "${MSYS_SRCDIR}/wix35-bina
 
 # install unzip
 mkdir "${MSYS_STAGEDIR}/mozilla-build/info-zip"
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" "${MSYS_SRCDIR}/unz552xN.exe"
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" -o "${MSYS_SRCDIR}/zip232xN.zip"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" "${MSYS_SRCDIR}/unz600xN.exe"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" -o "${MSYS_SRCDIR}/zip300xN.zip"
 
 # build and install libiconv
 rm -rf "${MSYS_STAGEDIR}/libiconv-1.11"
