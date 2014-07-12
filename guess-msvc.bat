@@ -116,8 +116,12 @@ IF NOT DEFINED MOZ_MAXWINSDK (
   SET MOZ_MAXWINSDK=999999
 )
 
-REM Windows Software Development Kit DirectX x64 Remote x64 (SDK 8.1)
-REG QUERY "%SDKPRODUCTKEY%" /v "{5247E16E-BCF8-95AB-1653-B3F8FBF8B3F1}" >nul 2>nul
+REM Windows Software Development Kit DirectX Remote (SDK 8.1)
+if "%WIN64%" == "1" (
+  REG QUERY "%SDKPRODUCTKEY%" /v "{5247E16E-BCF8-95AB-1653-B3F8FBF8B3F1}" >nul 2>nul
+) else (
+  REG QUERY "%SDKPRODUCTKEY%" /v "{A1CB8286-CFB3-A985-D799-721A0F2A27F3}" >nul 2>nul
+)
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80100 (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot81') DO SET SDKDIR=%%B
@@ -133,8 +137,12 @@ IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
   SET SDKDIR=
 )
 
-REM Windows Software Development Kit DirectX x64 Remote x64 (SDK 8.0)
-REG QUERY "%SDKPRODUCTKEY%" /v "{5FB4C443-6BD6-1514-2717-3827D65AE6FB}" >nul 2>nul
+REM Windows Software Development Kit DirectX Remote (SDK 8.0)
+if "%WIN64%" == "1" (
+  REG QUERY "%SDKPRODUCTKEY%" /v "{5FB4C443-6BD6-1514-2717-3827D65AE6FB}" >nul 2>nul
+) else (
+  REG QUERY "%SDKPRODUCTKEY%" /v "{23176E97-26CB-C72A-19EB-BFB21AC1D15A}" >nul 2>nul
+)
 if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot') DO SET SDKDIR=%%B
