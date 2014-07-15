@@ -40,16 +40,6 @@ make
 make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
 popd
 
-# This CVS has issues, so disable building it for now.
-# See bug 409260 for details.
-#
-# tar -xjf "${MSYS_SRCDIR}/cvs-1.11.22.tar.bz2" -C "${MSYS_STAGEDIR}"
-# pushd "${MSYS_STAGEDIR}/cvs-1.11.22"
-# ./configure --prefix=/local
-# make
-# make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
-# popd
-
 # Install some newer MSYS packages
 tar -jvxf "${MSYS_SRCDIR}/autoconf-2.61-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 tar -jvxf "${MSYS_SRCDIR}/minires-1.01-1-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
