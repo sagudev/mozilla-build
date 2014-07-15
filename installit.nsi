@@ -40,6 +40,7 @@ Section "MozillaBuild"
   RMDir /r "$INSTDIR\moztools-x64\lib"
   RMDir /r "$INSTDIR\nsis-2.33u"
   RMDir /r "$INSTDIR\upx203w"
+  RMDir /r "$INSTDIR\wix-351728"
   File /r *.*
   ; write the full path to ca-bundle.crt in wget.ini
   FileOpen $0 "$INSTDIR\wget\wget.ini" w

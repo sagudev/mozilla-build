@@ -35,9 +35,6 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
 # install SVN
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/svn-win32-1.6.3.zip"
 
-# install WiX toolset nightly 3.5.1728.0
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/wix-351728/" "${MSYS_SRCDIR}/wix35-binaries.zip"
-
 # install unzip
 mkdir "${MSYS_STAGEDIR}/mozilla-build/info-zip"
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" "${MSYS_SRCDIR}/unz600xN.exe"
