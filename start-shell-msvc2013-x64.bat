@@ -68,9 +68,8 @@ if "%VC12DIR%"=="" (
 if "%VC12DIR%"=="" (
     rem Prepend SDK paths - Don't use the SDK SetEnv.cmd because it pulls in
     rem random VC paths which we don't want.
-    rem Add the atlthunk compat library to the end of our LIB
     set "PATH=%SDKDIR%\bin\x64;%SDKDIR%\bin;%PATH%"
-    set "LIB=%SDKDIR%\lib\x64;%SDKDIR%\lib;%LIB%;%MOZBUILDDIR%atlthunk_compat"
+    set "LIB=%SDKDIR%\lib\x64;%SDKDIR%\lib;%LIB%"
 
     if "%USEPSDKATL%"=="1" (
         if "%USEPSDKIDL%"=="1" (
