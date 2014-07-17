@@ -1,5 +1,5 @@
---- Mercurial.rc	2013-12-05 14:16:40 -0500
-+++ Mercurial.rc	2014-02-03 10:27:59 -0500
+--- Mercurial.rc	2014-07-15 23:25:00 -0400
++++ Mercurial.rc	2014-07-15 23:25:25 -0400
 @@ -11,17 +11,16 @@
  ; your user Mercurial.ini file, where USERNAME is your Windows user name:
  ;

@@ -41,6 +41,8 @@ cp -R usr/* ./
 rm -rf usr/
 popd
 
+chmod 755 "${MSYS_STAGEDIR}/mozilla-build/msys/bin/mktemp.exe"
+
 # In order for this to actually work, we now need to rebase
 # the DLL. Since I can't figure out how to rebase just one
 # DLL to avoid conflicts with a set of others, we just
