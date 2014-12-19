@@ -91,7 +91,7 @@ sed < "${MSYS_SRCDIR}"/version.nsi s/@VERSION@/$version/g > "${MSYS_STAGEDIR}"/v
 unix2dos "${MSYS_STAGEDIR}/license.rtf"
 
 # Build and install mozmake
-MAKE_VERSION="4.0-43-g8411528"
+MAKE_VERSION="4.1"
 tar -xjf "${MSYS_SRCDIR}/mozmake/make-${MAKE_VERSION}.tar.bz2" -C "${MSYS_STAGEDIR}"
 pushd "${MSYS_STAGEDIR}/make-${MAKE_VERSION}"
 sed "s/%PACKAGE%/make/;s/%VERSION%/${MAKE_VERSION}/;/#define BATCH_MODE_ONLY_SHELL/s/\/\*\(.*\)\*\//\1/" config.h.W32.template > config.h.W32
