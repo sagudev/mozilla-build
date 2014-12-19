@@ -3,7 +3,7 @@ rem Alter to suit your environment.
 
 set VC8DIR=D:\msvs8
 set SDKDIR=C:\Program Files\Microsoft Platform SDK
-set PYTHONDIR=C:\python25
+set PYTHONDIR=C:\Python27
 set SRCDIR=%~dp0%
 
 call "%VC8DIR%\VC\bin\vcvars32.bat"
