@@ -82,7 +82,7 @@ cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/wget"
 
 # Install yasm
 mkdir "${MSYS_STAGEDIR}/mozilla-build/yasm"
-cp "${MSYS_SRCDIR}/yasm-1.2.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/yasm.exe"
+cp "${MSYS_SRCDIR}/yasm-1.3.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/yasm.exe"
 
 # stage files to make the installer
 cp "${MSYS_SRCDIR}"/{license.rtf,installit.nsi} "${MSYS_STAGEDIR}"
