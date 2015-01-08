@@ -35,6 +35,7 @@ SET MSVC11KEY=%MSVCROOTKEY%\11.0\Setup\VC
 SET MSVC11EXPRESSKEY=%MSVCEXPROOTKEY%\11.0\Setup\VC
 SET MSVC12KEY=%MSVCROOTKEY%\12.0\Setup\VC
 SET MSVC12EXPRESSKEY=%MSVCEXPROOTKEY%\12.0\Setup\VC
+SET MSVC14KEY=%MSVCROOTKEY%\14.0\Setup\VC
 
 REM First see if we can find MSVC, then set the variable
 REM NOTE: delims=<tab><space>
@@ -91,6 +92,13 @@ REG QUERY "%MSVC12EXPRESSKEY%" /v ProductDir >nul 2>nul
 if "%VC12EXPRESSDIR%"=="" (
   IF %ERRORLEVEL% EQU 0 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC12EXPRESSKEY%" /v ProductDir') DO SET VC12EXPRESSDIR=%%B
+  )
+)
+
+REG QUERY "%MSVC14KEY%" /v ProductDir >nul 2>nul
+if "%VC14DIR%"=="" (
+  IF %ERRORLEVEL% EQU 0 (
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC14KEY%" /v ProductDir') DO SET VC14DIR=%%B
   )
 )
 
@@ -190,6 +198,7 @@ if defined VC11DIR ECHO Visual C++ 11 directory: %VC11DIR%
 if defined VC11EXPRESSDIR ECHO Visual C++ 11 Express directory: %VC11EXPRESSDIR%
 if defined VC12DIR ECHO Visual C++ 12 directory: %VC12DIR%
 if defined VC12EXPRESSDIR ECHO Visual C++ 12 Express directory: %VC12EXPRESSDIR%
+if defined VC14DIR ECHO Visual C++ 14 directory: %VC14DIR%
 
 setlocal enableextensions enabledelayedexpansion
 
