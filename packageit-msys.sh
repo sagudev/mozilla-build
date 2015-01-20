@@ -54,6 +54,6 @@ find "${MSYS_STAGEDIR}/mozilla-build/msys" -name "*.dll" | \
 # Skip libW11.dll, since it doesn't rebase properly
 find "${MSYS_STAGEDIR}/mozilla-build/msys" -name "*.dll" | \
   grep -v "libW11.dll" | \
-  xargs rebase -d -b 60000000
+  xargs editbin /REBASE:BASE=0x60000000,DOWN /DYNAMICBASE:NO
 # Now rebase msys-1.0.dll to a special place because it's finicky
-rebase -b 60100000 "${MSYS_STAGEDIR}/mozilla-build/msys/bin/msys-1.0.dll"
+editbin /REBASE:BASE=0x60100000 /DYNAMICBASE:NO "${MSYS_STAGEDIR}/mozilla-build/msys/bin/msys-1.0.dll"
