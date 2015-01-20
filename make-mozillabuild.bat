@@ -1,13 +1,11 @@
 rem This script is specific to the paths on the mozillabuild-builder vm.
 rem Alter to suit your environment.
 
-set VC8DIR=D:\msvs8
-set SDKDIR=C:\Program Files\Microsoft Platform SDK
+set VCDIR=C:\Program Files\Microsoft Visual Studio 10.0
 set PYTHONDIR=C:\Python27
 set SRCDIR=%~dp0%
 
-call "%VC8DIR%\VC\bin\vcvars32.bat"
-set INCLUDE=%SDKDIR%\Include\atl;%INCLUDE%
+call "%VCDIR%\VC\bin\vcvars32.bat"
 
 cd %SRCDIR%
 %PYTHONDIR%\python.exe packageit.py --msys c:\msys --output c:\stage
