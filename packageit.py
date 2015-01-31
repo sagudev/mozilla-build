@@ -68,7 +68,7 @@ from subprocess import check_call
 from os import getcwd, remove, environ, chdir, walk, rename, remove
 from os.path import dirname, join, split, abspath, exists
 import optparse
-from shutil import rmtree, copyfile
+from shutil import rmtree, copyfile, copytree
 
 sourcedir = join(split(abspath(__file__))[0])
 stagedir = getcwd()
@@ -99,9 +99,15 @@ print("Output location: " + stagedir)
 if exists(join(stagedir, "mozilla-build")):
     check_call(["cmd.exe", "/C", "rmdir /S /Q %s" % join(stagedir, "mozilla-build")])
 
-check_call([join(sourcedir, "7z442.exe"),
-            "/D=" + join(stagedir, "mozilla-build", "7zip")])
-check_call(["msiexec.exe", "/a",
+# Install 7-Zip. Create an administrative install point and copy the files to stage rather
+# than using a silent install to avoid installing the shell extension on the host machine.
+check_call(["msiexec.exe", "/q", "/a",
+            join(sourcedir, "7z920.msi"),
+            "TARGETDIR=" + join(stagedir, "7zip")])
+copytree(join(stagedir, "7zip", "Files", "7-Zip"),
+         join(stagedir, "mozilla-build", "7zip"))
+
+check_call(["msiexec.exe", "/q", "/a",
             join(sourcedir, "python-2.7.8.msi"),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
 # copy python.exe to python2.7.exe
