@@ -25,10 +25,6 @@ IF NOT ERRORLEVEL 1 (
   SET WIN64=0
 )
 
-SET MSVC10KEY=%MSVCROOTKEY%\10.0\Setup\VC
-SET MSVC10EXPRESSKEY=%MSVCEXPROOTKEY%\10.0\Setup\VC
-SET MSVC11KEY=%MSVCROOTKEY%\11.0\Setup\VC
-SET MSVC11EXPRESSKEY=%MSVCEXPROOTKEY%\11.0\Setup\VC
 SET MSVC12KEY=%MSVCROOTKEY%\12.0\Setup\VC
 SET MSVC12EXPRESSKEY=%MSVCEXPROOTKEY%\12.0\Setup\VC
 SET MSVC14KEY=%MSVCROOTKEY%\14.0\Setup\VC
@@ -36,46 +32,6 @@ SET MSVC14KEY=%MSVCROOTKEY%\14.0\Setup\VC
 REM First see if we can find MSVC, then set the variable
 REM NOTE: delims=<tab><space>
 REM NOTE: Use IF ERRORLEVEL X to check if the last ERRORLEVEL was GEQ(greater or equal than) X
-
-if "%VC10DIR%"=="" (
-  REM Newer SDKs (7.1) install the VC10 compilers and set this key,
-  REM but they're functionally equivalent to the VC10 Express compilers.
-  REG QUERY "%MSVC10KEY%" /v ProductDir >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10KEY%" /v ProductDir') DO SET TEMPVC10DIR=%%B
-  )
-)
-
-REM We'll double-check for a VC10 Pro install here per the comment above.
-if NOT "%TEMPVC10DIR%"=="" (
-  REG QUERY "%MSVCROOTKEY%\10.0\InstalledProducts\Microsoft Visual C++" >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    SET "VC10DIR=%TEMPVC10DIR%"
-  ) ELSE (
-    SET "VC10EXPRESSDIR=%TEMPVC10DIR%"
-  )
-)
-
-if "%VC10EXPRESSDIR%"=="" (
-  REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC10EXPRESSKEY%" /v ProductDir') DO SET VC10EXPRESSDIR=%%B
-  )
-)
-
-if "%VC11DIR%"=="" (
-  REG QUERY "%MSVC11KEY%" /v ProductDir >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC11KEY%" /v ProductDir') DO SET VC11DIR=%%B
-  )
-)
-
-if "%VC11EXPRESSDIR%"=="" (
-  REG QUERY "%MSVC11EXPRESSKEY%" /v ProductDir >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC11EXPRESSKEY%" /v ProductDir') DO SET VC11EXPRESSDIR=%%B
-  )
-)
 
 if "%VC12DIR%"=="" (
   REG QUERY "%MSVC12KEY%" /v ProductDir >nul 2>nul
@@ -98,13 +54,9 @@ if "%VC14DIR%"=="" (
   )
 )
 
-REM Look for Installed SDKs:
-SET SDK7KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0
-SET SDK7AKEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A
-SET SDK71KEY=HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1
-REM 8.0 and 8.1 uses same key tree
+REM Look for Installed SDKs
 SET SDKPRODUCTKEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Products
-SET SDK80KEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots
+SET SDKROOTKEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots
 
 REM Just a base value to compare against
 SET SDKDIR=
@@ -128,7 +80,7 @@ if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80100 (
     REG QUERY "%SDKPRODUCTKEY%" /v "{A1CB8286-CFB3-A985-D799-721A0F2A27F3}" >nul 2>nul
   )
   IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot81') DO SET SDKDIR=%%B
+    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDKROOTKEY%" /v KitsRoot81') DO SET SDKDIR=%%B
 	SET SDKVER=8
 	SET SDKMINORVER=1
   )
@@ -141,63 +93,12 @@ IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
   SET SDKDIR=
 )
 
-REM Windows Software Development Kit DirectX Remote (SDK 8.0)
-if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 80000 (
-  if "%WIN64%" == "1" (
-    REG QUERY "%SDKPRODUCTKEY%" /v "{5FB4C443-6BD6-1514-2717-3827D65AE6FB}" >nul 2>nul
-  ) else (
-    REG QUERY "%SDKPRODUCTKEY%" /v "{23176E97-26CB-C72A-19EB-BFB21AC1D15A}" >nul 2>nul
-  )
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK80KEY%" /v KitsRoot') DO SET SDKDIR=%%B
-	SET SDKVER=8
-	SET SDKMINORVER=0
-  )
-)
-
-REM The Installed Products key still exists even if the SDK is uninstalled.
-REM Verify that the Windows.h header exists to confirm that the SDK is
-REM installed.
-IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
-  SET SDKDIR=
-)
-
-if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70100 (
-  REG QUERY "%SDK71KEY%" /v InstallationFolder >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK71KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
-    SET SDKVER=7
-    SET SDKMINORVER=1
-  )
-)
-
-if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70001 (
-  REG QUERY "%SDK7AKEY%" /v InstallationFolder >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK7AKEY%" /v InstallationFolder') DO SET SDKDIR=%%B
-    SET SDKVER=7
-    SET SDKMINORVER=0A
-  )
-)
-
-if "%SDKDIR%"=="" IF %MOZ_MAXWINSDK% GEQ 70000 (
-  REG QUERY "%SDK7KEY%" /v InstallationFolder >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%SDK7KEY%" /v InstallationFolder') DO SET SDKDIR=%%B
-    SET SDKVER=7
-  )
-)
-
-if defined VC10DIR ECHO Visual C++ 10 directory: %VC10DIR%
-if defined VC10EXPRESSDIR ECHO Visual C++ 10 Express directory: %VC10EXPRESSDIR%
-if defined VC11DIR ECHO Visual C++ 11 directory: %VC11DIR%
-if defined VC11EXPRESSDIR ECHO Visual C++ 11 Express directory: %VC11EXPRESSDIR%
 if defined VC12DIR ECHO Visual C++ 12 directory: %VC12DIR%
 if defined VC12EXPRESSDIR ECHO Visual C++ 12 Express directory: %VC12EXPRESSDIR%
 if defined VC14DIR ECHO Visual C++ 14 directory: %VC14DIR%
 
-setlocal enableextensions enabledelayedexpansion
 
+setlocal enableextensions enabledelayedexpansion
 if "!SDKDIR!"=="" (
     SET SDKDIR=!PSDKDIR!
     SET SDKVER=%PSDKVER%
