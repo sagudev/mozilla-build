@@ -126,8 +126,8 @@ check_call(["msiexec", "/i",
             "/qn",
             "INSTALLDIR=" + join(stagedir, "mozilla-build", "hg")])
 check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
-            "/S",
-            "/D=" + join(stagedir, "mozilla-build", "kdiff3")])
+            "-y",
+            "-o" + join(stagedir, "mozilla-build", "kdiff3")])
 
 # install setuptools from egg
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
