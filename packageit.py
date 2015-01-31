@@ -107,12 +107,15 @@ check_call(["msiexec.exe", "/q", "/a",
 copytree(join(stagedir, "7zip", "Files", "7-Zip"),
          join(stagedir, "mozilla-build", "7zip"))
 
+# Install Python
 check_call(["msiexec.exe", "/q", "/a",
-            join(sourcedir, "python-2.7.8.msi"),
+            join(sourcedir, "python-2.7.9.msi"),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
-# copy python.exe to python2.7.exe
+# copy python.exe to python2.7.exe and remove the MSI
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
          join(stagedir, "mozilla-build", "python", "python2.7.exe"))
+remove(join(stagedir, "mozilla-build", "python", "python-2.7.9.msi"))
+
 check_call([join(sourcedir, "MSYS-1.0.11-rc-1.exe"),
             "/DIR=" + join(stagedir, "mozilla-build", "msys"),
             # "/VERYSILENT", "/SUPRESSMSGBOXES",
