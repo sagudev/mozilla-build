@@ -1,15 +1,9 @@
-REM -*- Mode: fundamental; tab-width: 8; indent-tabs-mode: 1 -*-
 @ECHO OFF
 
 set CYGWIN=
 if not defined MOZ_NO_RESET_PATH (
     set PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
 )
-
-REM if DISPLAY is set, rxvt attempts to load libX11.dll and fails to start
-REM (see mozilla bug 376828)
-SET DISPLAY=
-
 SET INCLUDE=
 SET LIB=
 
@@ -88,3 +82,4 @@ if defined VC14DIR ECHO Visual C++ 14 directory: %VC14DIR%
 
 ECHO Windows SDK directory: %SDKDIR%
 ECHO Windows SDK version: %SDKVER%.%SDKMINORVER%
+ECHO.
