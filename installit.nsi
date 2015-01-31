@@ -5,7 +5,7 @@
 RequestExecutionLevel highest
 
 SetCompressor /SOLID lzma
-InstallDir "C:\mozilla-build"
+InstallDir "C:\mozilla-build-test"
 
 LicenseData "..\license.rtf"
 Page license
