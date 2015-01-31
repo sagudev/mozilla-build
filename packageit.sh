@@ -72,7 +72,8 @@ make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
 popd
 
 # Install wget
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.15b.zip"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.16.1b.zip"
+rm "${MSYS_STAGEDIR}/mozilla-build/wget/wget.exe.debug"
 # copy over CA certificates in PEM format (converted from Firefox's defaults)
 # so SSL will work
 cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/wget"
