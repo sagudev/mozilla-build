@@ -5,7 +5,7 @@ SET MOZ_MSVCVERSION=14
 SET MOZBUILDDIR=%~dp0
 SET MOZILLABUILD=%MOZBUILDDIR%
 
-echo "Mozilla tools directory: %MOZBUILDDIR%"
+echo Mozilla tools directory: %MOZBUILDDIR%
 
 REM Get MSVC paths
 call "%MOZBUILDDIR%guess-msvc.bat"
@@ -23,7 +23,7 @@ if "%VC14DIR%"=="" (
 )
 
 if "%SDKDIR%"=="" (
-    ECHO "Microsoft Windows SDK was not found. Exiting."
+    ECHO "No Windows SDK found. Exiting."
     pause
     EXIT /B 1
 )
@@ -33,11 +33,18 @@ rem By default, the Windows 8.1 SDK should be automatically included via vcvars3
 rem Prefer cross-compiling 32-bit builds using the 64-bit toolchain if able to do so.
 if exist "%VC14DIR%\bin\amd64_x86\vcvarsamd64_x86.bat" (
     call "%VC14DIR%\bin\amd64_x86\vcvarsamd64_x86.bat"
-    ECHO Using the VC 2013 64-bit toolchain and built-in Windows 8.1 SDK
+    ECHO Using the MSVC 2015 64-bit cross-compile toolchain.
 ) else (
-    call "%VC14DIR%\bin\vcvars32.bat"
-    ECHO Using the VC 2013 32-bit toolchain and built-in Windows 8.1 SDK
+    if exist "%VC12DIR%\bin\vcvars32.bat" (
+        call "%VC12DIR%\bin\vcvars32.bat"
+        ECHO Using the MSVC 2015 32-bit toolchain.
+    ) else (
+        ECHO Unable to find a suitable vcvars batch script. Exiting.
+        pause
+        EXIT /B 1
+    )
 )
+ECHO Using the built-in Windows 8.1 SDK.
 
 cd "%USERPROFILE%"
 
