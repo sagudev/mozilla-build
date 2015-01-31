@@ -17,16 +17,13 @@ SET WINCURVERKEY=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion
 REG QUERY "%WINCURVERKEY%" /v "ProgramFilesDir (x86)" >nul 2>nul
 IF NOT ERRORLEVEL 1 (
   SET MSVCROOTKEY=HKLM\SOFTWARE\Wow6432Node\Microsoft\VisualStudio
-  SET MSVCEXPROOTKEY=HKLM\SOFTWARE\Wow6432Node\Microsoft\VCExpress
   SET WIN64=1
 ) else (
   SET MSVCROOTKEY=HKLM\SOFTWARE\Microsoft\VisualStudio
-  SET MSVCEXPROOTKEY=HKLM\SOFTWARE\Microsoft\VCExpress
   SET WIN64=0
 )
 
 SET MSVC12KEY=%MSVCROOTKEY%\12.0\Setup\VC
-SET MSVC12EXPRESSKEY=%MSVCEXPROOTKEY%\12.0\Setup\VC
 SET MSVC14KEY=%MSVCROOTKEY%\14.0\Setup\VC
 
 REM First see if we can find MSVC, then set the variable
@@ -37,13 +34,6 @@ if "%VC12DIR%"=="" (
   REG QUERY "%MSVC12KEY%" /v ProductDir >nul 2>nul
   IF NOT ERRORLEVEL 1 (
     FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC12KEY%" /v ProductDir') DO SET VC12DIR=%%B
-  )
-)
-
-if "%VC12EXPRESSDIR%"=="" (
-  REG QUERY "%MSVC12EXPRESSKEY%" /v ProductDir >nul 2>nul
-  IF NOT ERRORLEVEL 1 (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY "%MSVC12EXPRESSKEY%" /v ProductDir') DO SET VC12EXPRESSDIR=%%B
   )
 )
 
@@ -94,21 +84,7 @@ IF "%SDKDIR%" NEQ "" IF NOT EXIST "%SDKDIR%\Include\um\Windows.h" (
 )
 
 if defined VC12DIR ECHO Visual C++ 12 directory: %VC12DIR%
-if defined VC12EXPRESSDIR ECHO Visual C++ 12 Express directory: %VC12EXPRESSDIR%
 if defined VC14DIR ECHO Visual C++ 14 directory: %VC14DIR%
 
-
-setlocal enableextensions enabledelayedexpansion
-if "!SDKDIR!"=="" (
-    SET SDKDIR=!PSDKDIR!
-    SET SDKVER=%PSDKVER%
-) else (
-    ECHO Windows SDK directory: !SDKDIR!
-    ECHO Windows SDK version: %SDKVER%.%SDKMINORVER%
-)
-if not "!PSDKDIR!"=="" (
-    ECHO Platform SDK directory: !PSDKDIR!
-    ECHO Platform SDK version: %PSDKVER%
-)
-
-setlocal disableextensions disabledelayedexpansion
+ECHO Windows SDK directory: %SDKDIR%
+ECHO Windows SDK version: %SDKVER%.%SDKMINORVER%

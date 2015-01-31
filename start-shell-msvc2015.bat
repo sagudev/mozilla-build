@@ -22,6 +22,12 @@ if "%VC14DIR%"=="" (
     EXIT /B 1
 )
 
+if "%SDKDIR%"=="" (
+    ECHO "Microsoft Windows SDK was not found. Exiting."
+    pause
+    EXIT /B 1
+)
+
 rem Prepend MSVC paths
 rem By default, the Windows 8.1 SDK should be automatically included via vcvars32.bat.
 rem Prefer cross-compiling 32-bit builds using the 64-bit toolchain if able to do so.
