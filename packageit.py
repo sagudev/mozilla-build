@@ -115,6 +115,36 @@ check_call(["msiexec.exe", "/q", "/a",
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
          join(stagedir, "mozilla-build", "python", "python2.7.exe"))
 remove(join(stagedir, "mozilla-build", "python", "python-2.7.9.msi"))
+# Run ensurepip and update to the latest version
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "ensurepip"])
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "--upgrade", "pip"])
+# Update setuptools to the latest version
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "--upgrade", "setuptools"])
+# Install virtualenv
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "virtualenv"])
+
+# Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
+# to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
+# scripts, which breaks because it uses the path on the machine we built this package on, not
+# the machine it was installed on. And unfortunately, pip doesn't have a way to pass down the
+# --executable flag to override this behavior.
+# See http://docs.python.org/distutils/setupscript.html#installing-scripts
+def distutils_shebang_fix(path, oldString, newString):
+    for dirname, dirs, files in walk(path):
+        for filename in files:
+            filepath = join(dirname, filename)
+            with open(filepath, "rb") as f:
+                s = f.read()
+            s = s.replace(oldString, newString)
+            with open(filepath, "wb") as f:
+                f.write(s)
+distutils_shebang_fix(join(stagedir, "mozilla-build", "python", "Scripts"),
+                      join(stagedir, "mozilla-build", "python", "python.exe"),
+                      "python.exe")
 
 check_call([join(sourcedir, "MSYS-1.0.11-rc-1.exe"),
             "/DIR=" + join(stagedir, "mozilla-build", "msys"),
@@ -131,12 +161,6 @@ check_call(["msiexec", "/i",
 check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
             "-y",
             "-o" + join(stagedir, "mozilla-build", "kdiff3")])
-
-# install setuptools from egg
-check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
-            join(sourcedir, "ez_setup.py"),
-            "-H", "None",
-            join(sourcedir, "setuptools-0.6c11-py2.7.egg")])
 
 # install NSIS 2.46 Unicode
 check_call([join(sourcedir, "nsis-2.46-Unicode-setup.exe"),
@@ -165,22 +189,6 @@ rename(join(stagedir, "mozilla-build", "nsis-3.0a2", "Bin", "makensis.exe"),
 
 # remove the NSIS 3.0a2 uninstaller
 remove(join(stagedir, "mozilla-build", "nsis-3.0a2", "uninst-nsis.exe"))
-
-# awful, but distutils hardcodes the interpreter path in the scripts,
-# which breaks because it uses the path on the machine we built this package
-# on, not the machine you installed it on.
-# See http://docs.python.org/distutils/setupscript.html#installing-scripts
-# (easy_setup.py doesn't seem to have a way to pass down --executable)
-def munge_easy_install_script(path):
-    f = file(path)
-    lines = f.readlines()
-    f.close()
-    f = file(path, "w")
-    f.write("#!python.exe\n")
-    f.write('\n'.join(lines[1:]))
-    f.close()
-munge_easy_install_script(join(stagedir, "mozilla-build", "python", "Scripts", "easy_install-script.py"))
-munge_easy_install_script(join(stagedir, "mozilla-build", "python", "Scripts", "easy_install-2.7-script.py"))
 
 # Run an MSYS shell to perform the following tasks:
 # * install make-3.81.90
