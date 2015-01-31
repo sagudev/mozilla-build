@@ -1,21 +1,6 @@
 ; This is an AutoHotKey script, tested using AHK 1.0.47.06
 ; http://www.autohotkey.com/
 SetTitleMatchMode Regex
-; 7-Zip
-WinWait, 7-Zip.+Setup, &Install, 10
-if ErrorLevel
-   Exit
-WinActivate
-Click, 365, 365
-WinWait, 7-Zip.+Setup, Finish, 10
-if ErrorLevel
-   Exit
-Click, 365, 365
-; Python Setup (silent, just displays a finish screen)
-WinWait, Python.+Setup, Finish, 600
-if ErrorLevel
-   Exit
-Click, 350, 400
 ; MSYS setup (complicated)
 WinWait, Minimal SYStem, Welcome, 600
 if ErrorLevel
