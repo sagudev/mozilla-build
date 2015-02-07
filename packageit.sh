@@ -14,11 +14,6 @@ fi
 MSYS_SRCDIR=$(cd "$MOZ_SRCDIR" && pwd)
 MSYS_STAGEDIR=$(cd "$MOZ_STAGEDIR" && pwd)
 
-# Patch Mercurial.ini
-pushd "${MSYS_STAGEDIR}/mozilla-build/hg/hgrc.d"
-patch -p0 < "${MSYS_SRCDIR}/Mercurial.rc.patch"
-popd
-
 # install emacs
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/emacs-24.3-bin-i386.zip"
 
@@ -74,13 +69,17 @@ popd
 # Install wget
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.16.1b.zip"
 rm "${MSYS_STAGEDIR}/mozilla-build/wget/wget.exe.debug"
-# copy over CA certificates in PEM format (converted from Firefox's defaults)
-# so SSL will work
-cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/wget"
+
+# Copy over CA certificates in PEM format (converted from Firefox's defaults) so SSL will work
+# This is used by both Mercurial and wget
+cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
 
 # Install yasm
 mkdir "${MSYS_STAGEDIR}/mozilla-build/yasm"
 cp "${MSYS_SRCDIR}/yasm-1.3.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/yasm.exe"
+
+# Copy mercurial.ini to the python dir so Mercurial has sane defaults
+cp "${MSYS_SRCDIR}"/mercurial.ini "${MSYS_STAGEDIR}/mozilla-build/python"
 
 # stage files to make the installer
 cp "${MSYS_SRCDIR}"/{license.rtf,installit.nsi} "${MSYS_STAGEDIR}"
