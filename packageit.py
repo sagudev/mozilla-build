@@ -61,6 +61,7 @@
 # * [http://code.google.com/p/unsis/downloads/detail?name=nsis-2.46-Unicode-setup.exe NSIS]
 # * [http://superb-dca2.dl.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0a2/nsis-3.0a2-setup.exe NSIS]
 # * [http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/unz552xN.exe?raw=1&ctype=application/octet-stream unzip]
+# * [http://www.microsoft.com/en-us/download/details.aspx?id=44266 Visual C++ for Python 2.7]
 # ** Extract to c:\program files\unzip
 # * Append ';c:\python25;c:\program files\nsis;c:\program files\unzip' to path.
 # 
@@ -115,6 +116,7 @@ check_call(["msiexec.exe", "/q", "/a",
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
          join(stagedir, "mozilla-build", "python", "python2.7.exe"))
 remove(join(stagedir, "mozilla-build", "python", "python-2.7.9.msi"))
+
 # Run ensurepip and update to the latest version
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "ensurepip"])
@@ -126,6 +128,9 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
 # Install virtualenv
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "virtualenv"])
+# Install Mercurial
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "Mercurial"])
 
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
@@ -154,10 +159,6 @@ check_call([join(sourcedir, "msysDTK-1.0.1.exe"),
             "/DIR=" + join(stagedir, "mozilla-build", "msys"),
             # "/VERYSILENT", "/SUPRESSMSGBOXES",
             "/SP-", "/NOICONS"])
-check_call(["msiexec", "/i", 
-            join(sourcedir, "mercurial-3.2.3-x86.msi"),
-            "/qn",
-            "INSTALLDIR=" + join(stagedir, "mozilla-build", "hg")])
 check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
             "-y",
             "-o" + join(stagedir, "mozilla-build", "kdiff3")])

@@ -39,6 +39,7 @@ Section "MozillaBuild"
   Delete "$INSTDIR\moztools\bin\uname.exe"
   RMDir /r "$INSTDIR\atlthunk_compat"
   RMDir /r "$INSTDIR\blat261"
+  RMDir /r "$INSTDIR\hg"
   RMDir /r "$INSTDIR\moztools\include"
   RMDir /r "$INSTDIR\moztools\lib"
   RMDir /r "$INSTDIR\moztools-x64\include"
@@ -48,13 +49,14 @@ Section "MozillaBuild"
   RMDir /r "$INSTDIR\upx203w"
   RMDir /r "$INSTDIR\wix-351728"
   File /r *.*
-  ; write the full path to ca-bundle.crt in wget.ini
+  ; Write the full path to ca-bundle.crt in wget.ini
   FileOpen $0 "$INSTDIR\wget\wget.ini" w
-  FileWrite $0 "ca_certificate=$INSTDIR\wget\ca-bundle.crt$\r$\n"
+  FileWrite $0 "ca_certificate=$INSTDIR\msys\etc\ca-bundle.crt$\r$\n"
   FileClose $0
-  ; write the full path to cacert.pem in 
-  FileOpen $0 "$INSTDIR\hg\hgrc.d\Paths.rc" w
-  FileWrite $0 "[web]$\r$\n"
-  FileWrite $0 "cacerts=$INSTDIR\hg\hgrc.d\cacert.pem"
+  ; Write the full path to ca-bundle.crt in mercurial.ini
+  FileOpen $0 "$INSTDIR\python\mercurial.ini" a
+  FileSeek $0 0 END
+  FileWrite $0 "$\n[web]$\n"
+  FileWrite $0 "cacerts=$INSTDIR\msys\etc\ca-bundle.crt$\n"
   FileClose $0
 SectionEnd
