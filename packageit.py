@@ -151,14 +151,6 @@ distutils_shebang_fix(join(stagedir, "mozilla-build", "python", "Scripts"),
                       join(stagedir, "mozilla-build", "python", "python.exe"),
                       "python.exe")
 
-check_call([join(sourcedir, "MSYS-1.0.11-rc-1.exe"),
-            "/DIR=" + join(stagedir, "mozilla-build", "msys"),
-            # "/VERYSILENT", "/SUPRESSMSGBOXES",
-            "/SP-", "/NOICONS"])
-check_call([join(sourcedir, "msysDTK-1.0.1.exe"),
-            "/DIR=" + join(stagedir, "mozilla-build", "msys"),
-            # "/VERYSILENT", "/SUPRESSMSGBOXES",
-            "/SP-", "/NOICONS"])
 check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
             "-y",
             "-o" + join(stagedir, "mozilla-build", "kdiff3")])
