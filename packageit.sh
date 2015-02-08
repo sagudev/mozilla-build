@@ -117,6 +117,15 @@ cp "${MSYS_SRCDIR}/yasm-1.3.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/ya
 # Copy mercurial.ini to the python dir so Mercurial has sane defaults
 cp "${MSYS_SRCDIR}"/mercurial.ini "${MSYS_STAGEDIR}/mozilla-build/python"
 
+# Patch Mercurial 3.3.x to better support color when running in MSYS
+# This patch will be included in Mercurial 3.4+
+pushd "${MSYS_STAGEDIR}/mozilla-build/python/Lib/site-packages"
+patch -p1 -i "${MSYS_SRCDIR}/hg33-color.patch"
+popd
+# Run a basic hg command to regenerate the .pyc files
+PATH="${MSYS_STAGEDIR}/mozilla-build/python:${MSYS_STAGEDIR}/mozilla-build/python/Scripts:$PATH"
+hg identify https://hg.mozilla.org/mozilla-central
+
 # Copy over CA certificates in PEM format (converted from Firefox's defaults) so SSL will work
 # This is used by both Mercurial and wget
 cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
