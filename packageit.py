@@ -184,21 +184,12 @@ rename(join(stagedir, "mozilla-build", "nsis-3.0a2", "Bin", "makensis.exe"),
 remove(join(stagedir, "mozilla-build", "nsis-3.0a2", "uninst-nsis.exe"))
 
 # Run an MSYS shell to perform the following tasks:
-# * install make-3.81.90
-# * install UPX
-# * install blat
-# * install SVN
-# * install emacs
-# * build and install libiconv
-
+# * Extract MSYS packages and rebase DLLs
+# * Build and install autoconf-2.13 and make-3.81.90
+# * Build and install mozmake (based on GNU make 4.x)
+# * Install other packages (UPX, info-zip, etc)
 check_call([join(msysdir, "bin", "sh.exe"), "--login",
             join(sourcedir, "packageit.sh")])
-
-environ["MSYSTEM"] = "MSYS"
-check_call([join(msysdir, "bin", "sh.exe"), "--login",
-            join(sourcedir, "packageit-msys.sh")])
-
-del environ["MSYSTEM"]
 
 # Embed some manifests to make Vista happy
 def embedmanifest(f, mf):
