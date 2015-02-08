@@ -24,14 +24,7 @@ make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
 popd
 
 # Install some newer MSYS packages
-tar -jvxf "${MSYS_SRCDIR}/autoconf-2.61-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/minires-1.01-1-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/mktemp-1.6-1-msys-1.0.11-bin.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/openssh-4.6p1-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/openssl-0.9.8e-3-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/sed-4.2.1-1-msys-1.0.11-bin.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/tar-1.22-1-msys-1.0.11-bin.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-tar -jvxf "${MSYS_SRCDIR}/zlib-1.2.3-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
+#tar -jvxf "${MSYS_SRCDIR}/autoconf-2.61-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 # Replace the native MSYS rm with winrm and move the tarballs that extract to usr/ up a level.
 cp "${MSYS_SRCDIR}/winrm.exe" "${MSYS_STAGEDIR}/mozilla-build/msys/bin"
 pushd "${MSYS_STAGEDIR}/mozilla-build/msys"

@@ -14,15 +14,11 @@ fi
 MSYS_SRCDIR=$(cd "$MOZ_SRCDIR" && pwd)
 MSYS_STAGEDIR=$(cd "$MOZ_STAGEDIR" && pwd)
 
+# copy the vi shell script to the bin dir
+cp "${MSYS_SRCDIR}/vi" "${MSYS_STAGEDIR}/mozilla-build/msys"
+
 # install emacs
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/emacs-24.3-bin-i386.zip"
-
-# install vim
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/vim72rt.zip"
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/vim72w32.zip"
-unzip -o -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/gvim72.zip"
-# copy the vi and view shell scripts to the bin dir
-cp "${MSYS_SRCDIR}"/{vi,view} "${MSYS_STAGEDIR}"/mozilla-build/vim/vim72
 
 # install UPX
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
@@ -31,17 +27,6 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/info-zip"
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" "${MSYS_SRCDIR}/unz600xN.exe"
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" -o "${MSYS_SRCDIR}/zip300xN.zip"
-
-# build and install libiconv
-rm -rf "${MSYS_STAGEDIR}/libiconv-1.11"
-tar -xzf "${MSYS_SRCDIR}/libiconv-1.11.tar.gz" -C "${MSYS_STAGEDIR}"
-
-pushd "${MSYS_STAGEDIR}/libiconv-1.11"
-patch -p0 < "${MSYS_SRCDIR}/libiconv-build.patch"
-./configure --prefix=/local --enable-static --disable-shared
-make
-make install DESTDIR="${MSYS_STAGEDIR}/mozilla-build/msys" LIBTOOL_INSTALL=
-popd
 
 # install moztools-static
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static.zip"
