@@ -1,5 +1,4 @@
 set -e
-set -v
 
 # This script expects these to be absolute paths in win32 format
 if test -z "$MOZ_SRCDIR"; then
@@ -18,22 +17,22 @@ MSYS_STAGEDIR=$(cd "$MOZ_STAGEDIR" && pwd)
 # Extract and configure the MSYS environment
 #
 
-# Install some newer MSYS packages
-#tar -jvxf "${MSYS_SRCDIR}/autoconf-2.61-MSYS-1.0.11.tar.bz2" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
-# Replace the native MSYS rm with winrm and move the tarballs that extract to usr/ up a level.
+# Extract MSYS packages to the stage directory
+mkdir -p "${MSYS_STAGEDIR}/mozilla-build/msys"
+find "${MSYS_SRCDIR}/msys" -name "*.lzma" | xargs -I file tar --lzma -vxf file -C "${MSYS_STAGEDIR}/mozilla-build/msys"
+
+# Replace the native MSYS rm with winrm.
 cp "${MSYS_SRCDIR}/winrm.exe" "${MSYS_STAGEDIR}/mozilla-build/msys/bin"
 pushd "${MSYS_STAGEDIR}/mozilla-build/msys"
 mv bin/rm.exe bin/rm-msys.exe
 cp bin/winrm.exe bin/rm.exe
-cp -R usr/* ./
-rm -rf usr/
 popd
 
-# mktemp.exe needs 755 or else manifest embedding will error out
+# mktemp.exe extracts as read-only, which breaks manifest embedding
 chmod 755 "${MSYS_STAGEDIR}/mozilla-build/msys/bin/mktemp.exe"
 
-# copy the vi shell script to the bin dir
-cp "${MSYS_SRCDIR}/vi" "${MSYS_STAGEDIR}/mozilla-build/msys"
+# Copy the vi shell script to the bin dir
+cp "${MSYS_SRCDIR}/msys/misc/vi" "${MSYS_STAGEDIR}/mozilla-build/msys/bin"
 
 # Build and install autoconf 2.13
 tar -xzf "${MSYS_SRCDIR}/autoconf-2.13.tar.gz" -C "${MSYS_STAGEDIR}"
@@ -61,17 +60,17 @@ popd
 find "${MSYS_STAGEDIR}/mozilla-build/msys" -name "*.dll" | \
   xargs chmod 755
 
-# Skip libW11.dll, since it doesn't rebase properly
+# Skip msys-W11.dll, since it doesn't rebase properly
 find "${MSYS_STAGEDIR}/mozilla-build/msys" -name "*.dll" | \
-  grep -v "libW11.dll" | \
+  grep -v "msys-W11.dll" | \
   xargs editbin /REBASE:BASE=0x60000000,DOWN /DYNAMICBASE:NO
 # Now rebase msys-1.0.dll to a special place because it's finicky
 editbin /REBASE:BASE=0x60100000 /DYNAMICBASE:NO "${MSYS_STAGEDIR}/mozilla-build/msys/bin/msys-1.0.dll"
 
 # Copy various configuration files
-cp "${MSYS_SRCDIR}/inputrc" "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
+cp "${MSYS_SRCDIR}/msys/misc/inputrc" "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
-cp "${MSYS_SRCDIR}"/{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,profile-homedir.sh,profile-sshagent.sh} \
+cp "${MSYS_SRCDIR}/msys/misc/"{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,profile-homedir.sh,profile-sshagent.sh} \
     "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
 
 #
