@@ -89,7 +89,7 @@ cp WinRel/make.exe "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
 popd
 
 # Install emacs
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/emacs-24.3-bin-i386.zip"
+tar --lzma -vxf "${MSYS_SRCDIR}/emacs-24.4-bin.tar.lzma" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 
 # Install info-zip
 mkdir "${MSYS_STAGEDIR}/mozilla-build/info-zip"
