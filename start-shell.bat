@@ -16,12 +16,21 @@ SET MOZILLABUILD=%MOZBUILDDIR%
 ECHO MozillaBuild Install Directory: %MOZBUILDDIR%
 
 REM Figure out if we're on a 32-bit or 64-bit host OS.
-REM NOTE: Use IF ERRORLEVEL X to check if the last ERRORLEVEL was GEQ(greater or equal than) X
+REM NOTE: Use IF ERRORLEVEL X to check if the last ERRORLEVEL was GEQ(greater or equal than) X.
 SET WINCURVERKEY=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion
 REG QUERY "%WINCURVERKEY%" /v "ProgramFilesDir (x86)" >nul 2>nul
 IF NOT ERRORLEVEL 1 (
   SET WIN64=1
 ) ELSE (
+  REM Bail early if the x64 MSVC start script is invoked on a 32-bit host OS.
+  REM Note: We explicitly aren't supporting x86->x64 cross-compiles.
+  IF "%MOZ_MSVCBITS%" == "64" (
+    ECHO.
+    ECHO The MSVC 64-bit toolchain is not supported on a 32-bit host OS. Exiting.
+    ECHO.
+    PAUSE
+    EXIT /B 1
+  )
   SET WIN64=0
 )
 
