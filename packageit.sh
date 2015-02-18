@@ -131,7 +131,7 @@ hg identify https://hg.mozilla.org/mozilla-central
 cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
 
 # Copy the batch files that make everything go!
-cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-shell-l10n.bat,start-shell-msvc2013.bat,start-shell-msvc2013-x64.bat,start-shell-msvc2015.bat,start-shell-msvc2015-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
+cp "${MSYS_SRCDIR}"/{guess-msvc.bat,start-shell.bat,start-shell-msvc2013.bat,start-shell-msvc2013-x64.bat,start-shell-msvc2015.bat,start-shell-msvc2015-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
 
 # Copy VERSION file
 cp "${MSYS_SRCDIR}"/VERSION "${MSYS_STAGEDIR}/mozilla-build"
