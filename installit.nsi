@@ -18,6 +18,7 @@ Section "MozillaBuild"
   return
   continue:
   SetOutPath $INSTDIR
+  Delete "$INSTDIR\guess-msvc.bat"
   Delete "$INSTDIR\start-l10n.bat"
   Delete "$INSTDIR\start-msvc71.bat"
   Delete "$INSTDIR\start-msvc8.bat"
