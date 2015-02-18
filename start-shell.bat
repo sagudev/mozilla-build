@@ -10,10 +10,9 @@ IF NOT DEFINED MOZ_NO_RESET_PATH (
   SET PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
 )
 
-SET MOZBUILDDIR=%~dp0
-SET MOZILLABUILD=%MOZBUILDDIR%
+SET MOZILLABUILD=%~dp0
 
-ECHO MozillaBuild Install Directory: %MOZBUILDDIR%
+ECHO MozillaBuild Install Directory: %MOZILLABUILD%
 
 REM Figure out if we're on a 32-bit or 64-bit host OS.
 REM NOTE: Use IF ERRORLEVEL X to check if the last ERRORLEVEL was GEQ(greater or equal than) X.
@@ -36,9 +35,9 @@ IF NOT ERRORLEVEL 1 (
 
 REM Append moztools to PATH
 IF "%WIN64%" == "1" (
-  SET MOZ_TOOLS=%MOZBUILDDIR%moztools-x64
+  SET MOZ_TOOLS=%MOZILLABUILD%moztools-x64
 ) ELSE (
-  SET MOZ_TOOLS=%MOZBUILDDIR%moztools
+  SET MOZ_TOOLS=%MOZILLABUILD%moztools
 )
 SET PATH=%PATH%;%MOZ_TOOLS%\bin
 
@@ -54,15 +53,14 @@ IF DEFINED MOZ_MSVCVERSION (
 
     REM Find the MSVC installation directory and bail if none is found.
     REG QUERY !MSVCKEY! /v ProductDir >nul 2>nul
-    IF NOT ERRORLEVEL 1 (
-      FOR /F "tokens=2*" %%A IN ('REG QUERY !MSVCKEY! /v ProductDir') DO SET VCDIR=%%B
-    ) ELSE (
+    IF ERRORLEVEL 1 (
       ECHO.
       ECHO Microsoft Visual C++ %MOZ_MSVCYEAR% was not found. Exiting.
       ECHO.
       PAUSE
       EXIT /B 1
     )
+    FOR /F "tokens=2*" %%A IN ('REG QUERY !MSVCKEY! /v ProductDir') DO SET VCDIR=%%B
   )
 
   IF NOT DEFINED SDKDIR (
@@ -78,23 +76,25 @@ IF DEFINED MOZ_MSVCVERSION (
     REM Windows SDK 8.1
     REG QUERY "!SDKPRODUCTKEY!" /v "!WIN81SDKKEY!" >nul 2>nul
     IF NOT ERRORLEVEL 1 (
-      FOR /F "tokens=2*" %%A IN ('REG QUERY "!SDKROOTKEY!" /v KitsRoot81') DO SET SDKDIR=%%B
-	  SET SDKVER=8
-  	  SET SDKMINORVER=1
-    )
-    REM The Installed Products key still exists even if the SDK is uninstalled.
-    REM Verify that the Windows.h header exists to confirm that the SDK is installed.
-    IF DEFINED SDKDIR IF NOT EXIST "!SDKDIR!\Include\um\Windows.h" (
-      SET SDKDIR=
-    )
+      FOR /F "tokens=2*" %%A IN ('REG QUERY "!SDKROOTKEY!" /v KitsRoot81') DO (
+        REM The Installed Products key still exists even if the SDK is uninstalled.
+        REM Verify that the Windows.h header exists to confirm that the SDK is installed.
+        IF EXIST "%%B\Include\um\Windows.h" (
+          SET SDKDIR=%%B
+        )
+      )
 
-    REM Bail if no Windows SDK is found.
-    IF NOT DEFINED SDKDIR (
-      ECHO.
-      ECHO No Windows SDK found. Exiting.
-      ECHO.
-      PAUSE
-      EXIT /B 1
+      REM Bail if no Windows SDK is found.
+      IF NOT DEFINED SDKDIR (
+        ECHO.
+        ECHO No Windows SDK found. Exiting.
+        ECHO.
+        PAUSE
+        EXIT /B 1
+      )
+
+      SET SDKVER=8
+      SET SDKMINORVER=1
     )
   )
 
