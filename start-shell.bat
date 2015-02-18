@@ -90,25 +90,29 @@ IF DEFINED MOZ_MSVCVERSION (
   )
 
   REM Prepend MSVC paths.
-  IF "%WIN64%" == "1" (
-    IF "%MOZ_MSVCBITS%" == "32" (
-      REM Prefer cross-compiling 32-bit builds using the 64-bit toolchain if able to do so.
-      IF EXIST "!VCDIR!\bin\amd64_x86\vcvarsamd64_x86.bat" (
-        CALL "!VCDIR!\bin\amd64_x86\vcvarsamd64_x86.bat"
-        SET TOOLCHAIN=64-bit cross-compile
+  IF "%MOZ_MSVCBITS%" == "32" (
+    REM Prefer cross-compiling 32-bit builds using the 64-bit toolchain if able to do so.
+    IF "%WIN64%" == "1" IF EXIST "!VCDIR!\bin\amd64_x86\vcvarsamd64_x86.bat" (
+      CALL "!VCDIR!\bin\amd64_x86\vcvarsamd64_x86.bat"
+      SET TOOLCHAIN=64-bit cross-compile
+    )
+
+    REM LIB will be defined if vcvarsamd64_x86.bat has already run.
+    REM Fall back to vcvars32.bat if it hasn't.
+    IF NOT DEFINED LIB (
+      IF EXIST "!VCDIR!\bin\vcvars32.bat" (
+        CALL "!VCDIR!\bin\vcvars32.bat"
+        SET TOOLCHAIN=32-bit
       )
-    ) ELSE IF "%MOZ_MSVCBITS%" == "64" (
+    )
+  ) ELSE IF "%MOZ_MSVCBITS%" == "64" (
       IF EXIST "!VCDIR!\bin\amd64\vcvars64.bat" (
         CALL "!VCDIR!\bin\amd64\vcvars64.bat"
         SET TOOLCHAIN=64-bit
       )
-    )
-  ) ELSE IF EXIST "!VCDIR!\bin\vcvars32.bat" (
-    CALL "!VCDIR!\bin\vcvars32.bat"
-    SET TOOLCHAIN=32-bit
   )
 
-  REM LIB will be defined if vcvars has run. Bail if it isn't.
+  REM LIB will be defined if a vcvars script has run. Bail if it isn't.
   IF NOT DEFINED LIB (
     SET ERROR=Unable to call a suitable vcvars script. Exiting.
     GOTO _QUIT
