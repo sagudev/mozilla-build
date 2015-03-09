@@ -68,7 +68,7 @@ find "${MSYS_STAGEDIR}/mozilla-build/msys" -name "*.dll" | \
 editbin /REBASE:BASE=0x60100000 /DYNAMICBASE:NO "${MSYS_STAGEDIR}/mozilla-build/msys/bin/msys-1.0.dll"
 
 # Copy various configuration files
-cp "${MSYS_SRCDIR}/msys/misc/inputrc" "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
+cp "${MSYS_SRCDIR}/msys/misc/"{inputrc,minttyrc} "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
 cp "${MSYS_SRCDIR}/msys/misc/"{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,profile-homedir.sh,profile-sshagent.sh} \
     "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
