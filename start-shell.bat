@@ -9,10 +9,16 @@ SET LIB=
 IF NOT DEFINED MOZ_NO_RESET_PATH (
   SET PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
 )
-SET ERROR=
-SET TOOLCHAIN=
 
+REM mintty is available as an alternate terminal, but is not enabled by default due
+REM to various usability regressions. Set USE_MINTTY to 1 to enable it.
+IF NOT DEFINED USE_MINTTY (
+  SET USE_MINTTY=
+)
+
+SET ERROR=
 SET MOZILLABUILD=%~dp0
+SET TOOLCHAIN=
 
 REM Figure out if we're on a 32-bit or 64-bit host OS.
 REM NOTE: Use IF ERRORLEVEL X to check if the last ERRORLEVEL was GEQ(greater or equal than) X.
@@ -120,9 +126,12 @@ IF DEFINED MOZ_MSVCVERSION (
 )
 
 cd "%USERPROFILE%"
-%MOZILLABUILD%\msys\bin\bash --login -i
+IF "%USE_MINTTY%" == "1" (
+  START %MOZILLABUILD%msys\bin\mintty -e %MOZILLABUILD%msys\bin\console %MOZILLABUILD%msys\bin\bash --login
+) ELSE (
+  %MOZILLABUILD%msys\bin\bash --login -i
+)
 EXIT
-
 
 :_QUIT
 ECHO MozillaBuild Install Directory: %MOZILLABUILD%
