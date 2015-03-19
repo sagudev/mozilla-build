@@ -59,7 +59,6 @@
 # ** Put the exe files in c:\windows
 # * [http://www.python.org/ftp/python/2.7.5/python-2.7.5.msi Python 2.7]
 # * [http://code.google.com/p/unsis/downloads/detail?name=nsis-2.46-Unicode-setup.exe NSIS]
-# * [http://superb-dca2.dl.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0a2/nsis-3.0a2-setup.exe NSIS]
 # * [http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/unz552xN.exe?raw=1&ctype=application/octet-stream unzip]
 # * [http://www.microsoft.com/en-us/download/details.aspx?id=44266 Visual C++ for Python 2.7]
 # ** Extract to c:\program files\unzip
@@ -166,22 +165,6 @@ rename(join(stagedir, "mozilla-build", "nsis-2.46u", "makensis.exe"),
 
 # remove the NSIS 2.46 Unicode uninstaller
 remove(join(stagedir, "mozilla-build", "nsis-2.46u", "uninst-nsis.exe"))
-
-# install NSIS 3.0a2
-check_call([join(sourcedir, "nsis-3.0a2-setup.exe"),
-            "/S",
-            "/D=" + join(stagedir, "mozilla-build", "nsis-3.0a2")])
-
-# rename the NSIS 3.0a2 executable stub
-rename(join(stagedir, "mozilla-build", "nsis-3.0a2", "makensis.exe"),
-       join(stagedir, "mozilla-build", "nsis-3.0a2", "makensisu-3.0a2.exe"))
-
-# rename the NSIS 3.0a2 executable
-rename(join(stagedir, "mozilla-build", "nsis-3.0a2", "Bin", "makensis.exe"),
-       join(stagedir, "mozilla-build", "nsis-3.0a2", "Bin", "makensisu-3.0a2.exe"))
-
-# remove the NSIS 3.0a2 uninstaller
-remove(join(stagedir, "mozilla-build", "nsis-3.0a2", "uninst-nsis.exe"))
 
 # Run an MSYS shell to perform the following tasks:
 # * Extract MSYS packages and rebase DLLs
