@@ -131,7 +131,7 @@ IF "%USE_MINTTY%" == "1" (
 ) ELSE (
   %MOZILLABUILD%msys\bin\bash --login -i
 )
-EXIT
+EXIT /B
 
 :_QUIT
 ECHO MozillaBuild Install Directory: %MOZILLABUILD%
@@ -142,4 +142,4 @@ ECHO.
 ECHO %ERROR%
 ECHO.
 PAUSE
-EXIT
+EXIT /B
