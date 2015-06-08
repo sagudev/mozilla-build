@@ -108,13 +108,14 @@ copytree(join(stagedir, "7zip", "Files", "7-Zip"),
          join(stagedir, "mozilla-build", "7zip"))
 
 # Install Python
+python_installer = "python-2.7.10.msi"
 check_call(["msiexec.exe", "/q", "/a",
-            join(sourcedir, "python-2.7.9.msi"),
+            join(sourcedir, python_installer),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
 # copy python.exe to python2.7.exe and remove the MSI
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
          join(stagedir, "mozilla-build", "python", "python2.7.exe"))
-remove(join(stagedir, "mozilla-build", "python", "python-2.7.9.msi"))
+remove(join(stagedir, "mozilla-build", "python", python_installer))
 
 # Run ensurepip and update to the latest version
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
