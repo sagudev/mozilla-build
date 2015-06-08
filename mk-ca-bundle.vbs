@@ -28,7 +28,7 @@
 Option Explicit
 Const myVersion = "0.3.9"
 
-Const myUrl = "https://hg.mozilla.org/projects/nss/raw-file/NSS_3_18_RTM/lib/ckfw/builtins/certdata.txt"
+Const myUrl = "https://hg.mozilla.org/projects/nss/raw-file/NSS_3_19_1_RTM/lib/ckfw/builtins/certdata.txt"
 Const myOpenssl = "openssl.exe"
 
 Const myCdSavF = FALSE       ' Flag: save downloaded data to file certdata.txt
