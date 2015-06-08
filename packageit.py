@@ -67,8 +67,8 @@
 from subprocess import check_call
 from os import getcwd, remove, environ, chdir, walk, rename, remove
 from os.path import dirname, join, split, abspath, exists
-import optparse
 from shutil import rmtree, copyfile, copytree
+import distutils.core, optparse, tarfile, urllib2
 
 sourcedir = join(split(abspath(__file__))[0])
 stagedir = getcwd()
@@ -127,9 +127,22 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
 # Install virtualenv
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "virtualenv"])
-# Install Mercurial
-check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
-            "-m", "pip", "install", "Mercurial"])
+# Download and install Mercurial
+# We need to run multiple setup.py commands, so pip install isn't an option.
+hg_version = "mercurial-3.4.1"
+hg_source_package = hg_version + ".tar.gz"
+hg_url = "https://pypi.python.org/packages/source/M/Mercurial/" + hg_source_package
+print("Downloading/unpacking Mercurial from " + hg_url)
+f = urllib2.urlopen(hg_url)
+with open(join(stagedir, hg_source_package), "wb") as code:
+     code.write(f.read())
+tar = tarfile.open(join(stagedir, hg_source_package), "r:gz")
+tar.extractall(stagedir)
+chdir(join(stagedir, hg_version))
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py", "install"])
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py", "build_hgexe"])
+copyfile(join(stagedir, hg_version, r"build\temp.win32-2.7\Release\build\lib.win32-2.7\hg.exe"),
+         join(stagedir, r"mozilla-build\python\Scripts\hg.exe"))
 
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
