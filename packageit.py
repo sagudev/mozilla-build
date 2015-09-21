@@ -144,6 +144,10 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py",
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py", "build_hgexe"])
 copyfile(join(stagedir, hg_version, r"build\temp.win32-2.7\Release\build\lib.win32-2.7\hg.exe"),
          join(stagedir, r"mozilla-build\python\Scripts\hg.exe"))
+# Copy the bundleclone Mercurial extension to the extensions directory
+# https://hg.mozilla.org/hgcustom/version-control-tools/raw-file/d1e664f1dc8d/hgext/bundleclone/__init__.py
+copyfile(join(sourcedir, "bundleclone.py"),
+         join(stagedir, "mozilla-build", "python", "Lib", "site-packages", "hgext", "bundleclone.py"))
 
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
