@@ -65,18 +65,16 @@ IF DEFINED MOZ_MSVCVERSION (
 
   IF NOT DEFINED SDKDIR (
     REM Set the Windows SDK registry keys.
-    SET SDKPRODUCTKEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Products
-    SET SDKROOTKEY=HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots
     IF "%WIN64%" == "1" (
-      SET WIN81SDKKEY={5247E16E-BCF8-95AB-1653-B3F8FBF8B3F1}
+      SET SDKPRODUCTKEY=HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1
     ) ELSE (
-      SET WIN81SDKKEY={A1CB8286-CFB3-A985-D799-721A0F2A27F3}
+      SET SDKPRODUCTKEY=HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1
     )
 
     REM Windows SDK 8.1
-    REG QUERY "!SDKPRODUCTKEY!" /v "!WIN81SDKKEY!" >nul 2>nul
+    REG QUERY "!SDKPRODUCTKEY!" /v ProductName >nul 2>nul
     IF NOT ERRORLEVEL 1 (
-      FOR /F "tokens=2*" %%A IN ('REG QUERY "!SDKROOTKEY!" /v KitsRoot81') DO (
+      FOR /F "tokens=2*" %%A IN ('REG QUERY "!SDKPRODUCTKEY!" /v InstallationFolder') DO (
         REM The Installed Products key still exists even if the SDK is uninstalled.
         REM Verify that the Windows.h header exists to confirm that the SDK is installed.
         IF EXIST "%%B\Include\um\Windows.h" (
