@@ -112,7 +112,9 @@ python_installer = "python-2.7.11.msi"
 check_call(["msiexec.exe", "/q", "/a",
             join(sourcedir, python_installer),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
-# copy python.exe to python2.7.exe and remove the MSI
+# Copy python.exe to python2.exe & python2.7.exe and remove the MSI
+copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
+         join(stagedir, "mozilla-build", "python", "python2.exe"))
 copyfile(join(stagedir, "mozilla-build", "python", "python.exe"),
          join(stagedir, "mozilla-build", "python", "python2.7.exe"))
 remove(join(stagedir, "mozilla-build", "python", python_installer))
