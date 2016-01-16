@@ -127,6 +127,9 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
 # Update setuptools to the latest version
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "--upgrade", "setuptools"])
+# Install hgwatchman
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "hgwatchman"])
 # Install virtualenv
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "virtualenv"])
