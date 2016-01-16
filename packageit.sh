@@ -102,6 +102,9 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static.zip"
 # Install UPX
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
 
+# Install watchman
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/watchman" "${MSYS_SRCDIR}/watchman-d1d427f3.zip"
+
 # Install wget
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.16.3-win32.zip"
 rm "${MSYS_STAGEDIR}/mozilla-build/wget/wget.exe.debug"
