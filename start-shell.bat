@@ -135,6 +135,14 @@ IF DEFINED MOZ_MSVCVERSION (
     SET ERROR=Unable to call a suitable vcvars script. Exiting.
     GOTO _QUIT
   )
+
+  REM Add the DIA SDK paths needed for dump_syms.
+  SET INCLUDE=!VCDIR!..\DIA SDK\include;!INCLUDE!
+  IF "%MOZ_MSVCBITS%" == "32" (
+    SET LIB=!VCDIR!..\DIA SDK\lib;!LIB!
+  ) ELSE (
+    SET LIB=!VCDIR!..\DIA SDK\lib\amd64;!LIB!
+  )
 )
 
 cd "%USERPROFILE%"
