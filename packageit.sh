@@ -69,6 +69,7 @@ editbin /REBASE:BASE=0x60100000 /DYNAMICBASE:NO "${MSYS_STAGEDIR}/mozilla-build/
 
 # Copy various configuration files
 cp "${MSYS_SRCDIR}/msys/misc/"{inputrc,minttyrc} "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
+cp "${MSYS_SRCDIR}/msys/misc/ssh_config" "${MSYS_STAGEDIR}/mozilla-build/msys/etc/ssh"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
 cp "${MSYS_SRCDIR}/msys/misc/"{profile-inputrc.sh,profile-extravars.sh,profile-echo.sh,profile-homedir.sh,profile-sshagent.sh} \
     "${MSYS_STAGEDIR}/mozilla-build/msys/etc/profile.d"
