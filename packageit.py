@@ -108,7 +108,7 @@ copytree(join(stagedir, "7zip", "Files", "7-Zip"),
          join(stagedir, "mozilla-build", "7zip"))
 
 # Install Python
-python_installer = "python-2.7.10.msi"
+python_installer = "python-2.7.11.msi"
 check_call(["msiexec.exe", "/q", "/a",
             join(sourcedir, python_installer),
             "TARGETDIR=" + join(stagedir, "mozilla-build", "python")])
