@@ -1,11 +1,12 @@
+!include LogicLib.nsh
+!include WinVer.nsh
+
 !include version.nsi
+
 !cd mozilla-build
 
-!include WinVer.nsh
 RequestExecutionLevel highest
-
 SetCompressor /SOLID lzma
-InstallDir "C:\mozilla-build"
 
 LicenseData "..\license.rtf"
 Page license
