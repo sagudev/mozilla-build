@@ -132,7 +132,7 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "virtualenv"])
 # Download and install Mercurial
 # We need to run multiple setup.py commands, so pip install isn't an option.
-hg_version = "mercurial-3.6.1"
+hg_version = "mercurial-3.6.3"
 hg_source_package = hg_version + ".tar.gz"
 hg_url = "https://pypi.python.org/packages/source/M/Mercurial/" + hg_source_package
 print("Downloading/unpacking Mercurial from " + hg_url)
