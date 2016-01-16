@@ -120,6 +120,16 @@ mv makensis.exe makensis-3.0b1.exe
 mv Bin/makensis.exe Bin/makensis-3.0b1.exe
 popd
 
+# Install NSIS 3.0b3
+# [http://sourceforge.net/projects/nsis/files/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3.zip/download NSIS]
+unzip -d "${MSYS_STAGEDIR}/mozilla-build" -o "${MSYS_SRCDIR}/nsis-3.0b3.zip"
+
+# Rename the NSIS 3.0b3 command line executables
+pushd "${MSYS_STAGEDIR}/mozilla-build/nsis-3.0b3"
+mv makensis.exe makensis-3.0b3.exe
+mv Bin/makensis.exe Bin/makensis-3.0b3.exe
+popd
+
 #
 # Copy other miscellaneous files and stage for installer packaging
 #
