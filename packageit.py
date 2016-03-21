@@ -15,18 +15,6 @@
 # http://www.mingw.org/MinGWiki/index.php/MSYSBuildEnvironment
 # http://www.mingw.org/MinGWiki/index.php/Build%20MSYS?PHPSESSID=ec53e47bb122b5dbc18063cb441983be
 # http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/packageit.py
-# == Visual Studio/Platform SDK ==
-# === Installation ===
-# (note: my install was done with Visual Studio Express 2005)
-# * Install Visual Studio/Visual Studio Express
-# * Install the Platform SDK
-# ** Microsoft Windows Core SDK
-# ** Microsoft Web Workshop (IE) SDk
-# ** Microsoft IIS SDK
-# === Path Setup ===
-# * INCLUDE should be as follows: 'c:\program files\microsoft platform sdk\include;c:\program files\microsoft platform sdk\include\atl'.
-# * Open up vsvars32.bat (for Express this is in c:\program files\microsoft visual studio 8\common7\tools).
-# * Change the "@set INCLUDE=..." to start with "@set INCLUDE=%INCLUDE%", with the MSVS8 include path after it.
 # == MSYS Packages ==
 # === Installation ===
 # Install these two packages to the same location:
@@ -60,7 +48,6 @@
 # * [http://www.python.org/ftp/python/2.7.5/python-2.7.5.msi Python 2.7]
 # * [http://code.google.com/p/unsis/downloads/detail?name=nsis-2.46-Unicode-setup.exe NSIS]
 # * [http://mxr.mozilla.org/mozilla/source/tools/build-environment/win32/unz552xN.exe?raw=1&ctype=application/octet-stream unzip]
-# * [http://www.microsoft.com/en-us/download/details.aspx?id=44266 Visual C++ for Python 2.7]
 # ** Extract to c:\program files\unzip
 # * Append ';c:\python25;c:\program files\nsis;c:\program files\unzip' to path.
 # 
@@ -133,24 +120,11 @@ check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
 # Install virtualenv
 check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
             "-m", "pip", "install", "virtualenv"])
-# Download and install Mercurial
-# We need to run multiple setup.py commands, so pip install isn't an option.
-hg_version = "mercurial-3.6.3"
-hg_source_package = hg_version + ".tar.gz"
-hg_url = "https://pypi.python.org/packages/source/M/Mercurial/" + hg_source_package
-print("Downloading/unpacking Mercurial from " + hg_url)
-f = urllib2.urlopen(hg_url)
-with open(join(stagedir, hg_source_package), "wb") as code:
-     code.write(f.read())
-tar = tarfile.open(join(stagedir, hg_source_package), "r:gz")
-tar.extractall(stagedir)
-chdir(join(stagedir, hg_version))
-# Patch the downloaded Mercurial source prior to installation (if needed)
+# Install Mercurial
+check_call([join(stagedir, "mozilla-build", "python", "python.exe"),
+            "-m", "pip", "install", "mercurial"])
+# Patch the downloaded Mercurial source prior to packaging (if needed)
 #check_call([join(msysdir, "bin", "patch.exe"), "-p1", "-i", join(sourcedir, "patch-name.here")])
-check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py", "install"])
-check_call([join(stagedir, "mozilla-build", "python", "python.exe"), "setup.py", "build_hgexe"])
-copyfile(join(stagedir, hg_version, r"build\temp.win32-2.7\Release\build\lib.win32-2.7\hg.exe"),
-         join(stagedir, r"mozilla-build\python\Scripts\hg.exe"))
 
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
