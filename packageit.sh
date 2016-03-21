@@ -107,7 +107,8 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/watchman" "${MSYS_SRCDIR}/watchman-d1d427f3.zip"
 
 # Install wget
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.16.3-win32.zip"
+# Downloaded from https://eternallybored.org/misc/wget/
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/wget" "${MSYS_SRCDIR}/wget-1.17.1-win32.zip"
 rm "${MSYS_STAGEDIR}/mozilla-build/wget/wget.exe.debug"
 
 # Install yasm
