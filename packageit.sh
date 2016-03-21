@@ -134,8 +134,8 @@ mv makensis.exe makensis-3.0b3.exe
 mv Bin/makensis.exe Bin/makensis-3.0b3.exe
 popd
 
-# Update the copy of SQLite bundled with Python to version 3.10.1
-unzip -d "${MSYS_STAGEDIR}/mozilla-build/python/DLLs" -o "${MSYS_SRCDIR}/sqlite-dll-win32-x86-3100100.zip"
+# Update the copy of SQLite bundled with Python to version 3.11.1
+unzip -d "${MSYS_STAGEDIR}/mozilla-build/python/DLLs" -o "${MSYS_SRCDIR}/sqlite-dll-win32-x86-3110100.zip"
 rm "${MSYS_STAGEDIR}/mozilla-build/python/DLLs/sqlite3.def"
 
 #
