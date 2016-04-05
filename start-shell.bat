@@ -55,7 +55,7 @@ REM Find the LLVM installation directory
 REG QUERY "!LLVMKEY!" /ve >nul 2>nul
 IF NOT ERRORLEVEL 1 (
   FOR /F "tokens=2*" %%A IN ('REG QUERY "!LLVMKEY!" /ve') DO SET LLVMDIR=%%B
-  SET PATH=%PATH%;!LLVMDIR!\bin
+  SET PATH="%PATH%;!LLVMDIR!\bin"
 )
 
 REM Set up the MSVC environment if called from one of the start-shell-msvc batch files.
