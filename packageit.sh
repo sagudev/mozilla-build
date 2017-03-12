@@ -34,24 +34,6 @@ chmod 755 "${MSYS_STAGEDIR}/mozilla-build/msys/bin/mktemp.exe"
 # Copy the vi shell script to the bin dir
 cp "${MSYS_SRCDIR}/msys/misc/vi" "${MSYS_STAGEDIR}/mozilla-build/msys/bin"
 
-# Build and install autoconf 2.13
-tar -xzf "${MSYS_SRCDIR}/autoconf-2.13.tar.gz" -C "${MSYS_STAGEDIR}"
-pushd "${MSYS_STAGEDIR}/autoconf-2.13"
-./configure --prefix=/local --program-suffix=-2.13
-make
-make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
-popd
-
-# The make 3.81 shipping with msys is still broken, so build and install version 3.81.90 instead.
-rm -rf "${MSYS_STAGEDIR}/make-3.81.90"
-tar -xjf "${MSYS_SRCDIR}/make-3.81.90.tar.bz2" -C "${MSYS_STAGEDIR}"
-pushd "${MSYS_STAGEDIR}/make-3.81.90"
-patch -p0 < "${MSYS_SRCDIR}/make-msys.patch"
-MSYSTEM=MSYS ./configure --prefix=/local
-make
-make install prefix="${MSYS_STAGEDIR}/mozilla-build/msys/local"
-popd
-
 # In order for this to actually work, we now need to rebase
 # the DLL. Since I can't figure out how to rebase just one
 # DLL to avoid conflicts with a set of others, we just
