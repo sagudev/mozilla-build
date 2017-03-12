@@ -1,9 +1,0 @@
-This directory contains the source and modifications to GNU Make to enable it to be
-used to build Firefox.
-
-This directory contains source archives for GNU Make that were exported from
-its canonical Git repository at git://git.savannah.gnu.org/make.git, with the
-following command, and further bzip2'ed:
-    git archive -o make-`git describe HEAD`.tar --format=tar --prefix=make-`git describe HEAD`/ HEAD
-
-The build instructions are part of packageit.sh in the parent directory.

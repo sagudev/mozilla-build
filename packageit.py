@@ -163,8 +163,6 @@ remove(join(stagedir, "mozilla-build", "nsis-2.46u", "uninst-nsis.exe"))
 
 # Run an MSYS shell to perform the following tasks:
 # * Extract MSYS packages and rebase DLLs
-# * Build and install autoconf-2.13 and make-3.81.90
-# * Build and install mozmake (based on GNU make 4.x)
 # * Install other packages (UPX, info-zip, etc)
 check_call([join(msysdir, "bin", "sh.exe"), "--login",
             join(sourcedir, "packageit.sh")])
