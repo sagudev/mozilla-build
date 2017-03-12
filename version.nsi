@@ -3,7 +3,7 @@ OutFile "..\MozillaBuildSetup@VERSION@.exe"
 
 # Install to a unique directory by default if this is a test build.
 Function .onInit
-StrCpy $0 "@VERSION@" 3 -4
+StrCpy $0 "@VERSION@" 3 -3
 ${If} $0 == "pre"
   StrCpy $INSTDIR "C:\mozilla-build-@VERSION@"
 ${Else}
