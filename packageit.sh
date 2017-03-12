@@ -60,16 +60,9 @@ cp "${MSYS_SRCDIR}/msys/misc/"{profile-inputrc.sh,profile-extravars.sh,profile-e
 # Install other non-MSYS packages
 #
 
-# Build and install mozmake
-MAKE_VERSION="4.1"
-tar -xjf "${MSYS_SRCDIR}/mozmake/make-${MAKE_VERSION}.tar.bz2" -C "${MSYS_STAGEDIR}"
-pushd "${MSYS_STAGEDIR}/make-${MAKE_VERSION}"
-sed "s/%PACKAGE%/make/;s/%VERSION%/${MAKE_VERSION}/;/#define BATCH_MODE_ONLY_SHELL/s/\/\*\(.*\)\*\//\1/" config.h.W32.template > config.h.W32
-cp NMakefile.template NMakefile
-nmake -f NMakefile
-mkdir "${MSYS_STAGEDIR}/mozilla-build/mozmake"
-cp WinRel/make.exe "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
-popd
+# Copy mozmake
+mkdir -p "${MSYS_STAGEDIR}/mozilla-build/mozmake"
+cp "${MSYS_SRCDIR}/mozmake.exe" "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
 
 # Install emacs
 tar --lzma -vxf "${MSYS_SRCDIR}/emacs-24.5-bin-i686-mingw32.tar.lzma" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
