@@ -90,16 +90,6 @@ rm "${MSYS_STAGEDIR}/mozilla-build/wget/wget.exe.debug"
 mkdir "${MSYS_STAGEDIR}/mozilla-build/yasm"
 cp "${MSYS_SRCDIR}/yasm-1.3.0-win32.exe" "${MSYS_STAGEDIR}/mozilla-build/yasm/yasm.exe"
 
-# Install NSIS 3.0b1
-# [http://sourceforge.net/projects/nsis/files/NSIS%203%20Pre-release/3.0b1/nsis-3.0b1.zip/download NSIS]
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" -o "${MSYS_SRCDIR}/nsis-3.0b1.zip"
-
-# Rename the NSIS 3.0b1 command line executables
-pushd "${MSYS_STAGEDIR}/mozilla-build/nsis-3.0b1"
-mv makensis.exe makensis-3.0b1.exe
-mv Bin/makensis.exe Bin/makensis-3.0b1.exe
-popd
-
 # Install NSIS 3.0b3
 # [http://sourceforge.net/projects/nsis/files/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3.zip/download NSIS]
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" -o "${MSYS_SRCDIR}/nsis-3.0b3.zip"
@@ -108,6 +98,16 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build" -o "${MSYS_SRCDIR}/nsis-3.0b3.zip"
 pushd "${MSYS_STAGEDIR}/mozilla-build/nsis-3.0b3"
 mv makensis.exe makensis-3.0b3.exe
 mv Bin/makensis.exe Bin/makensis-3.0b3.exe
+popd
+
+# Install NSIS 3.01
+# [https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download NSIS]
+unzip -d "${MSYS_STAGEDIR}/mozilla-build" -o "${MSYS_SRCDIR}/nsis-3.01.zip"
+
+# Rename the NSIS 3.01 command line executables
+pushd "${MSYS_STAGEDIR}/mozilla-build/nsis-3.01"
+mv makensis.exe makensis-3.01.exe
+mv Bin/makensis.exe Bin/makensis-3.01.exe
 popd
 
 # Update the copy of SQLite bundled with Python to version 3.17.0
