@@ -54,6 +54,7 @@ Section "MozillaBuild"
   RMDir /r "$INSTDIR\msys\lib\perl5\site_perl\5.6.1\msys"
   RMDir /r "$INSTDIR\nsis-2.33u"
   RMDir /r "$INSTDIR\upx203w"
+  RMDir /r "$INSTDIR\upx391w"
   RMDir /r "$INSTDIR\wix-351728"
   File /r *.*
   ; Write the full path to ca-bundle.crt in wget.ini
