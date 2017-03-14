@@ -89,7 +89,7 @@ if exists(join(stagedir, "mozilla-build")):
 # Install 7-Zip. Create an administrative install point and copy the files to stage rather
 # than using a silent install to avoid installing the shell extension on the host machine.
 check_call(["msiexec.exe", "/q", "/a",
-            join(sourcedir, "7z1514.msi"),
+            join(sourcedir, "7z1604.msi"),
             "TARGETDIR=" + join(stagedir, "7zip")])
 copytree(join(stagedir, "7zip", "Files", "7-Zip"),
          join(stagedir, "mozilla-build", "7zip"))
