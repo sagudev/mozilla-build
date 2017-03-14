@@ -149,18 +149,6 @@ check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
             "-y",
             "-o" + join(stagedir, "mozilla-build", "kdiff3")])
 
-# install NSIS 2.46 Unicode
-check_call([join(sourcedir, "nsis-2.46-Unicode-setup.exe"),
-            "/S",
-            "/D=" + join(stagedir, "mozilla-build", "nsis-2.46u")])
-
-# rename the NSIS 2.46 Unicode executable
-rename(join(stagedir, "mozilla-build", "nsis-2.46u", "makensis.exe"),
-       join(stagedir, "mozilla-build", "nsis-2.46u", "makensisu-2.46.exe"))
-
-# remove the NSIS 2.46 Unicode uninstaller
-remove(join(stagedir, "mozilla-build", "nsis-2.46u", "uninst-nsis.exe"))
-
 # Run an MSYS shell to perform the following tasks:
 # * Extract MSYS packages and rebase DLLs
 # * Install other packages (UPX, info-zip, etc)
