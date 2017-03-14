@@ -76,7 +76,7 @@ unzip -d "${MSYS_STAGEDIR}/mozilla-build/info-zip" -o "${MSYS_SRCDIR}/zip300xN.z
 unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/moztools-static.zip"
 
 # Install UPX
-unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx391w.zip"
+unzip -d "${MSYS_STAGEDIR}/mozilla-build" "${MSYS_SRCDIR}/upx393w.zip"
 
 # Install watchman
 unzip -d "${MSYS_STAGEDIR}/mozilla-build/watchman" "${MSYS_SRCDIR}/watchman-d1d427f3.zip"
