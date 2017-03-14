@@ -65,7 +65,7 @@ mkdir -p "${MSYS_STAGEDIR}/mozilla-build/mozmake"
 cp "${MSYS_SRCDIR}/mozmake.exe" "${MSYS_STAGEDIR}/mozilla-build/mozmake/mozmake.exe"
 
 # Install emacs
-tar --lzma -vxf "${MSYS_SRCDIR}/emacs-24.5-bin-i686-mingw32.tar.lzma" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
+tar --lzma -vxf "${MSYS_SRCDIR}/emacs-25.2-bin-i686-mingw32.tar.lzma" -C "${MSYS_STAGEDIR}/mozilla-build/msys"
 
 # Install info-zip
 mkdir "${MSYS_STAGEDIR}/mozilla-build/info-zip"
