@@ -126,7 +126,7 @@ cp "${MSYS_SRCDIR}"/mercurial.ini "${MSYS_STAGEDIR}/mozilla-build/python"
 cp "${MSYS_SRCDIR}"/ca-bundle.crt "${MSYS_STAGEDIR}/mozilla-build/msys/etc"
 
 # Copy the batch files that make everything go!
-cp "${MSYS_SRCDIR}"/{start-shell.bat,start-shell-msvc2015.bat,start-shell-msvc2015-x64.bat} "${MSYS_STAGEDIR}/mozilla-build"
+cp "${MSYS_SRCDIR}"/start-shell.bat "${MSYS_STAGEDIR}/mozilla-build"
 
 # Copy VERSION file
 cp "${MSYS_SRCDIR}"/VERSION "${MSYS_STAGEDIR}/mozilla-build"
