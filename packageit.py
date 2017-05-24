@@ -160,11 +160,6 @@ if not os.path.exists(join(pkgdir, "mozmake")):
     os.mkdir(join(pkgdir, "mozmake"))
 copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"mozmake\mozmake.exe"))
 
-# Extract moztools-static to the stage directory.
-print "Staging moztools..."
-with zipfile.ZipFile(join(sourcedir, "moztools-static.zip"), 'r') as moztools_zip:
-    moztools_zip.extractall(pkgdir)
-
 # Extract NSIS 3.01 to the stage directory.
 # Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
 print "Staging NSIS..."
@@ -239,6 +234,9 @@ if not os.path.exists(join(msysdir, "etc", "profile.d")):
 for file in ["profile-inputrc.sh", "profile-extravars.sh", "profile-echo.sh", "profile-homedir.sh", "profile-sshagent.sh"]:
     copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, r"etc\profile.d", file))
 
+# Copy nsinstall.exe to the msys local\bin directory.
+copyfile(join(sourcedir, "nsinstall.exe"), join(msysdir, r"local\bin\nsinstall.exe"))
+
 # Recursively find all MSYS DLLs, then chmod them to make sure none are read-only.
 # Then rebase them via the editbin tool.
 print "Rebasing MSYS DLLs..."
@@ -273,7 +271,6 @@ def embed_recursedir(dir, mf):
 
 manifest = join(sourcedir, "noprivs.manifest")
 embed_recursedir(msysdir, manifest)
-embedmanifest(join(pkgdir, "moztools", "bin", "nsinstall.exe"), manifest)
 
 # Copy some miscellaneous files to the root directory.
 print "Copying a few miscellaneous files..."
