@@ -282,11 +282,12 @@ copyfile(join(sourcedir, "VERSION"), join(pkgdir, "VERSION"))
 
 # Package the installer.
 print "Packaging everything up into the installer..."
-copyfile(join(sourcedir, "license.rtf"), join(stagedir, "license.rtf"))
-copyfile(join(sourcedir, "installit.nsi"), join(stagedir, "installit.nsi"))
-# Take version.nsi from the source directory and write a new copy to the stage directory with version number added.
-with open(join(sourcedir, "version.nsi"), 'r') as version_old, open(join(stagedir, "version.nsi"), 'wb') as version_new:
-    for line in version_old:
-        changed_line = line.replace("@VERSION@", version)
-        version_new.write(changed_line)
+for file in ["helpers.nsi", "installit.nsi", "license.rtf"]:
+    copyfile(join(sourcedir, file), join(stagedir, file))
+# Write the real version number to installit.nsi in the stage directory.
+with open(join(stagedir, 'installit.nsi'), 'rb') as fh:
+   lines = fh.readlines()
+with open(join(stagedir, 'installit.nsi'), 'wb') as fh:
+   for line in lines:
+       fh.write(line.replace('@VERSION@', version))
 check_call(["makensis-3.01.exe", "/NOCD", "installit.nsi"], cwd=stagedir)
