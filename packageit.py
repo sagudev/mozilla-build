@@ -90,7 +90,7 @@ if os.path.exists(stagedir):
 # Install 7-Zip. Create an administrative install point and copy the files to stage rather
 # than using a silent install to avoid installing the shell extension on the host machine.
 print "Staging 7-Zip..."
-check_call(["msiexec.exe", "/q", "/a", join(sourcedir, "7z1604.msi"),
+check_call(["msiexec.exe", "/q", "/a", join(sourcedir, "7z1604-x64.msi"),
             "TARGETDIR=" + join(stagedir, "7zip")])
 copytree(join(stagedir, "7zip", "Files", "7-Zip"), join(pkgdir, "7zip"))
 
