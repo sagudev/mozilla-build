@@ -111,8 +111,9 @@ distutils_shebang_fix(join(stagedir, "mozilla-build", "python", "Scripts"),
                       join(stagedir, "mozilla-build", "python", "python.exe"),
                       "python.exe")
 
-check_call([join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
-            "-y",
+# Extract KDiff3 to the stage directory. The KDiff3 installer doesn't support any sort of
+# silent installation, so we use a ready-to-extract 7-Zip archive instead.
+check_call(["7z.exe", "x", join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
             "-o" + join(stagedir, "mozilla-build", "kdiff3")])
 
 # Run an MSYS shell to perform the following tasks:
