@@ -36,14 +36,6 @@ IF NOT ERRORLEVEL 1 (
   SET WIN64=0
 )
 
-REM Append moztools to PATH
-IF "%WIN64%" == "1" (
-  SET MOZ_TOOLS=%MOZILLABUILD%moztools-x64
-) ELSE (
-  SET MOZ_TOOLS=%MOZILLABUILD%moztools
-)
-SET PATH=%PATH%;%MOZ_TOOLS%\bin
-
 REM Set up LLVM if present.
 SET LLVMDIR=
 IF "%WIN64%" == "1" (
