@@ -191,7 +191,7 @@ os.remove(join(pkgdir, r"wget\wget.exe.debug"))
 print "Staging yasm 1.3.0..."
 if not os.path.exists(join(pkgdir, "yasm")):
     os.mkdir(join(pkgdir, "yasm"))
-copyfile(join(sourcedir, "yasm-1.3.0-win32.exe"), join(pkgdir, "yasm", "yasm.exe"))
+copyfile(join(sourcedir, "yasm-1.3.0-win64.exe"), join(pkgdir, "yasm", "yasm.exe"))
 
 # Extract MSYS packages to the stage directory.
 print "Extracting MSYS components..."
