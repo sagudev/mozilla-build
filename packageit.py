@@ -183,7 +183,7 @@ with zipfile.ZipFile(join(sourcedir, "watchman-d1d427f3.zip"), 'r') as watchman_
 # Extract wget to the stage directory.
 # Downloaded from https://eternallybored.org/misc/wget/
 print "Staging wget 1.19.1..."
-with zipfile.ZipFile(join(sourcedir, "wget-1.19.1-win32.zip"), 'r') as wget_zip:
+with zipfile.ZipFile(join(sourcedir, "wget-1.19.1-win64.zip"), 'r') as wget_zip:
     wget_zip.extractall(join(pkgdir, "wget"))
 os.remove(join(pkgdir, r"wget\wget.exe.debug"))
 
