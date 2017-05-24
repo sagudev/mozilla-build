@@ -149,7 +149,11 @@ cd "%USERPROFILE%"
 IF "%USE_MINTTY%" == "1" (
   START %MOZILLABUILD%msys\bin\mintty -e %MOZILLABUILD%msys\bin\console %MOZILLABUILD%msys\bin\bash --login
 ) ELSE (
-  %MOZILLABUILD%msys\bin\bash --login -i
+  IF "%*%" == "" (
+    %MOZILLABUILD%msys\bin\bash --login -i
+  ) ELSE (
+    %MOZILLABUILD%msys\bin\bash --login -i -c "%*"
+  )
 )
 EXIT /B
 
