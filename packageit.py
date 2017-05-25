@@ -98,7 +98,7 @@ copytree(join(stagedir, "7zip", "Files", "7-Zip"), join(pkgdir, "7zip"))
 # polluting the host machine along the way.
 print "Staging Python 2.7 and extra packages..."
 python27_dir = join(pkgdir, "python")
-python_installer = "python-2.7.13.msi"
+python_installer = "python-2.7.13.amd64.msi"
 check_call(["msiexec.exe", "/q", "/a", join(sourcedir, python_installer),
             "TARGETDIR=" + python27_dir])
 # Copy python.exe to python2.exe & python2.7.exe and remove the MSI.
