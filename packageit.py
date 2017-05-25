@@ -171,8 +171,8 @@ os.rename(join(nsis_dir, "makensis.exe"), join(nsis_dir, "makensis-3.01.exe"))
 os.rename(join(nsis_dir, r"Bin\makensis.exe"), join(nsis_dir, r"Bin\makensis-3.01.exe"))
 
 # Extract UPX to the stage directory.
-print "Staging UPX 3.93..."
-with zipfile.ZipFile(join(sourcedir, "upx393w.zip"), 'r') as upx_zip:
+print "Staging UPX 3.94..."
+with zipfile.ZipFile(join(sourcedir, "upx394w.zip"), 'r') as upx_zip:
     upx_zip.extractall(pkgdir)
 
 # Extract watchman to the stage directory.
