@@ -106,8 +106,8 @@ copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.exe"))
 copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.7.exe"))
 os.remove(join(python27_dir, python_installer))
 
-# Update the copy of SQLite bundled with Python to version 3.17.0.
-with zipfile.ZipFile(join(sourcedir, "sqlite-dll-win32-x86-3170000.zip"), 'r') as sqlite3_zip:
+# Update the copy of SQLite bundled with Python to version 3.19.2.
+with zipfile.ZipFile(join(sourcedir, "sqlite-dll-win64-x64-3190200.zip"), 'r') as sqlite3_zip:
     sqlite3_zip.extract("sqlite3.dll", join(python27_dir, "DLLs"))
 
 # Run ensurepip and update to the latest version.
