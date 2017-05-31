@@ -160,6 +160,11 @@ if not os.path.exists(join(pkgdir, "mozmake")):
     os.mkdir(join(pkgdir, "mozmake"))
 copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"mozmake\mozmake.exe"))
 
+# Extract nodejs 7.10.0 to the stage directory.
+print "Staging nodejs..."
+with zipfile.ZipFile(join(sourcedir, "node-v7.10.0-win-x64.zip"), 'r') as nodejs_zip:
+    nodejs_zip.extractall(pkgdir)
+
 # Extract NSIS 3.01 to the stage directory.
 # Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
 print "Staging NSIS..."
