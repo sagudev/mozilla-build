@@ -52,9 +52,3 @@ IF "%USE_MINTTY%" == "1" (
   )
 )
 EXIT /B
-
-:_QUIT
-ECHO MozillaBuild Install Directory: %MOZILLABUILD%
-ECHO.
-PAUSE
-EXIT /B
