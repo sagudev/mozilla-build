@@ -106,8 +106,9 @@ copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.exe"))
 copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.7.exe"))
 os.remove(join(python27_dir, python_installer))
 
-# Update the copy of SQLite bundled with Python to version 3.19.2.
-with zipfile.ZipFile(join(sourcedir, "sqlite-dll-win64-x64-3190200.zip"), 'r') as sqlite3_zip:
+# Update the copy of SQLite bundled with Python to version 3.19.3.
+sqlite_file = "sqlite-dll-win64-x64-3190300.zip"
+with zipfile.ZipFile(join(sourcedir, sqlite_file), 'r') as sqlite3_zip:
     sqlite3_zip.extract("sqlite3.dll", join(python27_dir, "DLLs"))
 
 # Run ensurepip and update to the latest version.
@@ -140,6 +141,36 @@ def distutils_shebang_fix(path, oldString, newString):
                 f.write(s)
 
 distutils_shebang_fix(join(python27_dir, "Scripts"), join(python27_dir, "python.exe"), "python.exe")
+
+# Extract Python 3.6 to the stage directory. The archive being used is the result of running the
+# installer in a VM with the command line below and packaging up the resulting directory.
+# Unfortunately, there isn't a way to run a fully isolated install on the host machine without
+# adding a bunch of registry entries, so this is what we're left doing.
+#   <installer> /passive InstallAllUsers=0 TargetDir=c:\python3 Include_launcher=0 Include_test=0 CompileAll=1
+# Packaged with 7-Zip using:
+#   LZMA2 compression with Ultra compression, 96MB dictionary size, 256 word size, solid archive
+print "Staging Python 3.6 and extra packages..."
+python36_dir = join(pkgdir, "python3")
+check_call(["7z.exe", "x", join(sourcedir, "python-3.6.1.7z"), "-o" + python36_dir])
+# Copy python.exe to python3.exe & python3.6.exe.
+copyfile(join(python36_dir, "python.exe"), join(python36_dir, "python3.exe"))
+copyfile(join(python36_dir, "python.exe"), join(python36_dir, "python3.6.exe"))
+
+# Update the copy of SQLite bundled with Python 3.6.
+with zipfile.ZipFile(join(sourcedir, sqlite_file), 'r') as sqlite3_zip:
+    sqlite3_zip.extract("sqlite3.dll", join(python36_dir, "DLLs"))
+
+# Update pip to the latest version.
+check_call([join(python36_dir, "python3.exe"), "-m", "pip", "install", "--upgrade", "pip"])
+# Update setuptools to the latest version.
+check_call([join(python36_dir, "python3.exe"), "-m", "pip", "install", "--upgrade", "setuptools"])
+# Install virtualenv.
+check_call([join(python36_dir, "python3.exe"), "-m", "pip", "install", "virtualenv"])
+
+# Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
+# aforementioned packaging issues above.
+distutils_shebang_fix(join(python36_dir, "Scripts"), join(r"c:\python3\python.exe"), "python3.exe")
+distutils_shebang_fix(join(python36_dir, "Scripts"), join(python36_dir, "python3.exe"), "python3.exe")
 
 # Extract KDiff3 to the stage directory. The KDiff3 installer doesn't support any sort of
 # silent installation, so we use a ready-to-extract 7-Zip archive instead.
