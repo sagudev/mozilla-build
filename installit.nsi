@@ -93,6 +93,4 @@ Section "MozillaBuild"
   FileWrite $0 "$\n[web]$\n"
   FileWrite $0 "cacerts=$INSTDIR\msys\etc\ca-bundle.crt$\n"
   FileClose $0
-  ; Replace occurrences of @INSTDIR@ in mercurial.ini with $INSTDIR
-  ${AdvReplaceInFile} @INSTDIR@ $INSTDIR "$INSTDIR\python\mercurial.ini"
 SectionEnd

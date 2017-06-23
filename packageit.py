@@ -116,8 +116,6 @@ check_call([join(python27_dir, "python.exe"), "-m", "ensurepip"])
 check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "--upgrade", "pip"])
 # Update setuptools to the latest version.
 check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "--upgrade", "setuptools"])
-# Install hgwatchman - TEMPORARILY COMMENTED OUT DUE TO BUSTAGE
-#check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "hgwatchman"])
 # Install virtualenv.
 check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "virtualenv"])
 # Install Mercurial and copy mercurial.ini to the python dir so Mercurial has sane defaults.
@@ -215,6 +213,7 @@ with zipfile.ZipFile(join(sourcedir, "upx394w.zip"), 'r') as upx_zip:
 print "Staging watchman..."
 with zipfile.ZipFile(join(sourcedir, "watchman-d1d427f3.zip"), 'r') as watchman_zip:
     watchman_zip.extractall(join(pkgdir, "watchman"))
+os.remove(join(pkgdir, r"watchman\watchman.pdb"))
 
 # Extract wget to the stage directory.
 # Downloaded from https://eternallybored.org/misc/wget/
