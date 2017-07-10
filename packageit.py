@@ -195,6 +195,20 @@ print "Staging nodejs..."
 with zipfile.ZipFile(join(sourcedir, node_package + ".zip"), 'r') as nodejs_zip:
     nodejs_zip.extractall(pkgdir)
 
+# Update npm to the latest version available.
+print "Updating npm..."
+check_call([join(pkgdir, node_package, "node.exe"),
+            join(pkgdir, node_package, r"node_modules\npm\bin\npm-cli.js"), "install", "-g", "npm"])
+
+# Install the flatten-packages npm package and run it on the staged node_modules directory.
+# Installer packaging will fail otherwise due to maximum path length issues.
+print "Flatting node_modules..."
+check_call([join(pkgdir, node_package, "node.exe"),
+            join(pkgdir, node_package, r"node_modules\npm\bin\npm-cli.js"), "install", "-g", "flatten-packages"])
+check_call([join(pkgdir, node_package, "node.exe"),
+            join(pkgdir, node_package, r"node_modules\flatten-packages\bin\flatten")],
+            cwd=join(pkgdir, node_package))
+
 # Extract NSIS 3.01 to the stage directory.
 # Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
 print "Staging NSIS..."
