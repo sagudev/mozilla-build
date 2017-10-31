@@ -189,8 +189,8 @@ if not os.path.exists(join(pkgdir, "mozmake")):
     os.mkdir(join(pkgdir, "mozmake"))
 copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"mozmake\mozmake.exe"))
 
-# Extract nodejs 8.1.4 to the stage directory.
-node_package = "node-v8.1.4-win-x64"
+# Extract nodejs 8.9.0 to the stage directory.
+node_package = "node-v8.9.0-win-x64"
 print "Staging nodejs..."
 with zipfile.ZipFile(join(sourcedir, node_package + ".zip"), 'r') as nodejs_zip:
     nodejs_zip.extractall(pkgdir)
