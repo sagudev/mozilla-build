@@ -122,6 +122,10 @@ check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "virtualen
 check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "mercurial"])
 copyfile(join(sourcedir, "mercurial.ini"), join(python27_dir, "mercurial.ini"))
 
+# Copy python27.dll to the Scripts directory to work around path detection issues in hg.exe.
+# See bug 1415374 for details.
+copyfile(join(python27_dir, "python27.dll"), join(python27_dir, r"Scripts\python27.dll"))
+
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
 # scripts, which breaks because it uses the path on the machine we built this package on, not
