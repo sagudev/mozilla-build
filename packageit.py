@@ -153,7 +153,7 @@ distutils_shebang_fix(join(python27_dir, "Scripts"), join(python27_dir, "python.
 #   LZMA2 compression with Ultra compression, 96MB dictionary size, 256 word size, solid archive
 print "Staging Python 3.6 and extra packages..."
 python36_dir = join(pkgdir, "python3")
-check_call(["7z.exe", "x", join(sourcedir, "python-3.6.3.7z"), "-o" + python36_dir])
+check_call(["7z.exe", "x", join(sourcedir, "python-3.6.5.7z"), "-o" + python36_dir])
 # Copy python.exe to python3.exe & python3.6.exe.
 copyfile(join(python36_dir, "python.exe"), join(python36_dir, "python3.exe"))
 copyfile(join(python36_dir, "python.exe"), join(python36_dir, "python3.6.exe"))
