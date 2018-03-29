@@ -199,9 +199,7 @@ with zipfile.ZipFile(join(sourcedir, "zip300xN.zip"), 'r') as zip_zip:
 
 # Copy mozmake to the stage directory.
 print "Staging mozmake..."
-if not os.path.exists(join(pkgdir, "mozmake")):
-    os.mkdir(join(pkgdir, "mozmake"))
-copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"mozmake\mozmake.exe"))
+copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"bin\mozmake.exe"))
 
 # Extract nodejs to the stage directory.
 node_package = "node-v8.11.1-win-x64"
