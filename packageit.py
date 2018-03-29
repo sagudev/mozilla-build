@@ -87,6 +87,16 @@ print "Removing the old stage directory..." + "\n"
 if os.path.exists(stagedir):
     check_call(["cmd.exe", "/C", "rmdir /S /Q %s" % stagedir])
 
+# Create the staging directories
+if not os.path.exists(stagedir):
+    os.mkdir(stagedir)
+if not os.path.exists(pkgdir):
+    os.mkdir(pkgdir)
+
+# Create a bin directory as a place for miscellaneous tools to go.
+if not os.path.exists(join(pkgdir, "bin")):
+    os.mkdir(join(pkgdir, "bin"))
+
 # Install 7-Zip. Create an administrative install point and copy the files to stage rather
 # than using a silent install to avoid installing the shell extension on the host machine.
 print "Staging 7-Zip..."
