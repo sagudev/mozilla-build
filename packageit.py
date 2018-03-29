@@ -256,10 +256,10 @@ with zipfile.ZipFile(join(sourcedir, "wget-1.19.4-win64.zip"), 'r') as wget_zip:
 os.remove(join(pkgdir, r"wget\wget.exe.gdb"))
 
 # Extract yasm to the stage directory.
-# Includes a bundled copy of msvcr100.dll 10.00.40219.325
+# Includes a bundled copy of msvcr100.dll to avoid missing runtime errors on some systems.
 print "Staging yasm 1.3.0..."
 with zipfile.ZipFile(join(sourcedir, "yasm-1.3.0-win64.zip"), 'r') as yasm_zip:
-    yasm_zip.extractall(join(pkgdir, "yasm"))
+    yasm_zip.extractall(join(pkgdir, "bin"))
 
 # Extract MSYS packages to the stage directory.
 print "Extracting MSYS components..."
