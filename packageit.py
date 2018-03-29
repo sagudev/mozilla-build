@@ -238,6 +238,10 @@ print "Staging UPX 3.94..."
 with zipfile.ZipFile(join(sourcedir, "upx394w.zip"), 'r') as upx_zip:
     upx_zip.extractall(pkgdir)
 
+# Copy vswhere to the stage directory.
+print "Staging vswhere 2.4.1..."
+copyfile(join(sourcedir, "vswhere.exe"), join(pkgdir, r"bin\vswhere.exe"))
+
 # Extract watchman to the stage directory.
 print "Staging watchman..."
 with zipfile.ZipFile(join(sourcedir, "watchman-d8501b7.zip"), 'r') as watchman_zip:
