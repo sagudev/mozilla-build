@@ -230,7 +230,7 @@ with zipfile.ZipFile(join(sourcedir, "upx394w.zip"), 'r') as upx_zip:
 
 # Extract watchman to the stage directory.
 print "Staging watchman..."
-with zipfile.ZipFile(join(sourcedir, "watchman-95ac0c35.zip"), 'r') as watchman_zip:
+with zipfile.ZipFile(join(sourcedir, "watchman-d8501b7.zip"), 'r') as watchman_zip:
     watchman_zip.extractall(join(pkgdir, "watchman"))
 os.remove(join(pkgdir, r"watchman\watchman.pdb"))
 
