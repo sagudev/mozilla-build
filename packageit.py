@@ -253,8 +253,10 @@ os.remove(join(pkgdir, r"watchman\watchman.pdb"))
 # Downloaded from https://eternallybored.org/misc/wget/
 print "Staging wget 1.19.4..."
 with zipfile.ZipFile(join(sourcedir, "wget-1.19.4-win64.zip"), 'r') as wget_zip:
-    wget_zip.extractall(join(pkgdir, "wget"))
-os.remove(join(pkgdir, r"wget\wget.exe.gdb"))
+    wget_zip.extractall(join(pkgdir, r"bin\wget-1.19.4"))
+os.remove(join(pkgdir, r"bin\wget-1.19.4\wget.exe.gdb"))
+# Copy wget.exe to the main bin directory to make our PATH bit more tidy
+copyfile(join(pkgdir, r"bin\wget-1.19.4\wget.exe"), join(pkgdir, r"bin\wget.exe"))
 
 # Extract yasm to the stage directory.
 # Includes a bundled copy of msvcr100.dll to avoid missing runtime errors on some systems.
