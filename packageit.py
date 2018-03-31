@@ -102,7 +102,10 @@ if not os.path.exists(join(pkgdir, "bin")):
 print "Staging 7-Zip..."
 check_call(["msiexec.exe", "/q", "/a", join(sourcedir, "7z1801-x64.msi"),
             "TARGETDIR=" + join(stagedir, "7zip")])
-copytree(join(stagedir, "7zip", "Files", "7-Zip"), join(pkgdir, "7zip"))
+copytree(join(stagedir, r"7zip\Files\7-Zip"), join(pkgdir, r"bin\7zip"))
+# Copy 7z.exe to the main bin directory to make our PATH bit more tidy
+copyfile(join(pkgdir, r"bin\7zip\7z.exe"), join(pkgdir, r"bin\7z.exe"))
+copyfile(join(pkgdir, r"bin\7zip\7z.dll"), join(pkgdir, r"bin\7z.dll"))
 
 # Install Python 2.7 in the stage directory. Create an administrative install point to avoid
 # polluting the host machine along the way.
