@@ -196,9 +196,12 @@ check_call(["7z.exe", "x", join(sourcedir, "KDiff3-32bit-Setup_0.9.98.exe"),
 # Extract Info-Zip Zip & UnZip to the stage directory.
 print "Staging Info-Zip..."
 with zipfile.ZipFile(join(sourcedir, "unz600xN.exe"), 'r') as unzip_zip:
-    unzip_zip.extractall(join(pkgdir, "info-zip"))
+    unzip_zip.extractall(join(pkgdir, r"bin\info-zip"))
 with zipfile.ZipFile(join(sourcedir, "zip300xN.zip"), 'r') as zip_zip:
-    zip_zip.extractall(join(pkgdir, "info-zip"))
+    zip_zip.extractall(join(pkgdir, r"bin\info-zip"))
+# Copy unzip.exe and zip.exe to the main bin directory to make our PATH bit more tidy
+copyfile(join(pkgdir, r"bin\info-zip\unzip.exe"), join(pkgdir, r"bin\unzip.exe"))
+copyfile(join(pkgdir, r"bin\info-zip\zip.exe"), join(pkgdir, r"bin\zip.exe"))
 
 # Copy mozmake to the stage directory.
 print "Staging mozmake..."
