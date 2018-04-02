@@ -227,6 +227,10 @@ check_call([join(pkgdir, node_package, "node.exe"),
             join(pkgdir, node_package, r"node_modules\flatten-packages\bin\flatten")],
             cwd=join(pkgdir, node_package))
 
+# Copy nsinstall to the stage directory.
+print "Staging nsinstall..."
+copyfile(join(sourcedir, "nsinstall.exe"), join(pkgdir, r"bin\nsinstall.exe"))
+
 # Extract NSIS 3.01 to the stage directory.
 # Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
 print "Staging NSIS..."
@@ -311,9 +315,6 @@ if not os.path.exists(join(msysdir, "etc", "profile.d")):
     os.mkdir(join(msysdir, "etc", "profile.d"))
 for file in ["profile-inputrc.sh", "profile-extravars.sh", "profile-echo.sh", "profile-homedir.sh", "profile-sshagent.sh"]:
     copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, r"etc\profile.d", file))
-
-# Copy nsinstall.exe to the msys local\bin directory.
-copyfile(join(sourcedir, "nsinstall.exe"), join(msysdir, r"local\bin\nsinstall.exe"))
 
 # Recursively find all MSYS DLLs, then chmod them to make sure none are read-only.
 # Then rebase them via the editbin tool.
