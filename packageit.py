@@ -222,11 +222,11 @@ os.rename(join(nsis_dir, "makensis.exe"), join(nsis_dir, "makensis-3.01.exe"))
 os.rename(join(nsis_dir, r"Bin\makensis.exe"), join(nsis_dir, r"Bin\makensis-3.01.exe"))
 
 # Extract UPX to the stage directory.
-print "Staging UPX 3.94..."
-with zipfile.ZipFile(join(sourcedir, "upx394w.zip"), 'r') as upx_zip:
+print "Staging UPX 3.95..."
+with zipfile.ZipFile(join(sourcedir, "upx-3.95-win64.zip"), 'r') as upx_zip:
     upx_zip.extractall(join(pkgdir, "bin"))
 # Copy upx.exe to the main bin directory to make our PATH bit more tidy
-copyfile(join(pkgdir, r"bin\upx394w\upx.exe"), join(pkgdir, r"bin\upx.exe"))
+copyfile(join(pkgdir, r"bin\upx-3.95-win64\upx.exe"), join(pkgdir, r"bin\upx.exe"))
 
 # Copy vswhere to the stage directory.
 print "Staging vswhere 2.4.1..."
