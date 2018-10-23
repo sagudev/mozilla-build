@@ -229,7 +229,7 @@ with zipfile.ZipFile(join(sourcedir, "upx-3.95-win64.zip"), 'r') as upx_zip:
 copyfile(join(pkgdir, r"bin\upx-3.95-win64\upx.exe"), join(pkgdir, r"bin\upx.exe"))
 
 # Copy vswhere to the stage directory.
-print "Staging vswhere 2.4.1..."
+print "Staging vswhere 2.5.2..."
 copyfile(join(sourcedir, "vswhere.exe"), join(pkgdir, r"bin\vswhere.exe"))
 
 # Extract watchman to the stage directory.
