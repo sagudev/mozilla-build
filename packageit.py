@@ -18,6 +18,7 @@
 #   for changing the default paths if desired.
 #
 
+import os
 from os.path import join
 from shutil import copyfile, copytree
 from subprocess import check_call, check_output
@@ -34,12 +35,20 @@ def get_sdk_path():
     sdk_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0")
     sdk_dir = winreg.QueryValueEx(sdk_key, "InstallationFolder")[0]
     sdk_version = winreg.QueryValueEx(sdk_key, "ProductVersion")[0] + ".0"
-    
+
     return join(sdk_dir, "bin", sdk_version, "x64")
+
+def get_msys_bin_path():
+    for path in [os.path.realpath(p) for p in os.environ["PATH"].split(";")]:
+        if path.endswith(r"\mozilla-build\msys\bin"):
+            return path
+    raise ValueError("Failed to find mozilla-build path")
+
 
 # Set default values for the source and stage directories.
 sourcedir = join(os.path.split(os.path.abspath(__file__))[0])
-stagedir = "c:\\mozillabuild-stage"
+msys_bin_dir = get_msys_bin_path()
+stagedir = r"c:\mozillabuild-stage"
 vsdir = get_vs_path()
 sdkdir = get_sdk_path()
 
@@ -73,6 +82,7 @@ print "*****************************************"
 print "Packaging MozillaBuild version: " + version
 print "*****************************************"
 print ""
+print "mozilla-build/sys/bin location: " + msys_bin_dir
 print "Visual Studio location: " + vsdir
 print "Windows SDK location: " + sdkdir
 print "Source location: " + sourcedir
@@ -257,19 +267,20 @@ with zipfile.ZipFile(join(sourcedir, "yasm-1.3.0-win64.zip"), 'r') as yasm_zip:
 
 # Extract MSYS packages to the stage directory.
 print "Extracting MSYS components..."
+tar_path = join(msys_bin_dir, "tar")
 msysdir = join(pkgdir, "msys")
 if not os.path.exists(msysdir):
     os.mkdir(msysdir)
 for archive in glob.glob(join(sourcedir, "msys", "*.lzma")):
     print "    " + archive
-    check_call(["tar", "--lzma", "--force-local", "-xf", join(sourcedir, "msys", archive)], cwd=msysdir)
+    check_call([tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "msys", archive)], cwd=msysdir)
 
 # mktemp.exe extracts as read-only, which breaks manifest embedding later.
 os.chmod(join(msysdir, r"bin\mktemp.exe"), 0755)
 
 # Extract emacs to the stage directory.
 print "Staging emacs..."
-check_call(["tar", "--lzma", "--force-local", "-xf", join(sourcedir, "emacs-26.1-x86_64-no-deps.tar.lzma")], cwd=msysdir)
+check_call([tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "emacs-26.1-x86_64-no-deps.tar.lzma")], cwd=msysdir)
 
 # Replace the native MSYS rm with winrm.
 print "Replacing MSYS rm with winrm..."
