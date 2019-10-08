@@ -280,7 +280,7 @@ os.chmod(join(msysdir, r"bin\mktemp.exe"), 0755)
 
 # Extract emacs to the stage directory.
 print "Staging emacs..."
-check_call([tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "emacs-26.1-x86_64-no-deps.tar.lzma")], cwd=msysdir)
+check_call([tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "emacs-26.3-x86_64-no-deps.tar.lzma")], cwd=msysdir)
 
 # Replace the native MSYS rm with winrm.
 print "Replacing MSYS rm with winrm..."
