@@ -121,7 +121,7 @@ copyfile(join(pkgdir, r"bin\7zip\7z.dll"), join(pkgdir, r"bin\7z.dll"))
 # polluting the host machine along the way.
 print "Staging Python 2.7 and extra packages..."
 python27_dir = join(pkgdir, "python")
-python_installer = "python-2.7.15.amd64.msi"
+python_installer = "python-2.7.16.amd64.msi"
 check_call(["msiexec.exe", "/q", "/a", join(sourcedir, python_installer),
             "TARGETDIR=" + python27_dir])
 # Copy python.exe to python2.exe & python2.7.exe and remove the MSI.
@@ -129,7 +129,7 @@ copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.exe"))
 copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.7.exe"))
 os.remove(join(python27_dir, python_installer))
 
-# Update the copy of SQLite bundled with Python.
+# Update the copy of SQLite bundled with Python 2.
 sqlite_file = "sqlite-dll-win64-x64-3250200.zip"
 with zipfile.ZipFile(join(sourcedir, sqlite_file), 'r') as sqlite3_zip:
     sqlite3_zip.extract("sqlite3.dll", join(python27_dir, "DLLs"))
@@ -174,16 +174,14 @@ distutils_shebang_fix(join(python27_dir, "Scripts"), join(python27_dir, "python.
 #   <installer> /passive InstallAllUsers=0 TargetDir=c:\python3 Include_launcher=0 Include_test=0 CompileAll=1
 # Packaged with 7-Zip using:
 #   LZMA2 compression with Ultra compression, 96MB dictionary size, 256 word size, solid archive
+# or from the command line (only need to specify ultra compression here):
+#   $ cd /c/python3 && 7z a /c/temp/python-3.7.4.7z -r . -mx=9
 print "Staging Python 3.7 and extra packages..."
 python3_dir = join(pkgdir, "python3")
-check_call(["7z.exe", "x", join(sourcedir, "python-3.7.1.7z"), "-o" + python3_dir])
+check_call(["7z.exe", "x", join(sourcedir, "python-3.7.4.7z"), "-o" + python3_dir])
 # Copy python.exe to python3.exe & python3.7.exe.
 copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.exe"))
 copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.7.exe"))
-
-# Update the copy of SQLite bundled with Python3.
-with zipfile.ZipFile(join(sourcedir, sqlite_file), 'r') as sqlite3_zip:
-    sqlite3_zip.extract("sqlite3.dll", join(python3_dir, "DLLs"))
 
 # Update pip to the latest version.
 check_call([join(python3_dir, "python3.exe"), "-m", "pip", "install", "--upgrade", "pip"])
