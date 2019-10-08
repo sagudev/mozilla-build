@@ -259,12 +259,6 @@ os.remove(join(pkgdir, r"bin\wget-1.20.3\wget.exe.debug"))
 # Copy wget.exe to the main bin directory to make our PATH bit more tidy
 copyfile(join(pkgdir, r"bin\wget-1.20.3\wget.exe"), join(pkgdir, r"bin\wget.exe"))
 
-# Extract yasm to the stage directory.
-# Includes a bundled copy of msvcr100.dll to avoid missing runtime errors on some systems.
-print "Staging yasm 1.3.0..."
-with zipfile.ZipFile(join(sourcedir, "yasm-1.3.0-win64.zip"), 'r') as yasm_zip:
-    yasm_zip.extractall(join(pkgdir, "bin"))
-
 # Extract MSYS packages to the stage directory.
 print "Extracting MSYS components..."
 tar_path = join(msys_bin_dir, "tar")
