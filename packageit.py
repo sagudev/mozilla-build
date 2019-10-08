@@ -40,7 +40,7 @@ def get_sdk_path():
 
 def get_msys_bin_path():
     for path in [os.path.realpath(p) for p in os.environ["PATH"].split(";")]:
-        if path.endswith(r"\mozilla-build\msys\bin"):
+        if path.endswith(r"\msys\bin"):
             return path
     raise ValueError("Failed to find mozilla-build path")
 
