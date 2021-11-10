@@ -29,7 +29,7 @@ import _winreg as winreg
 def get_vs_path():
     def vswhere(property):
         return check_output(
-            ["vswhere", "-format", "value", "-property", property]
+            ["vswhere", "-products", "*", "-format", "value", "-property", property]
         ).decode("mbcs", "replace")
 
     return vswhere("installationPath").rstrip()
