@@ -311,14 +311,15 @@ copyfile(join(sourcedir, "vswhere.exe"), join(pkgdir, r"bin\vswhere.exe"))
 
 # Extract watchman to the stage directory.
 print("Staging watchman...")
-with zipfile.ZipFile(join(sourcedir, "watchman-ee2cd14e.zip"), "r") as watchman_zip:
-    watchman_zip.extractall(join(pkgdir, r"bin\watchman-ee2cd14e"))
-os.remove(join(pkgdir, r"bin\watchman-ee2cd14e\watchman.pdb"))
-# Copy watchman.exe to the main bin directory to make our PATH bit more tidy
+with zipfile.ZipFile(join(sourcedir, "watchman-v2021.01.11.00.zip"), "r") as watchman_zip:
+    # Copy to the main bin directory to make our PATH bit more tidy
+    watchman_zip.extractall(join(pkgdir, r"bin"))
+# Distribute license with watchman as mandated by MIT.
 copyfile(
-    join(pkgdir, r"bin\watchman-ee2cd14e\watchman.exe"),
-    join(pkgdir, r"bin\watchman.exe"),
+    join(sourcedir, "watchman-LICENSE"),
+    join(pkgdir, r"bin\watchman-LICENSE"),
 )
+
 
 # Extract wget to the stage directory.
 # Downloaded from https://eternallybored.org/misc/wget/
