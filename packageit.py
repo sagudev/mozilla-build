@@ -18,7 +18,6 @@
 #   for changing the default paths if desired.
 #
 
-import os
 from os.path import join
 from shutil import copyfile, copytree
 from subprocess import check_call, check_output
@@ -213,7 +212,7 @@ def distutils_shebang_fix(path, oldString, newString):
 
 
 distutils_shebang_fix(
-    join(python27_dir, "Scripts"), join(python27_dir, "python.exe"), "python.exe"
+    join(python27_dir, "Scripts"), join(python27_dir, "python.exe").encode("utf-8"), b"python.exe"
 )
 
 # Extract Python3 to the stage directory. The archive being used is the result of running the
@@ -253,10 +252,10 @@ check_call([join(python3_dir, "python3.exe"), "-m", "pip", "install", "virtualen
 # Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
 # aforementioned packaging issues above.
 distutils_shebang_fix(
-    join(python3_dir, "Scripts"), join(r"c:\python3\python.exe"), "python3.exe"
+    join(python3_dir, "Scripts"), rb"c:\python3\python.exe", b"python3.exe"
 )
 distutils_shebang_fix(
-    join(python3_dir, "Scripts"), join(python3_dir, "python3.exe"), "python3.exe"
+    join(python3_dir, "Scripts"), join(python3_dir, "python3.exe").encode("utf-8"), b"python3.exe"
 )
 
 # Extract KDiff3 to the stage directory. The KDiff3 installer doesn't support any sort of
@@ -409,7 +408,7 @@ def editbin(file_list, base):
 
 
 tools_version = (
-    open(join(vsdir, r"VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt"), "rb")
+    open(join(vsdir, r"VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt"), "r")
     .read()
     .strip()
 )
@@ -455,9 +454,9 @@ print("Packaging everything up into the installer...")
 for file in ["helpers.nsi", "installit.nsi", "license.rtf"]:
     copyfile(join(sourcedir, file), join(stagedir, file))
 # Write the real version number to installit.nsi in the stage directory.
-with open(join(stagedir, "installit.nsi"), "rb") as fh:
+with open(join(stagedir, "installit.nsi"), "r") as fh:
     lines = fh.readlines()
-with open(join(stagedir, "installit.nsi"), "wb") as fh:
+with open(join(stagedir, "installit.nsi"), "w") as fh:
     for line in lines:
         fh.write(line.replace("@VERSION@", version))
 check_call(["makensis-3.01.exe", "/NOCD", "installit.nsi"], cwd=stagedir)
