@@ -23,7 +23,7 @@ from os.path import join
 from shutil import copyfile, copytree
 from subprocess import check_call, check_output
 import glob, optparse, os, os.path, zipfile
-import _winreg as winreg
+import winreg as winreg
 
 
 def get_vs_path():
@@ -97,22 +97,22 @@ pkgdir = join(stagedir, "mozilla-build")
 with open(join(sourcedir, "VERSION")) as f:
     version = f.read().splitlines()[0]
 
-print "*****************************************"
-print "Packaging MozillaBuild version: " + version
-print "*****************************************"
-print ""
-print "mozilla-build/sys/bin location: " + msys_bin_dir
-print "Visual Studio location: " + vsdir
-print "Windows SDK location: " + sdkdir
-print "Source location: " + sourcedir
-print "Output location: " + stagedir
-print ""
+print("*****************************************")
+print("Packaging MozillaBuild version: " + version)
+print("*****************************************")
+print("")
+print("mozilla-build/sys/bin location: " + msys_bin_dir)
+print("Visual Studio location: " + vsdir)
+print("Windows SDK location: " + sdkdir)
+print("Source location: " + sourcedir)
+print("Output location: " + stagedir)
+print("")
 
 # Remove the old stage directory if it's already present.
 # We use cmd.exe instead of sh.rmtree because it's more forgiving of open handles than
 # Python is (i.e. not hard-stopping if you happen to have the stage directory open in
 # Windows Explorer while testing.
-print "Removing the old stage directory..." + "\n"
+print("Removing the old stage directory..." + "\n")
 if os.path.exists(stagedir):
     check_call(["cmd.exe", "/C", "rmdir /S /Q %s" % stagedir])
 
@@ -128,7 +128,7 @@ if not os.path.exists(join(pkgdir, "bin")):
 
 # Install 7-Zip. Create an administrative install point and copy the files to stage rather
 # than using a silent install to avoid installing the shell extension on the host machine.
-print "Staging 7-Zip..."
+print("Staging 7-Zip...")
 check_call(
     [
         "msiexec.exe",
@@ -145,7 +145,7 @@ copyfile(join(pkgdir, r"bin\7zip\7z.dll"), join(pkgdir, r"bin\7z.dll"))
 
 # Install Python 2.7 in the stage directory. Create an administrative install point to avoid
 # polluting the host machine along the way.
-print "Staging Python 2.7 and extra packages..."
+print("Staging Python 2.7 and extra packages...")
 python27_dir = join(pkgdir, "python")
 python_installer = "python-2.7.16.amd64.msi"
 check_call(
@@ -225,7 +225,7 @@ distutils_shebang_fix(
 #   LZMA2 compression with Ultra compression, 96MB dictionary size, 256 word size, solid archive
 # or from the command line (only need to specify ultra compression here):
 #   $ cd /c/python3 && 7z a /c/temp/python-3.7.4.7z -r . -mx=9
-print "Staging Python 3.7 and extra packages..."
+print("Staging Python 3.7 and extra packages...")
 python3_dir = join(pkgdir, "python3")
 check_call(["7z.exe", "x", join(sourcedir, "python-3.7.4.7z"), "-o" + python3_dir])
 # Copy python.exe to python3.exe & python3.7.exe.
@@ -261,7 +261,7 @@ distutils_shebang_fix(
 
 # Extract KDiff3 to the stage directory. The KDiff3 installer doesn't support any sort of
 # silent installation, so we use a ready-to-extract 7-Zip archive instead.
-print "Staging KDiff3..."
+print("Staging KDiff3...")
 check_call(
     [
         "7z.exe",
@@ -272,7 +272,7 @@ check_call(
 )
 
 # Extract Info-Zip Zip & UnZip to the stage directory.
-print "Staging Info-Zip..."
+print("Staging Info-Zip...")
 with zipfile.ZipFile(join(sourcedir, "unz600xN.exe"), "r") as unzip_zip:
     unzip_zip.extractall(join(pkgdir, r"bin\info-zip"))
 with zipfile.ZipFile(join(sourcedir, "zip300xN.zip"), "r") as zip_zip:
@@ -282,16 +282,16 @@ copyfile(join(pkgdir, r"bin\info-zip\unzip.exe"), join(pkgdir, r"bin\unzip.exe")
 copyfile(join(pkgdir, r"bin\info-zip\zip.exe"), join(pkgdir, r"bin\zip.exe"))
 
 # Copy mozmake to the stage directory.
-print "Staging mozmake..."
+print("Staging mozmake...")
 copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"bin\mozmake.exe"))
 
 # Copy nsinstall to the stage directory.
-print "Staging nsinstall..."
+print("Staging nsinstall...")
 copyfile(join(sourcedir, "nsinstall.exe"), join(pkgdir, r"bin\nsinstall.exe"))
 
 # Extract NSIS 3.01 to the stage directory.
 # Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
-print "Staging NSIS..."
+print("Staging NSIS...")
 nsis_dir = join(pkgdir, "nsis-3.01")
 with zipfile.ZipFile(join(sourcedir, "nsis-3.01.zip"), "r") as nsis_zip:
     nsis_zip.extractall(pkgdir)
@@ -300,18 +300,18 @@ os.rename(join(nsis_dir, "makensis.exe"), join(nsis_dir, "makensis-3.01.exe"))
 os.rename(join(nsis_dir, r"Bin\makensis.exe"), join(nsis_dir, r"Bin\makensis-3.01.exe"))
 
 # Extract UPX to the stage directory.
-print "Staging UPX 3.95..."
+print("Staging UPX 3.95...")
 with zipfile.ZipFile(join(sourcedir, "upx-3.95-win64.zip"), "r") as upx_zip:
     upx_zip.extractall(join(pkgdir, "bin"))
 # Copy upx.exe to the main bin directory to make our PATH bit more tidy
 copyfile(join(pkgdir, r"bin\upx-3.95-win64\upx.exe"), join(pkgdir, r"bin\upx.exe"))
 
 # Copy vswhere to the stage directory.
-print "Staging vswhere 2.5.2..."
+print("Staging vswhere 2.5.2...")
 copyfile(join(sourcedir, "vswhere.exe"), join(pkgdir, r"bin\vswhere.exe"))
 
 # Extract watchman to the stage directory.
-print "Staging watchman..."
+print("Staging watchman...")
 with zipfile.ZipFile(join(sourcedir, "watchman-ee2cd14e.zip"), "r") as watchman_zip:
     watchman_zip.extractall(join(pkgdir, r"bin\watchman-ee2cd14e"))
 os.remove(join(pkgdir, r"bin\watchman-ee2cd14e\watchman.pdb"))
@@ -323,7 +323,7 @@ copyfile(
 
 # Extract wget to the stage directory.
 # Downloaded from https://eternallybored.org/misc/wget/
-print "Staging wget 1.20.3..."
+print("Staging wget 1.20.3...")
 with zipfile.ZipFile(join(sourcedir, "wget-1.20.3-win64.zip"), "r") as wget_zip:
     wget_zip.extractall(join(pkgdir, r"bin\wget-1.20.3"))
 os.remove(join(pkgdir, r"bin\wget-1.20.3\wget.exe.debug"))
@@ -332,28 +332,28 @@ copyfile(join(pkgdir, r"bin\wget-1.20.3\wget.exe"), join(pkgdir, r"bin\wget.exe"
 
 # Extract yasm to the stage directory.
 # Includes a bundled copy of msvcr100.dll to avoid missing runtime errors on some systems.
-print "Staging yasm 1.3.0..."
+print("Staging yasm 1.3.0...")
 with zipfile.ZipFile(join(sourcedir, "yasm-1.3.0-win64.zip"), "r") as yasm_zip:
     yasm_zip.extractall(join(pkgdir, "bin"))
 
 # Extract MSYS packages to the stage directory.
-print "Extracting MSYS components..."
+print("Extracting MSYS components...")
 tar_path = join(msys_bin_dir, "tar")
 msysdir = join(pkgdir, "msys")
 if not os.path.exists(msysdir):
     os.mkdir(msysdir)
 for archive in glob.glob(join(sourcedir, "msys", "*.lzma")):
-    print "    " + archive
+    print("    " + archive)
     check_call(
         [tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "msys", archive)],
         cwd=msysdir,
     )
 
 # mktemp.exe extracts as read-only, which breaks manifest embedding later.
-os.chmod(join(msysdir, r"bin\mktemp.exe"), 0755)
+os.chmod(join(msysdir, r"bin\mktemp.exe"), 0o755)
 
 # Extract emacs to the stage directory.
-print "Staging emacs..."
+print("Staging emacs...")
 check_call(
     [
         tar_path,
@@ -366,7 +366,7 @@ check_call(
 )
 
 # Replace the native MSYS rm with winrm.
-print "Replacing MSYS rm with winrm..."
+print("Replacing MSYS rm with winrm...")
 os.rename(join(msysdir, r"bin\rm.exe"), join(msysdir, r"bin\rm-msys.exe"))
 copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"bin\rm.exe"))
 copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"bin\winrm.exe"))
@@ -379,7 +379,7 @@ copyfile(join(sourcedir, r"msys\misc\vi"), join(msysdir, r"bin\vi"))
 copyfile(join(sourcedir, "ca-bundle.crt"), join(msysdir, r"etc\ca-bundle.crt"))
 
 # Copy various configuration files.
-print "Copying various configuration files..."
+print("Copying various configuration files...")
 for file in ["inputrc", "minttyrc"]:
     copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, "etc", file))
 
@@ -398,7 +398,7 @@ for file in [
 
 # Recursively find all MSYS DLLs, then chmod them to make sure none are read-only.
 # Then rebase them via the editbin tool.
-print "Rebasing MSYS DLLs..."
+print("Rebasing MSYS DLLs...")
 
 
 def editbin(file_list, base):
@@ -427,7 +427,7 @@ editbin(dll_list, "0x60000000,DOWN")
 editbin([join(msysdir, r"bin\msys-1.0.dll")], "0x60100000")
 
 # Embed some manifests to make UAC happy.
-print "Embedding manifests in executable files..."
+print("Embedding manifests in executable files...")
 
 
 def embedmanifest(f, mf):
@@ -446,12 +446,12 @@ manifest = join(sourcedir, "noprivs.manifest")
 embed_recursedir(msysdir, manifest)
 
 # Copy some miscellaneous files to the root directory.
-print "Copying a few miscellaneous files..."
+print("Copying a few miscellaneous files...")
 copyfile(join(sourcedir, "start-shell.bat"), join(pkgdir, "start-shell.bat"))
 copyfile(join(sourcedir, "VERSION"), join(pkgdir, "VERSION"))
 
 # Package the installer.
-print "Packaging everything up into the installer..."
+print("Packaging everything up into the installer...")
 for file in ["helpers.nsi", "installit.nsi", "license.rtf"]:
     copyfile(join(sourcedir, file), join(stagedir, file))
 # Write the real version number to installit.nsi in the stage directory.
