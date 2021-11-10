@@ -40,7 +40,16 @@ IF NOT DEFINED MOZ_NO_GIT_DETECT (
 
 REM Reset to a known clean path, appending the path to Git if we found it.
 IF NOT DEFINED MOZ_NO_RESET_PATH (
+  FOR /F "tokens=* USEBACKQ" %%F IN (`where cargo 2^>NUL`) DO (
+    SET CARGO_DIR=%%~dpF
+  )
+
   SET PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
+
+  IF DEFINED CARGO_DIR (
+    SET "PATH=!PATH!;!CARGO_DIR!"
+    SET CARGO_DIR=
+  )
 )
 IF DEFINED GITDIR (
   SET "PATH=%PATH%;!GITDIR!"
