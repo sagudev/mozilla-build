@@ -280,23 +280,10 @@ with zipfile.ZipFile(join(sourcedir, "zip300xN.zip"), "r") as zip_zip:
 copyfile(join(pkgdir, r"bin\info-zip\unzip.exe"), join(pkgdir, r"bin\unzip.exe"))
 copyfile(join(pkgdir, r"bin\info-zip\zip.exe"), join(pkgdir, r"bin\zip.exe"))
 
-# Copy mozmake to the stage directory.
-print("Staging mozmake...")
-copyfile(join(sourcedir, "mozmake.exe"), join(pkgdir, r"bin\mozmake.exe"))
-
 # Copy nsinstall to the stage directory.
 print("Staging nsinstall...")
 copyfile(join(sourcedir, "nsinstall.exe"), join(pkgdir, r"bin\nsinstall.exe"))
 
-# Extract NSIS 3.01 to the stage directory.
-# Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
-print("Staging NSIS...")
-nsis_dir = join(pkgdir, "nsis-3.01")
-with zipfile.ZipFile(join(sourcedir, "nsis-3.01.zip"), "r") as nsis_zip:
-    nsis_zip.extractall(pkgdir)
-# Rename the NSIS 3.01 command line executables.
-os.rename(join(nsis_dir, "makensis.exe"), join(nsis_dir, "makensis-3.01.exe"))
-os.rename(join(nsis_dir, r"Bin\makensis.exe"), join(nsis_dir, r"Bin\makensis-3.01.exe"))
 
 # Extract UPX to the stage directory.
 print("Staging UPX 3.95...")
@@ -460,4 +447,11 @@ with open(join(stagedir, "installit.nsi"), "r") as fh:
 with open(join(stagedir, "installit.nsi"), "w") as fh:
     for line in lines:
         fh.write(line.replace("@VERSION@", version))
-check_call(["makensis-3.01.exe", "/NOCD", "installit.nsi"], cwd=stagedir)
+
+# Extract NSIS 3.01 to the stage directory.
+# Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
+print("Packaging with NSIS...")
+with zipfile.ZipFile(join(sourcedir, "nsis-3.01.zip"), "r") as nsis_zip:
+    nsis_zip.extractall(stagedir)
+makensis_path = os.path.join(stagedir, "nsis-3.01", "makensis.exe")
+check_call([makensis_path, "/NOCD", "installit.nsi"], cwd=stagedir)
