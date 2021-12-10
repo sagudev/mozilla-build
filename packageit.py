@@ -225,9 +225,8 @@ distutils_shebang_fix(
 print("Staging Python 3.7 and extra packages...")
 python3_dir = join(pkgdir, "python3")
 check_call(["7z.exe", "x", join(sourcedir, "python-3.7.9.7z"), "-o" + python3_dir])
-# Copy python.exe to python3.exe & python3.7.exe.
+# Copy python.exe to python3.exe.
 copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.exe"))
-copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.7.exe"))
 
 check_call(["patch", join(python3_dir, "Lib", "venv", "__init__.py"), join(sourcedir, "python3-venv-winerror.patch")])
 
