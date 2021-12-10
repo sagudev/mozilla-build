@@ -182,8 +182,6 @@ check_call(
         "setuptools",
     ]
 )
-# Install virtualenv.
-check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "virtualenv"])
 # Install Mercurial and copy mercurial.ini to the python dir so Mercurial has sane defaults.
 check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "mercurial"])
 copyfile(join(sourcedir, "mercurial.ini"), join(python27_dir, "mercurial.ini"))
@@ -248,9 +246,6 @@ check_call(
         "setuptools",
     ]
 )
-# Install virtualenv.
-check_call([join(python3_dir, "python3.exe"), "-m", "pip", "install", "virtualenv"])
-
 # Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
 # aforementioned packaging issues above.
 distutils_shebang_fix(
