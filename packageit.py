@@ -210,7 +210,7 @@ def distutils_shebang_fix(path, oldString, newString):
 
 
 distutils_shebang_fix(
-    join(python27_dir, "Scripts"), join(python27_dir, "python.exe").encode("utf-8"), b"python.exe"
+    join(python27_dir, "Scripts"), join(python27_dir, "python.exe").encode("utf-8"), b"python2.7.exe"
 )
 
 # Extract Python3 to the stage directory. The archive being used is the result of running the
