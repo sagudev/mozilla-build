@@ -507,10 +507,10 @@ with open(join(stagedir, "installit.nsi"), "w") as fh:
     for line in lines:
         fh.write(line.replace("@VERSION@", version))
 
-# Extract NSIS 3.01 to the stage directory.
-# Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01.zip/download
+# Extract NSIS 3.08 to the stage directory.
+# Downloaded from https://sourceforge.net/projects/nsis/files/NSIS%203/3.08/nsis-3.08.zip/download
 print("Packaging with NSIS...")
-with zipfile.ZipFile(join(sourcedir, "nsis-3.01.zip"), "r") as nsis_zip:
+with zipfile.ZipFile(join(sourcedir, "nsis-3.08.zip"), "r") as nsis_zip:
     nsis_zip.extractall(stagedir)
-makensis_path = os.path.join(stagedir, "nsis-3.01", "makensis.exe")
+makensis_path = os.path.join(stagedir, "nsis-3.08", "makensis.exe")
 check_call([makensis_path, "/NOCD", "installit.nsi"], cwd=stagedir)
