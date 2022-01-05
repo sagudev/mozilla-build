@@ -424,7 +424,7 @@ with open(join(msysdir, r"usr\bin\vi"), "w") as vi:
 
 # Copy various configuration files.
 print("Copying various configuration files...")
-for file in ["inputrc", "minttyrc"]:
+for file in ["minttyrc"]:
     copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, "etc", file))
 
 copyfile(join(sourcedir, r"msys\misc\ssh_config"), join(msysdir, r"etc\ssh\ssh_config"))
@@ -432,7 +432,6 @@ copyfile(join(sourcedir, r"msys\misc\ssh_config"), join(msysdir, r"etc\ssh\ssh_c
 if not os.path.exists(join(msysdir, "etc", "profile.d")):
     os.mkdir(join(msysdir, "etc", "profile.d"))
 for file in [
-    "profile-inputrc.sh",
     "profile-extravars.sh",
     "profile-echo.sh",
     "profile-homedir.sh",
