@@ -191,7 +191,16 @@ check_call(
     ]
 )
 # Install Mercurial and copy mercurial.ini to the python dir so Mercurial has sane defaults.
-check_call([join(python27_dir, "python.exe"), "-m", "pip", "install", "mercurial"])
+check_call(
+    [
+        join(python27_dir, "python.exe"),
+        "-m",
+        "pip",
+        "install",
+        "mercurial",
+        "windows-curses",
+    ]
+)
 copyfile(join(sourcedir, "mercurial.ini"), join(python27_dir, "mercurial.ini"))
 
 # Copy python27.dll to the Scripts directory to work around path detection issues in hg.exe.
