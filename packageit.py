@@ -329,6 +329,7 @@ print("Locating MSYS2 components and dependencies...")
 required_msys2_package_names = [
     "bash",
     "bzip2",
+    "ca-certificates",
     "coreutils",
     "diffutils",
     "file",
@@ -417,9 +418,6 @@ copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"usr\bin\winrm.exe"))
 # Copy the vi shell script to the bin dir.
 copyfile(join(sourcedir, r"msys\misc\vi"), join(msysdir, r"usr\bin\vi"))
 
-# Copy over CA certificates in PEM format (converted from Firefox's defaults) so SSL will work.
-# This is used by both Mercurial and wget.
-copyfile(join(sourcedir, "ca-bundle.crt"), join(msysdir, r"etc\ca-bundle.crt"))
 
 # Copy various configuration files.
 print("Copying various configuration files...")
