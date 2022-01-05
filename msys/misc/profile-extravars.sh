@@ -1,9 +1,6 @@
 #!/bin/sh
 
+export EDITOR="emacs.exe"
 if test -n "$MOZILLABUILD"; then
-    MSYS_MOZBUILD=$(cd "$MOZILLABUILD" && pwd)
-    PATH="/local/bin:$MSYS_MOZBUILD/bin:$MSYS_MOZBUILD/kdiff3:$MSYS_MOZBUILD/python3:$MSYS_MOZBUILD/python3/Scripts:$MSYS_MOZBUILD/python:$MSYS_MOZBUILD/python/Scripts:$PATH"
-    EDITOR="emacs.exe"
-    export PATH EDITOR
-    export HOSTTYPE MACHTYPE OSTYPE SHELL
+    PATH="$MOZILLABUILD/bin:$MOZILLABUILD/kdiff3:$MOZILLABUILD/python3:$MOZILLABUILD/python3/Scripts:$MOZILLABUILD/python:$MOZILLABUILD/python/Scripts:$PATH"
 fi
