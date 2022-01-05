@@ -19,22 +19,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SSH_ENV="$HOME/.ssh/environment"
+if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
+  SSH_ENV="$HOME/.ssh/environment"
 
-function start_agent {
-  ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-  chmod 600 "${SSH_ENV}"
-  . "${SSH_ENV}" > /dev/null
-  ssh-add;
-}
-
-if [ -d "$HOME/.ssh" ]; then
-  if [ -f "${SSH_ENV}" ]; then
+  function start_agent {
+    ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    chmod 600 "${SSH_ENV}"
     . "${SSH_ENV}" > /dev/null
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+    ssh-add;
+  }
+
+  if [ -d "$HOME/.ssh" ]; then
+    if [ -f "${SSH_ENV}" ]; then
+      . "${SSH_ENV}" > /dev/null
+      ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+      }
+    else
       start_agent;
-    }
-  else
-    start_agent;
+    fi
   fi
+else
+  PATH="$(cygpath -u $EXTERNAL_TO_MOZILLABUILD_SSH_DIR):$PATH"
 fi

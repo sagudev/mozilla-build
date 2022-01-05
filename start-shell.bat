@@ -11,6 +11,10 @@ REM Opt into "ConPTY" support, which enables usage of win32 console binaries fro
 SET MSYS=enable_pcon
 SET MOZILLABUILD=%~dp0
 
+FOR /F "tokens=* USEBACKQ" %%F IN (`where ssh 2^>NUL`) DO (
+    SET EXTERNAL_TO_MOZILLABUILD_SSH_DIR=%%~dpF
+)
+
 REM Start shell.
 IF "%*%" == "" (
     IF DEFINED MOZILLABUILD_USE_DEFAULT_WINDOWS_CONSOLE (
