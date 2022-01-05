@@ -412,9 +412,15 @@ os.rename(join(msysdir, r"usr\bin\rm.exe"), join(msysdir, r"usr\bin\rm-msys.exe"
 copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"usr\bin\rm.exe"))
 copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"usr\bin\winrm.exe"))
 
-# Copy the vi shell script to the bin dir.
-copyfile(join(sourcedir, r"msys\misc\vi"), join(msysdir, r"usr\bin\vi"))
-
+with open(join(msysdir, r"usr\bin\vi"), "w") as vi:
+    vi.write(
+        dedent(
+            """
+        #!/bin/sh
+        exec vim "$@"
+    """.strip()
+        )
+    )
 
 # Copy various configuration files.
 print("Copying various configuration files...")
