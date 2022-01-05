@@ -5,6 +5,7 @@ System Requirements:
   * 64-bit Windows 7+
   * Existing MozillaBuild installation
   * Visual Studio 2017 or newer
+  * MSYS2
   * Windows 10 SDK (included with Visual Studio installer, just be sure it's installed!)
 
 The packageit.py packaging script is intended to be entirely self-contained. However,
