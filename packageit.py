@@ -21,8 +21,9 @@
 from os.path import join
 from shutil import copyfile, copytree
 from subprocess import check_call, check_output
-import glob, optparse, os, os.path, zipfile
-import winreg as winreg
+import optparse, os, os.path, zipfile
+import winreg
+from textwrap import dedent
 
 
 def get_vs_path():
@@ -49,6 +50,8 @@ def get_msys_bin_path():
     for path in [os.path.realpath(p) for p in os.environ["PATH"].split(";")]:
         if path.endswith(r"\msys\bin"):
             return path
+        if path.endswith(r"\msys2\usr\bin"):
+            return path
     raise ValueError("Failed to find mozilla-build path")
 
 
@@ -58,6 +61,7 @@ msys_bin_dir = get_msys_bin_path()
 stagedir = r"c:\mozillabuild-stage"
 vsdir = get_vs_path()
 sdkdir = get_sdk_path()
+msys2refdir = r"c:\msys64"
 
 # Override the source and/or stage directory locations if otherwise specified.
 oparser = optparse.OptionParser()
@@ -76,6 +80,12 @@ oparser.add_option(
 oparser.add_option(
     "-w", "--winsdk", dest="sdkdir", help="Path to the Windows SDK installation."
 )
+oparser.add_option(
+    "-m",
+    "--msys2",
+    dest="msys2refdir",
+    help="Path to the reference MSYS2 installation.",
+)
 (options, args) = oparser.parse_args()
 
 if len(args) != 0:
@@ -89,6 +99,8 @@ if options.vsdir:
     vsdir = options.vsdir
 if options.sdkdir:
     sdkdir = options.sdkdir
+if options.msys2refdir:
+    msys2refdir = options.msys2refdir
 
 pkgdir = join(stagedir, "mozilla-build")
 
@@ -100,7 +112,7 @@ print("*****************************************")
 print("Packaging MozillaBuild version: " + version)
 print("*****************************************")
 print("")
-print("mozilla-build/sys/bin location: " + msys_bin_dir)
+print("mozilla-build/msys/bin location: " + msys_bin_dir)
 print("Visual Studio location: " + vsdir)
 print("Windows SDK location: " + sdkdir)
 print("Source location: " + sourcedir)
@@ -313,43 +325,97 @@ os.remove(join(pkgdir, r"bin\wget-1.20.3\wget.exe.debug"))
 # Copy wget.exe to the main bin directory to make our PATH bit more tidy
 copyfile(join(pkgdir, r"bin\wget-1.20.3\wget.exe"), join(pkgdir, r"bin\wget.exe"))
 
-# Extract MSYS packages to the stage directory.
-print("Extracting MSYS components...")
-tar_path = join(msys_bin_dir, "tar")
-msysdir = join(pkgdir, "msys")
-if not os.path.exists(msysdir):
-    os.mkdir(msysdir)
-for archive in glob.glob(join(sourcedir, "msys", "*.lzma")):
-    print("    " + archive)
-    check_call(
-        [tar_path, "--lzma", "--force-local", "-xf", join(sourcedir, "msys", archive)],
-        cwd=msysdir,
+print("Locating MSYS2 components and dependencies...")
+required_msys2_package_names = [
+    "bash",
+    "bzip2",
+    "coreutils",
+    "diffutils",
+    "file",
+    "filesystem",
+    "findutils",
+    "gawk",
+    "grep",
+    "gzip",
+    "less",
+    "m4",
+    "mintty",
+    "nano",
+    "openssh",
+    "patch",
+    "perl",
+    "sed",
+    "tar",
+    "vim",
+    "xz",
+    "which",
+]
+
+# Extract MSYS2 packages to the stage directory.
+print("Extracting MSYS2 components...")
+msysdir = join(pkgdir, "msys2")
+os.makedirs(join(msysdir, "tmp"))
+os.makedirs(join(msysdir, "var", "lib", "pacman"))
+os.makedirs(join(msysdir, "var", "log"))
+
+env_with_msys2_path = os.environ.copy()
+env_with_msys2_path["PATH"] = (
+    f"{msys2refdir}/usr/bin" + os.pathsep + env_with_msys2_path["PATH"]
+)
+
+check_call(
+    [
+        join(msys2refdir, "usr", "bin", "pacman.exe"),
+        "-S",
+        "--refresh",
+        "--noconfirm",
+        "--root",
+        msysdir,
+        # Install msys2-runtime first so that post-install scripts run successfully
+        "msys2-runtime",
+        *required_msys2_package_names,
+    ],
+    env=env_with_msys2_path,
+)
+
+# db_home: Set "~" to point to "%USERPROFILE%"
+# db_gecos: Fills out gecos information (such as the user's full name) from AD/SAM.
+with open(join(msysdir, r"etc\nsswitch.conf"), "w") as nsswitch_conf:
+    nsswitch_conf.write(
+        dedent(
+            """
+        db_home: windows
+        db_gecos: windows
+        """
+        )
     )
 
-# mktemp.exe extracts as read-only, which breaks manifest embedding later.
-os.chmod(join(msysdir, r"bin\mktemp.exe"), 0o755)
+# We won't be including the package manager (pacman), so remove its key management setup.
+os.remove(join(msysdir, r"etc\post-install\07-pacman-key.post"))
+# We don't install the xmlcatalog binary.
+os.remove(join(msysdir, r"etc\post-install\08-xml-catalog.post"))
 
 # Extract emacs to the stage directory.
 print("Staging emacs...")
 check_call(
     [
-        tar_path,
+        (join(msys_bin_dir, "tar")),
         "--lzma",
         "--force-local",
         "-xf",
         join(sourcedir, "emacs-26.3-x86_64-no-deps.tar.lzma"),
     ],
-    cwd=msysdir,
+    cwd=join(msysdir, "usr"),
 )
 
 # Replace the native MSYS rm with winrm.
 print("Replacing MSYS rm with winrm...")
-os.rename(join(msysdir, r"bin\rm.exe"), join(msysdir, r"bin\rm-msys.exe"))
-copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"bin\rm.exe"))
-copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"bin\winrm.exe"))
+os.rename(join(msysdir, r"usr\bin\rm.exe"), join(msysdir, r"usr\bin\rm-msys.exe"))
+copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"usr\bin\rm.exe"))
+copyfile(join(sourcedir, "winrm.exe"), join(msysdir, r"usr\bin\winrm.exe"))
 
 # Copy the vi shell script to the bin dir.
-copyfile(join(sourcedir, r"msys\misc\vi"), join(msysdir, r"bin\vi"))
+copyfile(join(sourcedir, r"msys\misc\vi"), join(msysdir, r"usr\bin\vi"))
 
 # Copy over CA certificates in PEM format (converted from Firefox's defaults) so SSL will work.
 # This is used by both Mercurial and wget.
@@ -392,18 +458,22 @@ tools_version = (
     .strip()
 )
 tools_path = join(vsdir, r"VC\Tools\MSVC", tools_version, r"bin\HostX64\x64")
-dll_list = []
+msys_dlls = {}
 for rootdir, dirnames, filenames in os.walk(msysdir):
     for file in filenames:
         if file.endswith(".dll"):
             abs_dll = join(rootdir, file)
             os.chmod(abs_dll, 0o755)
             relative_dll = os.path.relpath(abs_dll, msysdir)
-            dll_list.append(relative_dll)
+            if file not in msys_dlls:
+                # "msys-perl5_32.dll" is in both "/usr/bin/" and "/usr/lib/perl5/...".
+                # Since "editbin /rebase" fails if it's provided equivalent dlls, let's
+                # ensure no two dlls with the same name are added.
+                msys_dlls[file] = relative_dll
 
-editbin(dll_list, "0x60000000,DOWN", msysdir)
-# msys-1.0.dll is special and needs to be rebased independent of the rest
-editbin([join(msysdir, r"bin\msys-1.0.dll")], "0x60100000")
+editbin(list(msys_dlls.values()), "0x60000000,DOWN", msysdir)
+# msys-2.0.dll is special and needs to be rebased independent of the rest
+editbin([join(msysdir, r"usr\bin\msys-2.0.dll")], "0x60100000")
 
 # Embed some manifests to make UAC happy.
 print("Embedding manifests in executable files...")

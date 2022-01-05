@@ -7,63 +7,18 @@ SET CYGWIN=
 SET INCLUDE=
 SET LIB=
 SET GITDIR=
-
-REM mintty is available as an alternate terminal, but is not enabled by default due
-REM to various usability regressions. Set USE_MINTTY to 1 to enable it.
-IF NOT DEFINED USE_MINTTY (
-  SET USE_MINTTY=
-)
-
+REM Opt into "ConPTY" support, which enables usage of win32 console binaries from MSYS2.
+SET MSYS=enable_pcon
 SET MOZILLABUILD=%~dp0
 
-REM Find the Git bin directory so we can add it to the PATH.
-IF NOT DEFINED MOZ_NO_GIT_DETECT (
-  REM Try Windows PATH first
-  FOR /F "tokens=*" %%A IN ('where git 2^>NUL') DO SET GITDIR=%%~dpA
-  REM Current User 64-bit
-  IF NOT DEFINED GITDIR (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY HKCU\Software\GitForWindows /v InstallPath 2^>NUL') DO SET "GITDIR=%%B\bin"
-  )
-  REM Current User 32-bit
-  IF NOT DEFINED GITDIR (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY HKCU\Software\Wow6432Node\GitForWindows /v InstallPath 2^>NUL') DO SET "GITDIR=%%B\bin"
-  )
-  REM Local Machine 64-bit
-  IF NOT DEFINED GITDIR (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY HKLM\Software\GitForWindows /v InstallPath 2^>NUL') DO SET "GITDIR=%%B\bin"
-  )
-  REM Local Machine User 32-bit
-  IF NOT DEFINED GITDIR (
-    FOR /F "tokens=2*" %%A IN ('REG QUERY HKLM\Software\Wow6432Node\GitForWindows /v InstallPath 2^>NUL') DO SET "GITDIR=%%B\bin"
-  )
-)
-
-REM Reset to a known clean path, appending the path to Git if we found it.
-IF NOT DEFINED MOZ_NO_RESET_PATH (
-  FOR /F "tokens=* USEBACKQ" %%F IN (`where cargo 2^>NUL`) DO (
-    SET CARGO_DIR=%%~dpF
-  )
-
-  SET PATH=%SystemRoot%\System32;%SystemRoot%;%SystemRoot%\System32\Wbem
-
-  IF DEFINED CARGO_DIR (
-    SET "PATH=!PATH!;!CARGO_DIR!"
-    SET CARGO_DIR=
-  )
-)
-IF DEFINED GITDIR (
-  SET "PATH=%PATH%;!GITDIR!"
-  SET GITDIR=
-)
-
 REM Start shell.
-IF "%USE_MINTTY%" == "1" (
-  START %MOZILLABUILD%msys\bin\mintty -e %MOZILLABUILD%msys\bin\console %MOZILLABUILD%msys\bin\bash --login
+IF "%*%" == "" (
+    IF DEFINED MOZILLABUILD_USE_DEFAULT_WINDOWS_CONSOLE (
+        %MOZILLABUILD%msys2\msys2_shell.cmd -defterm -full-path
+    ) ELSE (
+        %MOZILLABUILD%msys2\msys2_shell.cmd -full-path
+    )
 ) ELSE (
-  IF "%*%" == "" (
-    %MOZILLABUILD%msys\bin\bash --login -i
-  ) ELSE (
-    %MOZILLABUILD%msys\bin\bash --login -i -c "%*"
-  )
+    %MOZILLABUILD%msys2\usr\bin\bash --login -i -c "%*"
 )
 EXIT /B
