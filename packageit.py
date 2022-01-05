@@ -424,16 +424,16 @@ with open(join(msysdir, r"usr\bin\vi"), "w") as vi:
 
 # Copy various configuration files.
 print("Copying various configuration files...")
-copyfile(join(sourcedir, r"msys\misc\ssh_config"), join(msysdir, r"etc\ssh\ssh_config"))
+copyfile(
+    join(sourcedir, r"msys-config\ssh_config"), join(msysdir, r"etc\ssh\ssh_config")
+)
 
 if not os.path.exists(join(msysdir, "etc", "profile.d")):
     os.mkdir(join(msysdir, "etc", "profile.d"))
-for file in [
-    "profile-extravars.sh",
-    "profile-echo.sh",
-    "profile-sshagent.sh",
-]:
-    copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, r"etc\profile.d", file))
+copyfile(
+    join(sourcedir, "msys-config", "profile-mozilla.sh"),
+    join(msysdir, r"etc\profile.d", "profile-mozilla.sh"),
+)
 
 # Recursively find all MSYS DLLs, then chmod them to make sure none are read-only.
 # Then rebase them via the editbin tool.
