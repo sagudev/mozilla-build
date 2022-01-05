@@ -323,6 +323,7 @@ copyfile(
 print("Locating MSYS2 components and dependencies...")
 required_msys2_package_names = [
     "bash",
+    "bash-completion",
     "bzip2",
     "ca-certificates",
     "coreutils",
