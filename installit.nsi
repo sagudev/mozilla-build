@@ -96,14 +96,4 @@ Section "MozillaBuild"
   RMDir /r "$INSTDIR\wix-351728"
   RMDir /r "$INSTDIR\yasm"
   File /r *.*
-  ; Write the full path to ca-bundle.crt in wget.ini
-  FileOpen $0 "$INSTDIR\bin\wget.ini" w
-  FileWrite $0 "ca_certificate=$INSTDIR\msys\etc\ca-bundle.crt$\r$\n"
-  FileClose $0
-  ; Write the full path to ca-bundle.crt in mercurial.ini
-  FileOpen $0 "$INSTDIR\python\mercurial.ini" a
-  FileSeek $0 0 END
-  FileWrite $0 "$\n[web]$\n"
-  FileWrite $0 "cacerts=$INSTDIR\msys\etc\ca-bundle.crt$\n"
-  FileClose $0
 SectionEnd
