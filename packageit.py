@@ -384,10 +384,11 @@ for file in [
 print("Rebasing MSYS DLLs...")
 
 
-def editbin(file_list, base):
+def editbin(file_list, base, cwd=None):
     check_call(
         [join(tools_path, "editbin.exe"), "/REBASE:BASE=" + base, "/DYNAMICBASE:NO"]
-        + file_list
+        + file_list,
+        cwd=cwd,
     )
 
 
@@ -401,11 +402,12 @@ dll_list = []
 for rootdir, dirnames, filenames in os.walk(msysdir):
     for file in filenames:
         if file.endswith(".dll"):
-            dll = join(rootdir, file)
-            os.chmod(dll, 755)
-            dll_list.append(dll)
+            abs_dll = join(rootdir, file)
+            os.chmod(abs_dll, 0o755)
+            relative_dll = os.path.relpath(abs_dll, msysdir)
+            dll_list.append(relative_dll)
 
-editbin(dll_list, "0x60000000,DOWN")
+editbin(dll_list, "0x60000000,DOWN", msysdir)
 # msys-1.0.dll is special and needs to be rebased independent of the rest
 editbin([join(msysdir, r"bin\msys-1.0.dll")], "0x60100000")
 
