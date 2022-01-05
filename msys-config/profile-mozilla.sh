@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export EDITOR="emacs.exe"
+export EDITOR="nano.exe"
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
   echo "MozillaBuild Install Directory: ${MOZILLABUILD}"
