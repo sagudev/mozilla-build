@@ -46,18 +46,8 @@ def get_sdk_path():
     return join(sdk_dir, "bin", sdk_version, "x64")
 
 
-def get_msys_bin_path():
-    for path in [os.path.realpath(p) for p in os.environ["PATH"].split(";")]:
-        if path.endswith(r"\msys\bin"):
-            return path
-        if path.endswith(r"\msys2\usr\bin"):
-            return path
-    raise ValueError("Failed to find mozilla-build path")
-
-
 # Set default values for the source and stage directories.
 sourcedir = join(os.path.split(os.path.abspath(__file__))[0])
-msys_bin_dir = get_msys_bin_path()
 stagedir = r"c:\mozillabuild-stage"
 vsdir = get_vs_path()
 sdkdir = get_sdk_path()
@@ -112,12 +102,18 @@ print("*****************************************")
 print("Packaging MozillaBuild version: " + version)
 print("*****************************************")
 print("")
-print("mozilla-build/msys/bin location: " + msys_bin_dir)
+print("Reference MSYS2 installation location: " + msys2refdir)
 print("Visual Studio location: " + vsdir)
 print("Windows SDK location: " + sdkdir)
 print("Source location: " + sourcedir)
 print("Output location: " + stagedir)
 print("")
+
+pacman = join(msys2refdir, "usr", "bin", "pacman.exe")
+assert os.path.isfile(pacman), (
+    f'Reference MSYS2 installation is invalid - "pacman" '
+    f'doesn\'t exist at "{pacman}"'
+)
 
 # Remove the old stage directory if it's already present.
 # We use cmd.exe instead of sh.rmtree because it's more forgiving of open handles than
@@ -366,7 +362,7 @@ env_with_msys2_path["PATH"] = (
 
 check_call(
     [
-        join(msys2refdir, "usr", "bin", "pacman.exe"),
+        pacman,
         "-S",
         "--refresh",
         "--noconfirm",
@@ -400,13 +396,15 @@ os.remove(join(msysdir, r"etc\post-install\08-xml-catalog.post"))
 print("Staging emacs...")
 check_call(
     [
-        (join(msys_bin_dir, "tar")),
+        join(msys2refdir, "usr", "bin", "tar.exe"),
         "--lzma",
         "--force-local",
         "-xf",
         join(sourcedir, "emacs-26.3-x86_64-no-deps.tar.lzma"),
     ],
     cwd=join(msysdir, "usr"),
+    # Use "env_with_msys2_path" so that "tar" can find "xz"/"zstd"
+    env=env_with_msys2_path,
 )
 
 # Replace the native MSYS rm with winrm.
