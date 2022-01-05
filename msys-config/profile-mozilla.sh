@@ -1,6 +1,7 @@
 #!/bin/sh
 
 export EDITOR="nano.exe"
+export HGENCODING=utf-8
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
   echo "MozillaBuild Install Directory: ${MOZILLABUILD}"
