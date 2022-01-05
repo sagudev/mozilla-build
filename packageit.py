@@ -431,7 +431,6 @@ if not os.path.exists(join(msysdir, "etc", "profile.d")):
 for file in [
     "profile-extravars.sh",
     "profile-echo.sh",
-    "profile-homedir.sh",
     "profile-sshagent.sh",
 ]:
     copyfile(join(sourcedir, r"msys\misc", file), join(msysdir, r"etc\profile.d", file))
