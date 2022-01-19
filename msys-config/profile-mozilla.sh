@@ -1,6 +1,8 @@
 #!/bin/sh
 
 export EDITOR="nano.exe"
+export GIT_EDITOR="nano -b -r 72"
+export HGEDITOR="nano -b -r 72"
 export HGENCODING=utf-8
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
