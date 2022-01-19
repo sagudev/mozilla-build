@@ -18,11 +18,14 @@
 #   for changing the default paths if desired.
 #
 
+from multiprocessing.pool import ThreadPool
 from os.path import join
+from pathlib import Path
 from shutil import copyfile, copytree
 from subprocess import check_call, check_output
 import optparse, os, os.path, zipfile
 import winreg
+import requests
 from textwrap import dedent
 
 
@@ -76,6 +79,12 @@ oparser.add_option(
     dest="msys2refdir",
     help="Path to the reference MSYS2 installation.",
 )
+oparser.add_option(
+    "--fetch-sources",
+    action="store_true",
+    help='Download sources for MSYS2 package and put them in "<staging-directory>/src/". '
+    "Off by default for packaging-performance reasons.",
+)
 (options, args) = oparser.parse_args()
 
 if len(args) != 0:
@@ -92,6 +101,7 @@ if options.sdkdir:
 if options.msys2refdir:
     msys2refdir = options.msys2refdir
 
+fetch_sources = bool(options.fetch_sources)
 pkgdir = join(stagedir, "mozilla-build")
 
 # Read the version number
@@ -107,6 +117,7 @@ print("Visual Studio location: " + vsdir)
 print("Windows SDK location: " + sdkdir)
 print("Source location: " + sourcedir)
 print("Output location: " + stagedir)
+print("Fetch sources: " + str(fetch_sources))
 print("")
 
 pacman = join(msys2refdir, "usr", "bin", "pacman.exe")
@@ -374,6 +385,32 @@ check_call(
     ],
     env=env_with_msys2_path,
 )
+
+if fetch_sources:
+    print("Downloading MSYS2 package sources...")
+
+    msys_src_packages_dir = join(stagedir, "src")
+    os.mkdir(msys_src_packages_dir)
+    output = check_output(
+        [pacman, "-Q", "--root", msysdir],
+        universal_newlines=True,
+    )
+    urls = [
+        f"https://repo.msys2.org/msys/sources/{name}-{version}.src.tar.gz"
+        for name, version in (line.split(" ") for line in output.splitlines())
+    ]
+
+    def download_file(url):
+        print(f"  Downloading {url}")
+        response = requests.get(url, stream=True)
+        with open(os.path.join(msys_src_packages_dir, Path(url).name), "wb") as file:
+            for chunk in response.iter_content(chunk_size=16*1024):
+                file.write(chunk)
+
+    pool = ThreadPool(8)
+    pool.imap_unordered(download_file, urls)
+    pool.close()
+    pool.join()
 
 # db_home: Set "~" to point to "%USERPROFILE%"
 # db_gecos: Fills out gecos information (such as the user's full name) from AD/SAM.
