@@ -16,13 +16,5 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`where ssh 2^>NUL`) DO (
 )
 
 REM Start shell.
-IF "%*%" == "" (
-    IF DEFINED MOZILLABUILD_USE_DEFAULT_WINDOWS_CONSOLE (
-        %MOZILLABUILD%msys2\msys2_shell.cmd -defterm -full-path
-    ) ELSE (
-        %MOZILLABUILD%msys2\msys2_shell.cmd -full-path
-    )
-) ELSE (
-    %MOZILLABUILD%msys2\usr\bin\bash --login -i -c "%*"
-)
+%MOZILLABUILD%msys2\msys2_shell.cmd -full-path %*
 EXIT /B
