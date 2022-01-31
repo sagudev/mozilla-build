@@ -7,7 +7,9 @@ export HGENCODING=utf-8
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
   echo "MozillaBuild Install Directory: ${MOZILLABUILD}"
-  PATH="$MOZILLABUILD/bin:$MOZILLABUILD/kdiff3:$MOZILLABUILD/python3:$MOZILLABUILD/python3/Scripts:$MOZILLABUILD/python:$MOZILLABUILD/python/Scripts:$PATH"
+  mozillabuild_unix=$(cygpath -u "$MOZILLABUILD")
+  mozillabuild_unix=${mozillabuild_unix%/} # Remove trailing slash
+  PATH="$mozillabuild_unix/bin:$mozillabuild_unix/kdiff3:$mozillabuild_unix/python3:$mozillabuild_unix/python3/Scripts:$PATH"
 fi
 
 if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
