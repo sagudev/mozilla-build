@@ -379,6 +379,7 @@ with open(join(msysdir, r"etc\nsswitch.conf"), "w") as nsswitch_conf:
 os.remove(join(msysdir, r"etc\post-install\07-pacman-key.post"))
 # We don't install the xmlcatalog binary.
 os.remove(join(msysdir, r"etc\post-install\08-xml-catalog.post"))
+copyfile(join(msysdir, r"etc\skel\.inputrc"), join(msysdir, r"etc\inputrc"))
 
 # Extract emacs to the stage directory.
 print("Staging emacs...")

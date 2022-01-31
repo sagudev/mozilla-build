@@ -16,5 +16,5 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`where ssh 2^>NUL`) DO (
 )
 
 REM Start shell.
-%MOZILLABUILD%msys2\msys2_shell.cmd -full-path %*
+%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %*
 EXIT /B

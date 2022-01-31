@@ -4,6 +4,9 @@ export EDITOR="nano.exe"
 export GIT_EDITOR="nano -b -r 72"
 export HGEDITOR="nano -b -r 72"
 export HGENCODING=utf-8
+# Use "cygwin" instead of MSYS2's default TERM of "xterm-256color"
+# to avoid HG coloring from showing up as text symbols.
+export TERM=cygwin
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
   echo "MozillaBuild Install Directory: ${MOZILLABUILD}"
