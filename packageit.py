@@ -161,74 +161,6 @@ copytree(join(stagedir, r"7zip\Files\7-Zip"), join(pkgdir, r"bin\7zip"))
 copyfile(join(pkgdir, r"bin\7zip\7z.exe"), join(pkgdir, r"bin\7z.exe"))
 copyfile(join(pkgdir, r"bin\7zip\7z.dll"), join(pkgdir, r"bin\7z.dll"))
 
-# Install Python 2.7 in the stage directory. Create an administrative install point to avoid
-# polluting the host machine along the way.
-print("Staging Python 2.7 and extra packages...")
-python27_dir = join(pkgdir, "python")
-python_installer = "python-2.7.17.amd64.msi"
-check_call(
-    [
-        "msiexec.exe",
-        "/q",
-        "/a",
-        join(sourcedir, python_installer),
-        "TARGETDIR=" + python27_dir,
-    ]
-)
-# Copy python.exe to python2.exe & python2.7.exe and remove the MSI.
-copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.exe"))
-copyfile(join(python27_dir, "python.exe"), join(python27_dir, "python2.7.exe"))
-os.remove(join(python27_dir, python_installer))
-
-# Update the copy of SQLite bundled with Python 2.
-sqlite_file = "sqlite-dll-win64-x64-3250200.zip"
-with zipfile.ZipFile(join(sourcedir, sqlite_file), "r") as sqlite3_zip:
-    sqlite3_zip.extract("sqlite3.dll", join(python27_dir, "DLLs"))
-
-# Run ensurepip and update to the latest version.
-check_call([join(python27_dir, "python.exe"), "-m", "ensurepip"])
-check_call(
-    [join(python27_dir, "python.exe"), "-m", "pip", "install", "--upgrade", "pip"]
-)
-# Update setuptools to the latest version.
-check_call(
-    [
-        join(python27_dir, "python.exe"),
-        "-m",
-        "pip",
-        "install",
-        "--upgrade",
-        "setuptools",
-    ]
-)
-
-# Copy python27.dll to the Scripts directory to work around path detection issues in hg.exe.
-# See bug 1415374 for details.
-copyfile(
-    join(python27_dir, "python27.dll"), join(python27_dir, r"Scripts\python27.dll")
-)
-
-# Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
-# to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
-# scripts, which breaks because it uses the path on the machine we built this package on, not
-# the machine it was installed on. And unfortunately, pip doesn't have a way to pass down the
-# --executable flag to override this behavior.
-# See http://docs.python.org/distutils/setupscript.html#installing-scripts
-def distutils_shebang_fix(path, oldString, newString):
-    for dirname, dirs, files in os.walk(path):
-        for filename in files:
-            filepath = join(dirname, filename)
-            with open(filepath, "rb") as f:
-                s = f.read()
-            s = s.replace(oldString, newString)
-            with open(filepath, "wb") as f:
-                f.write(s)
-
-
-distutils_shebang_fix(
-    join(python27_dir, "Scripts"), join(python27_dir, "python.exe").encode("utf-8"), b"python2.7.exe"
-)
-
 # Extract Python3 to the stage directory. The archive being used is the result of running the
 # installer in a VM with the command line below and packaging up the resulting directory.
 # Unfortunately, there isn't a way to run a fully isolated install on the host machine without
@@ -273,6 +205,22 @@ check_call(
     ]
 )
 copyfile(join(sourcedir, "mercurial.ini"), join(python3_dir, "Scripts", "mercurial.ini"))
+
+# Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
+# to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
+# scripts, which breaks because it uses the path on the machine we built this package on, not
+# the machine it was installed on. And unfortunately, pip doesn't have a way to pass down the
+# --executable flag to override this behavior.
+# See http://docs.python.org/distutils/setupscript.html#installing-scripts
+def distutils_shebang_fix(path, oldString, newString):
+    for dirname, dirs, files in os.walk(path):
+        for filename in files:
+            filepath = join(dirname, filename)
+            with open(filepath, "rb") as f:
+                s = f.read()
+            s = s.replace(oldString, newString)
+            with open(filepath, "wb") as f:
+                f.write(s)
 
 # Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
 # aforementioned packaging issues above.
