@@ -10,6 +10,10 @@ if test -n "$MOZILLABUILD"; then
   mozillabuild_unix=$(cygpath -u "$MOZILLABUILD")
   mozillabuild_unix=${mozillabuild_unix%/} # Remove trailing slash
   PATH="$mozillabuild_unix/bin:$mozillabuild_unix/kdiff3:$mozillabuild_unix/python3:$mozillabuild_unix/python3/Scripts:$PATH"
+
+  # Pip-installed mercurial puts two files in the Python Scripts directory: "hg" (a text, unix-y file), and "hg.exe".
+  # Use hg.exe to avoid https://bz.mercurial-scm.org/show_bug.cgi?id=6614
+  alias hg=hg.exe
 fi
 
 if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then

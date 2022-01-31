@@ -201,18 +201,6 @@ check_call(
         "setuptools",
     ]
 )
-# Install Mercurial and copy mercurial.ini to the python dir so Mercurial has sane defaults.
-check_call(
-    [
-        join(python27_dir, "python.exe"),
-        "-m",
-        "pip",
-        "install",
-        "mercurial",
-        "windows-curses",
-    ]
-)
-copyfile(join(sourcedir, "mercurial.ini"), join(python27_dir, "mercurial.ini"))
 
 # Copy python27.dll to the Scripts directory to work around path detection issues in hg.exe.
 # See bug 1415374 for details.
@@ -271,6 +259,21 @@ check_call(
         "setuptools",
     ]
 )
+
+# Install Mercurial and copy mercurial.ini to the python dir to improve its compatibility
+# with MozillaBuild
+check_call(
+    [
+        join(python3_dir, "python.exe"),
+        "-m",
+        "pip",
+        "install",
+        "mercurial",
+        "windows-curses",
+    ]
+)
+copyfile(join(sourcedir, "mercurial.ini"), join(python3_dir, "Scripts", "mercurial.ini"))
+
 # Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
 # aforementioned packaging issues above.
 distutils_shebang_fix(
