@@ -5,8 +5,11 @@ System Requirements:
   * 64-bit Windows 7+
   * Existing MozillaBuild installation
   * Visual Studio 2017 or newer
-  * MSYS2
   * Windows 10 SDK (included with Visual Studio installer, just be sure it's installed!)
+  * MSYS2
+    * This must be up-to-date ("pacman -Syu"). If not, you'll get Cygwin DLL errors when
+      the MozillaBuild MSYS2 environment is populated
+  * Python 3 with the `requests` library installed (`pip3 install --user requests`)
 
 The packageit.py packaging script is intended to be entirely self-contained. However,
 it's within the realm of possibility of making changes to the host machine it's running
