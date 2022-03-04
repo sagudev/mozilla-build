@@ -381,6 +381,12 @@ os.remove(join(msysdir, r"etc\post-install\07-pacman-key.post"))
 os.remove(join(msysdir, r"etc\post-install\08-xml-catalog.post"))
 copyfile(join(msysdir, r"etc\skel\.inputrc"), join(msysdir, r"etc\inputrc"))
 
+with open(join(msysdir, r"etc\inputrc"), "a") as inputrc:
+    inputrc.write(dedent(r"""
+    # MozillaBuild: map CTRL-V to paste
+    "\C-v": paste-from-clipboard
+    """))
+
 # Extract emacs to the stage directory.
 print("Staging emacs...")
 check_call(
