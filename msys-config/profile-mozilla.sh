@@ -8,9 +8,6 @@ export HGENCODING=utf-8
 # (which would be "MINGW64", "MSYS", etc) since MozillaBuild always executes
 # with "MSYSTEM=MSYS"
 export PS1="\[\e]0;MozillaBuild:\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
-# Use "cygwin" instead of MSYS2's default TERM of "xterm-256color"
-# to avoid HG coloring from showing up as text symbols.
-export TERM=cygwin
 
 # Unbind "ctrl-v" from the "lnext" special character so that it can
 # instead be used to paste.
@@ -25,7 +22,9 @@ if test -n "$MOZILLABUILD"; then
 
   # Pip-installed mercurial puts two files in the Python Scripts directory: "hg" (a text, unix-y file), and "hg.exe".
   # Use hg.exe to avoid https://bz.mercurial-scm.org/show_bug.cgi?id=6614
-  alias hg=hg.exe
+  # Additionally, set TERM to a value that doesn't include "xterm" to avoid
+  # https://bz.mercurial-scm.org/show_bug.cgi?id=6640
+  alias hg="TERM=cygwin hg.exe"
 fi
 
 if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
