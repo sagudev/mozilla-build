@@ -30,12 +30,9 @@ from textwrap import dedent
 
 
 def get_vs_path():
-    def vswhere(property):
-        return check_output(
-            ["vswhere", "-products", "*", "-format", "value", "-property", property]
-        ).decode("mbcs", "replace")
-
-    return vswhere("installationPath").rstrip()
+    return check_output(
+        ["vswhere", "-products", "*", "-format", "value", "-property", "installationPath", "-latest"]
+    ).decode("mbcs", "replace").rstrip()
 
 
 def get_sdk_path():
