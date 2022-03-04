@@ -11,6 +11,11 @@ export PS1="\[\e]0;MozillaBuild:\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\
 # Use "cygwin" instead of MSYS2's default TERM of "xterm-256color"
 # to avoid HG coloring from showing up as text symbols.
 export TERM=cygwin
+
+# Unbind "ctrl-v" from the "lnext" special character so that it can
+# instead be used to paste.
+stty lnext undef
+
 if test -n "$MOZILLABUILD"; then
   # $MOZILLABUILD should always be set by start-shell.bat.
   echo "MozillaBuild Install Directory: ${MOZILLABUILD}"
