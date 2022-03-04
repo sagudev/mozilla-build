@@ -4,6 +4,10 @@ export EDITOR="nano.exe"
 export GIT_EDITOR="nano -b -r 72"
 export HGEDITOR="nano -b -r 72"
 export HGENCODING=utf-8
+# Make prompt shorter than default MSYS2 prompt: don't show "$MSYSTEM"
+# (which would be "MINGW64", "MSYS", etc) since MozillaBuild always executes
+# with "MSYSTEM=MSYS"
+export PS1="\[\e]0;MozillaBuild:\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
 # Use "cygwin" instead of MSYS2's default TERM of "xterm-256color"
 # to avoid HG coloring from showing up as text symbols.
 export TERM=cygwin
