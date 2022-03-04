@@ -178,7 +178,7 @@ copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.exe"))
 
 # Update pip to the latest version.
 check_call(
-    [join(python3_dir, "python3.exe"), "-m", "pip", "install", "--upgrade", "pip"]
+    [join(python3_dir, "python3.exe"), "-m", "pip", "install", "--ignore-installed", "--upgrade", "pip"]
 )
 # Update setuptools to the latest version.
 check_call(
@@ -187,6 +187,7 @@ check_call(
         "-m",
         "pip",
         "install",
+        "--ignore-installed",
         "--upgrade",
         "setuptools",
     ]
@@ -200,6 +201,7 @@ check_call(
         "-m",
         "pip",
         "install",
+        "--ignore-installed",
         "mercurial",
         "windows-curses",
     ]
