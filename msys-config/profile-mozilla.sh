@@ -22,9 +22,7 @@ if test -n "$MOZILLABUILD"; then
 
   # Pip-installed mercurial puts two files in the Python Scripts directory: "hg" (a text, unix-y file), and "hg.exe".
   # Use hg.exe to avoid https://bz.mercurial-scm.org/show_bug.cgi?id=6614
-  # Additionally, set TERM to a value that doesn't include "xterm" to avoid
-  # https://bz.mercurial-scm.org/show_bug.cgi?id=6640
-  alias hg="TERM=cygwin hg.exe"
+  alias hg="hg.exe"
 fi
 
 if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
