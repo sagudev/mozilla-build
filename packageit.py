@@ -308,6 +308,7 @@ required_msys2_package_names = [
     "xz",
     "which",
     "wget",
+    "zstd",
 ]
 
 # Extract MSYS2 packages to the stage directory.
