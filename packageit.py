@@ -307,6 +307,7 @@ required_msys2_package_names = [
     "vim",
     "xz",
     "which",
+    "wget",
 ]
 
 # Extract MSYS2 packages to the stage directory.
