@@ -1,8 +1,5 @@
 #!/bin/sh
 
-export EDITOR="nano.exe"
-export GIT_EDITOR="nano -b -r 72"
-export HGEDITOR="nano -b -r 72"
 export HGENCODING=utf-8
 # Make prompt shorter than default MSYS2 prompt: don't show "$MSYSTEM"
 # (which would be "MINGW64", "MSYS", etc) since MozillaBuild always executes
