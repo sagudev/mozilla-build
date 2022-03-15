@@ -20,6 +20,10 @@ if test -n "$MOZILLABUILD"; then
   # Pip-installed mercurial puts two files in the Python Scripts directory: "hg" (a text, unix-y file), and "hg.exe".
   # Use hg.exe to avoid https://bz.mercurial-scm.org/show_bug.cgi?id=6614
   alias hg="hg.exe"
+  # When Git-For-Windows uses its vendored pager, it misbehaves in our environment: specifically,
+  # using the up/down arrow keys to move the pager doesn't work.
+  # https://github.com/git-for-windows/git/issues/3737
+  export GIT_PAGER="$mozillabuild_unix/msys2/usr/bin/less.exe"
 fi
 
 if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
