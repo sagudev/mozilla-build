@@ -1,5 +1,6 @@
 #!/bin/sh
 
+export EDITOR="nano.exe"
 export HGENCODING=utf-8
 # Make prompt shorter than default MSYS2 prompt: don't show "$MSYSTEM"
 # (which would be "MINGW64", "MSYS", etc) since MozillaBuild always executes
@@ -19,7 +20,7 @@ if test -n "$MOZILLABUILD"; then
 
   # Pip-installed mercurial puts two files in the Python Scripts directory: "hg" (a text, unix-y file), and "hg.exe".
   # Use hg.exe to avoid https://bz.mercurial-scm.org/show_bug.cgi?id=6614
-  alias hg="hg.exe"
+  alias hg="EDITOR= hg.exe"
   # When Git-For-Windows uses its vendored pager, it misbehaves in our environment: specifically,
   # using the up/down arrow keys to move the pager doesn't work.
   # https://github.com/git-for-windows/git/issues/3737
