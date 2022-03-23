@@ -175,12 +175,12 @@ copyfile(join(python3_dir, "python.exe"), join(python3_dir, "python3.exe"))
 
 # Update pip to the latest version.
 check_call(
-    [join(python3_dir, "python3.exe"), "-m", "pip", "install", "--ignore-installed", "--upgrade", "pip"]
+    [join(python3_dir, "python.exe"), "-m", "pip", "install", "--ignore-installed", "--upgrade", "pip"]
 )
 # Update setuptools to the latest version.
 check_call(
     [
-        join(python3_dir, "python3.exe"),
+        join(python3_dir, "python.exe"),
         "-m",
         "pip",
         "install",
@@ -224,10 +224,10 @@ def distutils_shebang_fix(path, oldString, newString):
 # Do the shebang fix on Python3 too. Need to special-case c:\python3\python.exe too due to the
 # aforementioned packaging issues above.
 distutils_shebang_fix(
-    join(python3_dir, "Scripts"), rb"c:\python3\python.exe", b"python3.exe"
+    join(python3_dir, "Scripts"), rb"c:\python3\python.exe", b"python.exe"
 )
 distutils_shebang_fix(
-    join(python3_dir, "Scripts"), join(python3_dir, "python3.exe").encode("utf-8"), b"python3.exe"
+    join(python3_dir, "Scripts"), join(python3_dir, "python.exe").encode("utf-8"), b"python.exe"
 )
 
 # Extract KDiff3 to the stage directory. The KDiff3 installer doesn't support any sort of
