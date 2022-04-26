@@ -37,7 +37,8 @@ ${EndIf}
 FunctionEnd
 
 Section "MozillaBuild"
-  MessageBox MB_YESNO|MB_ICONQUESTION "Previous installations in $INSTDIR will be overwritten (user-created files will be preserved). Do you want to continue?" /SD IDYES IDYES continue
+  IfFileExists $INSTDIR 0 continue
+  MessageBox MB_YESNO|MB_ICONEXCLAMATION "An existing installation was detected at $INSTDIR: please remove this installation before updating MozillaBuild. Do you want to continue installing over top, at risk of potential instability?" /SD IDYES IDYES continue
   SetErrors
   return
   continue:
