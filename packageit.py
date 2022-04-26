@@ -21,7 +21,7 @@
 from multiprocessing.pool import ThreadPool
 from os.path import join
 from pathlib import Path
-from shutil import copyfile, copytree
+from shutil import copyfile, copyfileobj, copytree
 from subprocess import check_call, check_output
 import optparse, os, os.path, zipfile
 import winreg
@@ -270,9 +270,16 @@ copyfile(join(sourcedir, "vswhere.exe"), join(pkgdir, r"bin\vswhere.exe"))
 
 # Extract watchman to the stage directory.
 print("Staging watchman...")
-with zipfile.ZipFile(join(sourcedir, "watchman-v2021.01.11.00.zip"), "r") as watchman_zip:
+with zipfile.ZipFile(
+    join(sourcedir, "watchman-v2022.04.11.00.zip"), "r"
+) as watchman_zip:
     # Copy to the main bin directory to make our PATH bit more tidy
-    watchman_zip.extractall(join(pkgdir, r"bin"))
+    for zipinfo in watchman_zip.infolist():
+        with watchman_zip.open(zipinfo) as source, open(
+            join(pkgdir, "bin", os.path.basename(zipinfo.filename)), "wb"
+        ) as target:
+            copyfileobj(source, target)
+
 # Distribute license with watchman as mandated by MIT.
 copyfile(
     join(sourcedir, "watchman-LICENSE"),
