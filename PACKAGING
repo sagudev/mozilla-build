@@ -7,8 +7,6 @@ System Requirements:
   * Visual Studio 2017 or newer
   * Windows 10 SDK (included with Visual Studio installer, just be sure it's installed!)
   * MSYS2
-    * This must be up-to-date ("pacman -Syu"). If not, you'll get Cygwin DLL errors when
-      the MozillaBuild MSYS2 environment is populated
   * Python 3 with the `requests` library installed (`pip3 install --user requests`)
 
 The packageit.py packaging script is intended to be entirely self-contained. However,
@@ -16,32 +14,61 @@ it's within the realm of possibility of making changes to the host machine it's 
 on, so it's recommended to be run within a VM instead.
 
 Packaging Instructions:
-1. Update the VERSION file, and set a tag in the format MOZILLABUILD_a_b_c_RELEASE.
+1.  Update the VERSION file.
+    (example: https://hg.mozilla.org/mozilla-build/rev/ef213965547bd66e2dfbbfcba354c02241a85d89)
 
-2. Run ./packageit.py from within a MozillaBuild terminal. The script has built-in defaults
-   which should allow for the entire process to run without any additional arguments. It also
-   supports the following command line arguments if any defaults need to be changed:
-   a) "-s" : Override the path to the MozillaBuild source (default: auto-detected)
-   b) "-o" : Set the path for the staging directory (default: c:\mozillabuild-stage)
-   c) "-v" : Path to the Visual Studio installation (default: auto-detected)
-   d) "-w" : Path to the Windows SDK installation (default: auto-detected)
+2.  Set a new tag in the format MOZILLABUILD_x_y_z_RELEASE.
+    You can resolve the hash of the current revision by running "hg --debug id".
+    (example: https://hg.mozilla.org/mozilla-build/rev/cfd83e961e4defa8746d7e2b74c9da2ff44cb0f5)
 
-3. When packaging is completed, there will be a packaged installer in the staging directory.
+3.  Update your MSYS2 environment - this is required to ensure that you don't get Cygwin DLL errors
+    when the MozillaBuild MSYS2 environment is populated. Open an MSYS2 shell and run "pacman -Syu".
+    If prompted, open a new shell and run it again (this is needed when the initial upgrade just
+    handled core libraries).
 
-4. Run a virus scan of the installer through a service like VirusTotal.
+4.  Run "./packageit.py --fetch-sources" (and the other commands mentioned in later steps) from
+    within a MozillaBuild terminal.
 
-5. File a bug blocking the main metabug for the new version for signing the installer. See
-   bug 1458884 for a prior example of this. This signing can be done via a Taskcluster job
-   triggered by RelEng.
+5.  When packaging is completed, there will be an installer created in the staging directory
+    ("/c/mozillabuild-stage/" by default). Package sources will be in the "src/" folder in the
+    staging directory.
 
-6. Use the awscli python package to upload the signed installer to Mozilla's S3 instance
-   (s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32).
+6.  Run a virus scan of the installer through a service like VirusTotal.
 
-   Also upload newer source packages for any updated packages included in the new release
-   under the src/ sub directory.
+7.  Now that the new release has been built successfully, push your new release tag to
+    hg.mozilla.org by running "hg push -r .". This may require updating the repository's ".hg/hgrc"
+    file, changing the "default" path to be "ssh://hg.mozilla.org/mozilla-build".
 
-   Note that the installer should be uploaded as both a versioned filename
-   (i.e. MozillaBuildSetup-3.2.exe) and as a generic MozillaBuildSetup-Latest.exe.
+8.  Install the "awscli" package, if you don't have it already: "pip3 install awscli".
 
-7. Send an email to the dev-builds, dev-platform, and firefox-dev mailing lists announcing
-   the new release. Also update the wiki page: https://wiki.mozilla.org/MozillaBuild
+9.  File a bug blocking the main metabug for the new version for signing the installer. See
+    bug 1766777 for a prior example of this. This signing can be done via a Taskcluster job
+    triggered by RelEng.
+    The signing task must fetch the artifact-to-sign via HTTP(S), so the unsigned installer should
+    temporarily be available from our S3 bucket:
+    "aws s3 cp MozillaBuildSetup-X.Y.Z.exe s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/MozillaBuildSetup-X.Y.Z-unsigned.exe"
+    This will make it available at
+    "https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-X.Y.Z-unsigned.exe"
+
+10. Once signed, remove the unsigned installer:
+    "aws s3 rm s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/MozillaBuildSetup-X.Y.Z-unsigned.exe"
+
+11. Upload the signed installer to our S3 bucket as both "MozillaBuildSetup-X.Y.Z.exe" and
+    "MozillaBuildSetup-Latest.exe":
+    "aws s3 cp <signed-installer> s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/MozillaBuildSetup-X.Y.Z.exe"
+    "aws s3 cp s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/MozillaBuildSetup-X.Y.Z.exe s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe"
+
+    Also upload newer source packages for any updated packages included in the new release
+    under the "src/" subdirectory. Before changing these files, it's recommended to make a local
+    backup:
+    "mkdir src"
+    "aws s3 sync s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/src src"
+    "cp /c/mozillabuild-stage/src/* src"
+    "aws s3 sync --dryrun src s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/src"
+    If the dry run looks good, then:
+    "aws s3 sync src s3://net-mozaws-prod-delivery-archive/pub/mozilla/libraries/win32/src"
+
+12. Send an email to the dev-platform mailing list announcing
+    the new release. Also update the wiki page: https://wiki.mozilla.org/MozillaBuild
+    (example: https://groups.google.com/a/mozilla.org/g/dev-platform/c/0GHhML7tY6c)
+

@@ -13,7 +13,7 @@
 name "${NAME} ${VERSION}"
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
-OutFile "..\${NAME}Setup${VERSION}.exe"
+OutFile "..\${NAME}Setup-${VERSION}.exe"
 
 LicenseData "..\license.rtf"
 Page license
