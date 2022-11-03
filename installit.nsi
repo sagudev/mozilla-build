@@ -97,4 +97,5 @@ Section "MozillaBuild"
   RMDir /r "$INSTDIR\wix-351728"
   RMDir /r "$INSTDIR\yasm"
   File /r *.*
+  WriteRegDword HKCU "Console" "VirtualTerminalLevel" 0x00000001
 SectionEnd
