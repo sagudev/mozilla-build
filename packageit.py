@@ -21,7 +21,7 @@
 from multiprocessing.pool import ThreadPool
 from os.path import join
 from pathlib import Path
-from shutil import copyfile, copyfileobj, copytree
+from shutil import copyfile, copyfileobj, copytree, rmtree
 from subprocess import check_call, check_output
 import optparse, os, os.path, zipfile
 import winreg
@@ -201,10 +201,19 @@ check_call(
         "--ignore-installed",
         "mercurial",
         "windows-curses",
+        "--no-binary",
+        "mercurial",
     ]
 )
 copyfile(join(sourcedir, "mercurial.ini"), join(python3_dir, "Scripts", "mercurial.ini"))
-
+# There's an issue with localizations and MSYS2 that causes garbled text output
+# from Mercurial. This is new with with Mercurial 6.2.3, since that's the first version
+# where pip installs the locale directory. Ideally we would solve the issue in MSYS2, but
+# for now we can just remove the locale directory as a workaround to get the same behavior as
+# with earlier versions of Mercurial/MozillaBuild
+locale_path = join(python3_dir, "Lib", "site-packages", "mercurial", "locale")
+if os.path.exists(locale_path):
+    shutil.rmtree(locale_path)
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
 # scripts, which breaks because it uses the path on the machine we built this package on, not
