@@ -213,7 +213,7 @@ copyfile(join(sourcedir, "mercurial.ini"), join(python3_dir, "Scripts", "mercuri
 # with earlier versions of Mercurial/MozillaBuild
 locale_path = join(python3_dir, "Lib", "site-packages", "mercurial", "locale")
 if os.path.exists(locale_path):
-    shutil.rmtree(locale_path)
+    rmtree(locale_path)
 # Find any occurrences of hardcoded interpreter paths in the Scripts directory and change them
 # to a generic python.exe instead. Awful, but distutils hardcodes the interpreter path in the
 # scripts, which breaks because it uses the path on the machine we built this package on, not
