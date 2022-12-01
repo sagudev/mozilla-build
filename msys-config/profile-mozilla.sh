@@ -67,5 +67,5 @@ if [ -z "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR" ]; then
     fi
   fi
 else
-  PATH="$(cygpath -u $EXTERNAL_TO_MOZILLABUILD_SSH_DIR):$PATH"
+  PATH="$(cygpath -u "$EXTERNAL_TO_MOZILLABUILD_SSH_DIR"):$PATH"
 fi
