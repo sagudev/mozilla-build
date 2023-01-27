@@ -20,7 +20,8 @@ jobs:
       env:
         MOZILLABUILD: 'C:\mozilla-build'
       run: |
-        C:/mozilla-build/start-shell.bat -here ./packageit.py --fetch-sources
+        # C:/mozilla-build/start-shell.bat -here 
+        ./packageit.py --fetch-sources
         
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
