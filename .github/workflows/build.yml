@@ -16,7 +16,7 @@ jobs:
       with:
         update: true
     - name: Build
-      shell: msys2 {0}
+      # shell: msys2 {0}
       env:
         MOZILLABUILD: 'C:\mozilla-build'
       run: python packageit.py --fetch-sources
