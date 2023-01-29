@@ -6,24 +6,23 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install deps
-      run: |
-        Start-BitsTransfer -Source https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-4.0.2.exe -Destination ./MozillaBuildSetup.exe
-        .\MozillaBuildSetup.exe /S | Out-Null
-        pip install requests
-    - name: Setup MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        update: true
-    - name: Build
-      # shell: msys2 {0}
-      env:
-        MOZILLABUILD: 'C:\mozilla-build'
-      run: python packageit.py --fetch-sources
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        name: MozBuild
-        path: C:\mozillabuild-stage\MozillaBuildSetup-4.0.2.exe
-
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: |
+          Start-BitsTransfer -Source https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-4.0.2.exe -Destination ./MozillaBuildSetup.exe
+          .\MozillaBuildSetup.exe /S | Out-Null
+          pip install requests
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+      - name: Build
+        # shell: msys2 {0}
+        env:
+          MOZILLABUILD: 'C:\mozilla-build'
+        run: python packageit.py --fetch-sources
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: MozBuild
+          path: C:\mozillabuild-stage\MozillaBuildSetup-4.0.42.exe
