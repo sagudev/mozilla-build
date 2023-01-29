@@ -25,5 +25,5 @@ jobs:
       uses: actions/upload-artifact@v3.1.2
       with:
         name: MozBuild
-        path: C:/mozillabuild-stage/
+        path: C:\mozillabuild-stage\MozillaBuildSetup-4.0.2.exe
 
